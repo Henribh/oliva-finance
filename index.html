@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oliva Finance</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- 1. Cabeçalho -->
+    <header>
+        <h1>🌿 Oliva <span>Finance</span></h1>
+        <div class="actions">
+            <button class="btn" id="theme-btn">🌙 Tema</button>
+            <button class="btn btn-primary" id="open-sim-btn">💡 Simular Compra</button>
+        </div>
+    </header>
+
+    <!-- 2. Planejamento Base (Renda e Custos Fixos + Reset) -->
+    <section class="panel setup-panel">
+        <h2>⚙️ Planejamento Mensal Base</h2>
+        <form id="setup-form" class="grid-inputs">
+            <div class="input-group">
+                <label for="monthly-income">Renda Mensal Líquida (R$)</label>
+                <input type="number" id="monthly-income" placeholder="Ex: 5000,00" step="0.01" min="0" required>
+            </div>
+            <div class="input-group">
+                <label for="fixed-costs">Custos Fixos Mensais (R$)</label>
+                <input type="number" id="fixed-costs" placeholder="Ex: 2200,00 (Aluguel, Luz, Internet)" step="0.01" min="0" required>
+            </div>
+            <div class="setup-actions" style="display: flex; gap: 10px; width: 100%;">
+                <button type="submit" class="btn btn-primary" style="flex: 1;">Salvar Planejamento</button>
+                <button type="button" id="reset-btn" class="btn" style="color: var(--red); border-color: var(--red);">🗑️ Resetar Tudo</button>
+            </div>
+        </form>
+    </section>
+
+    <!-- 3. Cards de Resumo -->
+    <section class="cards">
+        <div class="card">
+            <div class="label">💵 Saldo Livre / Disponível</div>
+            <div class="value" id="balance-val">R$ 0,00</div>
+            <div class="delta" id="balance-delta">Orçamento calculated</div>
+        </div>
+
+        <div class="card">
+            <div class="label">📈 Renda Total</div>
+            <div class="value" id="incomes-val">R$ 0,00</div>
+            <div class="delta up">Fixos + Variáveis</div>
+        </div>
+
+        <div class="card">
+            <div class="label">📉 Custos Totais</div>
+            <div class="value" id="expenses-val">R$ 0,00</div>
+            <div class="delta down">Fixos + Variáveis</div>
+        </div>
+
+        <div class="card">
+            <div class="label">🎯 Capacidade de Economia</div>
+            <div class="value" id="savings-val">R$ 0,00</div>
+            <div class="delta" id="savings-percent">0% da Renda</div>
+        </div>
+    </section>
+
+    <!-- 4. Simulador de Impacto Financeiro -->
+    <section class="panel simulator-panel" id="simulator-section">
+        <h2>🔮 Simulador de Compra e Impacto no Orçamento</h2>
+        <div class="sim-grid">
+            <form id="sim-form">
+                <input type="text" id="sim-title" placeholder="O que você quer comprar? (ex: Notebook)" required>
+                <input type="number" id="sim-price" placeholder="Valor Total (R$)" step="0.01" min="0.01" required>
+                
+                <select id="sim-installments" required>
+                    <option value="1">À vista (1x)</option>
+                    <option value="2">Parcelado em 2x</option>
+                    <option value="3">Parcelado em 3x</option>
+                    <option value="4">Parcelado em 4x</option>
+                    <option value="5">Parcelado em 5x</option>
+                    <option value="6">Parcelado em 6x</option>
+                    <option value="7">Parcelado em 7x</option>
+                    <option value="8">Parcelado em 8x</option>
+                    <option value="9">Parcelado em 9x</option>
+                    <option value="10">Parcelado em 10x</option>
+                    <option value="11">Parcelado em 11x</option>
+                    <option value="12">Parcelado em 12x</option>
+                </select>
+                
+                <button type="submit" class="btn btn-secondary">Simular Impacto</button>
+            </form>
+
+            <div class="sim-results" id="sim-results">
+                <p class="sim-placeholder">Preencha os valores ao lado para simular o comprometimento do seu salário.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Painel Central (Gráfico + Lançamento de Custos) -->
+    <section class="grid-2">
+        <div class="panel">
+            <h2>📊 Gastos por Categoria</h2>
+            <div class="donut"></div>
+            <ul class="legend">
+                <li><span class="dot cat-food"></span> Alimentação</li>
+                <li><span class="dot cat-transport"></span> Transporte</li>
+                <li><span class="dot cat-leisure"></span> Lazer</li>
+                <li><span class="dot cat-housing"></span> Moradia/Fixos</li>
+                <li><span class="dot cat-others"></span> Outros</li>
+            </ul>
+        </div>
+
+        <div class="panel">
+            <h2>➕ Lançar Demais Custos / Receitas</h2>
+            <form id="transaction-form">
+                <input type="text" id="desc" placeholder="Descrição (ex: Uber, Restaurante)" required>
+                <input type="number" id="amount" placeholder="Valor em R$" step="0.01" min="0.01" required>
+                
+                <select id="type" required>
+                    <option value="" disabled selected>Tipo</option>
+                    <option value="income">Receita Extra</option>
+                    <option value="expense">Despesa Variável</option>
+                </select>
+
+                <select id="category" required>
+                    <option value="" disabled selected>Categoria</option>
+                    <option value="Alimentação">Alimentação</option>
+                    <option value="Transporte">Transporte</option>
+                    <option value="Lazer">Lazer</option>
+                    <option value="Moradia">Moradia/Fixos</option>
+                    <option value="Outros">Outros</option>
+                </select>
+
+                <input type="date" id="date" required>
+
+                <button class="btn btn-primary" type="submit">Adicionar ao Extrato</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- 6. Histórico de Transações -->
+    <section class="panel table-panel">
+        <h2>📋 Extrato do Mês</h2>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Descrição</th>
+                        <th>Categoria</th>
+                        <th>Valor</th>
+                        <th>Ação</th>
+                    </tr>
+                </thead>
+                <tbody id="transaction-list">
+                    <!-- Preenchido via JS -->
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
