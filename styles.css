@@ -22,12 +22,13 @@
 }
 
 [data-theme="dark"] {
-  --bg-gradient: linear-gradient(135deg, #090e0a 0%, #111a12 100%);
+  --bg-gradient: linear-gradient(135deg, #050806 0%, #0d140e 100%);
   
-  --glass-bg: rgba(20, 28, 21, 0.55);
-  --glass-border: rgba(255, 255, 255, 0.12);
-  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
-  --inset-light: inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
+  /* Vidro mais fechado para compensar a renderização do iOS */
+  --glass-bg: rgba(14, 20, 15, 0.82);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.7);
+  --inset-light: inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
   
   --text: #e8ece7;
   --muted: #94a395;
@@ -61,7 +62,7 @@ body {
 }
 
 /* ==========================================
-   LUZES DE FUNDO (EFEITO VIDRO)
+  LUZES DE FUNDO (AJUSTADAS PARA DARK)
    ========================================== */
 .circle {
   position: fixed;
@@ -87,8 +88,16 @@ body {
   left: -100px;
 }
 
+[data-theme="dark"] .circle-1 {
+  background: rgba(107, 142, 35, 0.15);
+}
+
+[data-theme="dark"] .circle-2 {
+  background: rgba(85, 107, 47, 0.12);
+}
+
 /* ==========================================
-   LIQUID GLASS CARDS & PAINÉIS
+  LIQUID GLASS CARDS & PAINÉIS
    ========================================== */
 .panel, 
 .card, 
@@ -159,7 +168,7 @@ header h1 span {
 }
 
 /* ==========================================
-   PAINÉIS & INPUTS
+   PAINÉIS & INPUTS (CORREÇÃO DE DATA NO IOS)
    ========================================== */
 .panel {
   padding: 24px;
@@ -199,18 +208,32 @@ input, select {
   color: var(--text);
   font-size: 0.95rem;
   width: 100%;
+  max-width: 100%;
   outline: none;
   transition: border 0.2s, background 0.2s;
+  -webkit-appearance: none;
+  appearance: none;
+  box-sizing: border-box;
+}
+
+input[type="date"] {
+  min-height: 46px;
+  display: block;
 }
 
 [data-theme="dark"] input, 
 [data-theme="dark"] select {
-  background: rgba(0, 0, 0, 0.25);
+  background: rgba(0, 0, 0, 0.35);
 }
 
 input:focus, select:focus {
   border-color: var(--primary);
   background: rgba(255, 255, 255, 0.4);
+}
+
+[data-theme="dark"] input:focus, 
+[data-theme="dark"] select:focus {
+  background: rgba(0, 0, 0, 0.5);
 }
 
 /* ==========================================
@@ -311,6 +334,9 @@ th {
   font-size: 1rem;
 }
 
+/* ==========================================
+   MEDIA QUERIES (MOBILE)
+   ========================================== */
 @media (max-width: 768px) {
   body {
     padding: 12px;
