@@ -1,5 +1,5 @@
 /* ==========================================
-   PALETA DE CORES & VARIÁVEIS GLASS
+   1. PALETA DE CORES & VARIÁVEIS GLASS
    ========================================== */
 :root {
   --bg-gradient: linear-gradient(135deg, #eef3ec 0%, #d2ded0 100%);
@@ -44,7 +44,7 @@
 }
 
 /* ==========================================
-   RESET & LAYOUT GLOBAL
+   2. RESET & LAYOUT GLOBAL
    ========================================== */
 * {
   margin: 0;
@@ -91,25 +91,12 @@ body {
   left: -100px;
 }
 
-/* Trava global contra extravasamento no iOS Safari */
-.panel, 
-.card, 
-.input-group, 
-.grid-2-inputs, 
-.form-stack,
-.sim-grid,
-.grid-setup {
+.panel, .card, .input-group, .grid-2-inputs, .form-stack, .sim-grid, .grid-setup {
   min-width: 0;
   max-width: 100%;
 }
 
-/* ==========================================
-   CONTAINER GLASS (PAINÉIS E CARDS)
-   ========================================== */
-.panel, 
-.card, 
-header,
-.sim-results {
+.panel, .card, header, .sim-results, .goal-card {
   background: var(--glass-bg);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
@@ -118,33 +105,67 @@ header,
   border-radius: var(--radius);
 }
 
+/* ==========================================
+   3. NAVEGAÇÃO POR ABAS (SPA)
+   ========================================== */
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
-  padding: 18px 26px;
+  padding: 16px 24px;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 16px;
 }
 
 header h1 {
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   font-weight: 700;
-  letter-spacing: -0.5px;
 }
 
 header h1 span {
   color: var(--primary);
 }
 
+.nav-tabs {
+  display: flex;
+  gap: 8px;
+  background: var(--accent-light);
+  padding: 6px;
+  border-radius: 14px;
+}
+
+.nav-btn {
+  padding: 8px 16px;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nav-btn.active {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
 .actions {
   display: flex;
-  gap: 12px;
+  gap: 10px;
 }
 
 /* ==========================================
-   INPUTS, SELECTS E CORREÇÕES IOS
+   4. FORMULÁRIOS & INPUTS
    ========================================== */
 .panel {
   padding: 24px;
@@ -155,7 +176,6 @@ header h1 span {
   font-size: 1.15rem;
   margin-bottom: 20px;
   font-weight: 600;
-  letter-spacing: -0.3px;
 }
 
 .input-group {
@@ -170,7 +190,6 @@ header h1 span {
   color: var(--muted);
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
 input, select {
@@ -190,11 +209,6 @@ input, select {
   appearance: none;
 }
 
-input::placeholder {
-  color: var(--muted);
-  opacity: 0.75;
-}
-
 input:focus, select:focus {
   border-color: var(--primary);
   box-shadow: 0 0 0 3px var(--accent-light);
@@ -207,20 +221,10 @@ select option {
 
 input[type="date"] {
   min-height: 44px;
-  color: var(--text);
-}
-
-input[type="date"]::-webkit-calendar-picker-indicator {
-  opacity: 0.7;
-  cursor: pointer;
-}
-
-[data-theme="dark"] input[type="date"]::-webkit-calendar-picker-indicator {
-  filter: invert(0.9);
 }
 
 /* ==========================================
-   BOTÕES
+   5. BOTÕES
    ========================================== */
 .btn {
   padding: 12px 22px;
@@ -243,46 +247,19 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   box-shadow: 0 6px 16px rgba(0,0,0,0.1);
 }
 
-.btn-primary {
-  background: var(--primary);
-  color: #ffffff;
-  border: none;
-}
-
-.btn-primary:hover {
-  background: var(--primary-hover);
-}
-
-.btn-secondary {
-  background: var(--accent-light);
-  color: var(--primary);
-  border: 1px solid var(--primary);
-}
-
-.btn-danger {
-  background: rgba(198, 40, 40, 0.12);
-  color: var(--red);
-  border: 1px solid rgba(198, 40, 40, 0.3);
-}
-
-.btn-danger:hover {
-  background: var(--red);
-  color: #ffffff;
-}
+.btn-primary { background: var(--primary); color: #ffffff; border: none; }
+.btn-primary:hover { background: var(--primary-hover); }
+.btn-secondary { background: var(--accent-light); color: var(--primary); border: 1px solid var(--primary); }
+.btn-danger { background: rgba(198, 40, 40, 0.12); color: var(--red); border: 1px solid rgba(198, 40, 40, 0.3); }
 
 /* ==========================================
-   GRIDS & LAYOUTS
+   6. CARDS & GRIDS
    ========================================== */
 .grid-setup {
   display: grid;
   grid-template-columns: 1fr 1fr auto;
   gap: 16px;
   align-items: end;
-}
-
-.setup-buttons {
-  display: flex;
-  gap: 10px;
 }
 
 .cards {
@@ -300,59 +277,14 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   min-height: 120px;
 }
 
-.card .label {
-  color: var(--muted);
-  font-size: 0.82rem;
-  font-weight: 600;
-  margin-bottom: 6px;
-}
-
-.card .value {
-  font-size: 1.55rem;
-  font-weight: 700;
-  letter-spacing: -0.5px;
-  margin: 4px 0;
-}
-
-.card .delta {
-  font-size: 0.78rem;
-  color: var(--muted);
-}
+.card .label { color: var(--muted); font-size: 0.82rem; font-weight: 600; }
+.card .value { font-size: 1.55rem; font-weight: 700; margin: 4px 0; }
+.card .delta { font-size: 0.78rem; color: var(--muted); }
 
 .up { color: var(--green); font-weight: 600; }
 .down { color: var(--red); font-weight: 600; }
 .val-pos { color: var(--green); font-weight: 600; }
 .val-neg { color: var(--red); font-weight: 600; }
-
-.sim-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  align-items: start;
-}
-
-.sim-form-inputs {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.sim-results {
-  padding: 22px;
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  background: var(--accent-light);
-  border: 1px dashed var(--primary);
-}
-
-.sim-placeholder {
-  color: var(--muted);
-  font-size: 0.9rem;
-  text-align: center;
-  line-height: 1.5;
-}
 
 .grid-2 {
   display: grid;
@@ -370,34 +302,85 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
-  width: 100%;
+}
+
+.sim-results {
+  padding: 18px;
+  background: var(--accent-light);
+  border: 1px dashed var(--primary);
+  border-radius: 12px;
 }
 
 /* ==========================================
-   TABELA DE EXTRATO
+   7. METAS & COFRES (INLINE INPUT)
    ========================================== */
-.table-responsive {
-  overflow-x: auto;
+.goals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
 }
 
-table {
+.goal-card {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.goal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.progress-bar-bg {
   width: 100%;
-  border-collapse: collapse;
-  min-width: 500px;
+  height: 12px;
+  background: var(--accent-light);
+  border-radius: 20px;
+  overflow: hidden;
 }
 
-th, td {
-  padding: 14px;
-  text-align: left;
+.progress-bar-fill {
+  height: 100%;
+  background: var(--primary);
+  border-radius: 20px;
+  transition: width 0.4s ease;
+}
+
+/* Formulário de Depósito Direto no Card */
+.goal-deposit-form {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.goal-deposit-form input {
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  border-radius: 10px;
+}
+
+.goal-deposit-form button {
+  padding: 8px 14px;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+/* ==========================================
+   8. RELATÓRIOS & TABELAS (TELA 3)
+   ========================================== */
+.report-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
   border-bottom: 1px solid var(--glass-border);
 }
 
-th {
-  color: var(--muted);
-  font-size: 0.82rem;
-  font-weight: 600;
-  text-transform: uppercase;
-}
+.table-responsive { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; min-width: 500px; }
+th, td { padding: 14px; text-align: left; border-bottom: 1px solid var(--glass-border); }
+th { color: var(--muted); font-size: 0.82rem; text-transform: uppercase; }
 
 .tag {
   padding: 4px 10px;
@@ -414,57 +397,19 @@ th {
   color: var(--red);
   cursor: pointer;
   font-weight: bold;
-  font-size: 1.1rem;
 }
 
+/* ==========================================
+   9. RESPONSIVIDADE (MOBILE)
+   ========================================== */
 @media (max-width: 1024px) {
-  .cards {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  .cards { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 768px) {
-  body {
-    padding: 14px;
-  }
-
-  .grid-setup {
-    grid-template-columns: 1fr;
-  }
-
-  .setup-buttons {
-    width: 100%;
-  }
-
-  .setup-buttons .btn {
-    flex: 1;
-  }
-
-  .cards {
-    grid-template-columns: 1fr;
-  }
-
-  .sim-grid, .grid-2 {
-    grid-template-columns: 1fr;
-  }
-
-  .grid-2-inputs {
-    grid-template-columns: 1fr;
-  }
-
-  header {
-    padding: 16px;
-  }
-
-  header h1 {
-    font-size: 1.3rem;
-  }
-
-  .actions {
-    width: 100%;
-  }
-
-  .btn {
-    flex: 1;
-  }
+  body { padding: 12px; }
+  header { flex-direction: column; align-items: stretch; }
+  .nav-tabs { justify-content: center; }
+  .grid-setup, .cards, .grid-2, .grid-2-inputs { grid-template-columns: 1fr; }
+  .btn { width: 100%; }
 }

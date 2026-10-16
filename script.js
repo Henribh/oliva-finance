@@ -1,18 +1,15 @@
 // ==========================================
-// TRATAMENTO DE VALORES NUMÉRICOS (PONTOS E VÍRGULAS)
+// 1. TRATAMENTO DE VALORES NUMÉRICOS
 // ==========================================
 function parseCurrencyInput(value) {
   if (!value) return 0;
-  
   let cleanValue = value.toString().trim();
 
   if (cleanValue.includes('.') && cleanValue.includes(',')) {
     cleanValue = cleanValue.replace(/\./g, '').replace(',', '.');
-  } 
-  else if (cleanValue.includes(',')) {
+  } else if (cleanValue.includes(',')) {
     cleanValue = cleanValue.replace(',', '.');
-  } 
-  else if (cleanValue.includes('.')) {
+  } else if (cleanValue.includes('.')) {
     const parts = cleanValue.split('.');
     if (parts.length > 1 && parts[parts.length - 1].length === 3) {
       cleanValue = cleanValue.replace(/\./g, '');
@@ -22,55 +19,50 @@ function parseCurrencyInput(value) {
   return parseFloat(cleanValue) || 0;
 }
 
+function formatCurrency(val) {
+  return val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+}
+
 // ==========================================
-// ESTADO GLOBAL DA APLICAÇÃO
+// 2. ESTADO GLOBAL DA APLICAÇÃO
 // ==========================================
 let state = {
   monthlyIncome: parseCurrencyInput(localStorage.getItem('oliva_income')),
   fixedCosts: parseCurrencyInput(localStorage.getItem('oliva_fixed')),
   transactions: JSON.parse(localStorage.getItem('oliva_transactions')) || [],
+  goals: JSON.parse(localStorage.getItem('oliva_goals')) || [],
   theme: localStorage.getItem('oliva_theme') || 'light'
 };
 
 // ==========================================
-// SELEÇÃO DE ELEMENTOS DO DOM
+// 3. NAVEGAÇÃO DE TELA (SPA)
 // ==========================================
-const themeBtn = document.getElementById('theme-btn');
-const openSimBtn = document.getElementById('open-sim-btn');
-const simulatorSection = document.getElementById('simulator-section');
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
 
-const setupForm = document.getElementById('setup-form');
-const resetBtn = document.getElementById('reset-btn');
-const incomeInput = document.getElementById('monthly-income');
-const fixedInput = document.getElementById('fixed-costs');
+  document.getElementById(`tab-${tabId}`).classList.add('active');
+  event.currentTarget.classList.add('active');
 
-const simForm = document.getElementById('sim-form');
-const simResults = document.getElementById('sim-results');
-
-const transactionForm = document.getElementById('transaction-form');
-const transactionList = document.getElementById('transaction-list');
-
-const balanceVal = document.getElementById('balance-val');
-const incomesVal = document.getElementById('incomes-val');
-const expensesVal = document.getElementById('expenses-val');
-const savingsVal = document.getElementById('savings-val');
-const savingsPercent = document.getElementById('savings-percent');
+  if (tabId === 'relatorios') renderReports();
+}
 
 // ==========================================
-// INICIALIZAÇÃO E TEMA
+// 4. INICIALIZAÇÃO E TEMA
 // ==========================================
 function init() {
   document.documentElement.dataset.theme = state.theme;
   updateThemeButtonText();
 
-  if (state.monthlyIncome > 0) incomeInput.value = state.monthlyIncome;
-  if (state.fixedCosts > 0) fixedInput.value = state.fixedCosts;
+  if (state.monthlyIncome > 0) document.getElementById('monthly-income').value = state.monthlyIncome;
+  if (state.fixedCosts > 0) document.getElementById('fixed-costs').value = state.fixedCosts;
 
   renderTransactions();
   updateTotals();
+  renderGoals();
 }
 
-themeBtn.addEventListener('click', () => {
+document.getElementById('theme-btn').addEventListener('click', () => {
   state.theme = state.theme === 'dark' ? 'light' : 'dark';
   document.documentElement.dataset.theme = state.theme;
   localStorage.setItem('oliva_theme', state.theme);
@@ -78,61 +70,33 @@ themeBtn.addEventListener('click', () => {
 });
 
 function updateThemeButtonText() {
-  themeBtn.textContent = state.theme === 'dark' ? '☀️ Tema' : '🌙 Tema';
+  document.getElementById('theme-btn').textContent = state.theme === 'dark' ? '☀️ Tema' : '🌙 Tema';
 }
 
-if (openSimBtn && simulatorSection) {
-  openSimBtn.addEventListener('click', () => {
-    simulatorSection.scrollIntoView({ behavior: 'smooth' });
-    document.getElementById('sim-title').focus();
-  });
-}
+// Reset Geral
+document.getElementById('reset-btn').addEventListener('click', () => {
+  if (confirm('Tem certeza que deseja apagar TODOS os dados da aplicação?')) {
+    localStorage.clear();
+    location.reload();
+  }
+});
 
 // ==========================================
-// PLANEJAMENTO BASE E RESET DE DADOS
+// 5. DASHBOARD & TRANSAÇÕES
 // ==========================================
-setupForm.addEventListener('submit', (e) => {
+document.getElementById('setup-form').addEventListener('submit', (e) => {
   e.preventDefault();
-
-  state.monthlyIncome = parseCurrencyInput(incomeInput.value);
-  state.fixedCosts = parseCurrencyInput(fixedInput.value);
+  state.monthlyIncome = parseCurrencyInput(document.getElementById('monthly-income').value);
+  state.fixedCosts = parseCurrencyInput(document.getElementById('fixed-costs').value);
 
   localStorage.setItem('oliva_income', state.monthlyIncome);
   localStorage.setItem('oliva_fixed', state.fixedCosts);
 
   updateTotals();
-  alert('Planejamento inicial salvo com sucesso! 🌿');
+  alert('Planejamento salvo com sucesso! 🌿');
 });
 
-if (resetBtn) {
-  resetBtn.addEventListener('click', () => {
-    const confirmReset = confirm('Tem certeza que deseja apagar todos os dados e histórico da aplicação? Esta ação não pode ser desfeita.');
-
-    if (confirmReset) {
-      localStorage.removeItem('oliva_income');
-      localStorage.removeItem('oliva_fixed');
-      localStorage.removeItem('oliva_transactions');
-
-      state.monthlyIncome = 0;
-      state.fixedCosts = 0;
-      state.transactions = [];
-
-      incomeInput.value = '';
-      fixedInput.value = '';
-      simResults.innerHTML = `<p class="sim-placeholder">Preencha os valores ao lado para simular o comprometimento do seu salário.</p>`;
-
-      renderTransactions();
-      updateTotals();
-
-      alert('Todos os dados foram apagados com sucesso!');
-    }
-  });
-}
-
-// ==========================================
-// GERENCIAMENTO DE TRANSAÇÕES
-// ==========================================
-transactionForm.addEventListener('submit', (e) => {
+document.getElementById('transaction-form').addEventListener('submit', (e) => {
   e.preventDefault();
 
   const newTransaction = {
@@ -145,68 +109,48 @@ transactionForm.addEventListener('submit', (e) => {
   };
 
   state.transactions.unshift(newTransaction);
-  saveTransactions();
+  localStorage.setItem('oliva_transactions', JSON.stringify(state.transactions));
+
   renderTransactions();
   updateTotals();
-
-  transactionForm.reset();
+  document.getElementById('transaction-form').reset();
 });
-
-function saveTransactions() {
-  localStorage.setItem('oliva_transactions', JSON.stringify(state.transactions));
-}
 
 function deleteTransaction(id) {
   state.transactions = state.transactions.filter(t => t.id !== id);
-  saveTransactions();
+  localStorage.setItem('oliva_transactions', JSON.stringify(state.transactions));
   renderTransactions();
   updateTotals();
 }
 
-// ==========================================
-// CÁLCULOS DOS PAINÉIS
-// ==========================================
 function updateTotals() {
-  const extraIncomes = state.transactions
-    .filter(t => t.type === 'income')
-    .reduce((acc, t) => acc + t.amount, 0);
-
-  const variableExpenses = state.transactions
-    .filter(t => t.type === 'expense')
-    .reduce((acc, t) => acc + t.amount, 0);
+  const extraIncomes = state.transactions.filter(t => t.type === 'income').reduce((acc, t) => acc + t.amount, 0);
+  const variableExpenses = state.transactions.filter(t => t.type === 'expense').reduce((acc, t) => acc + t.amount, 0);
 
   const totalIncome = state.monthlyIncome + extraIncomes;
   const totalExpenses = state.fixedCosts + variableExpenses;
   const balance = totalIncome - totalExpenses;
 
-  incomesVal.textContent = formatCurrency(totalIncome);
-  expensesVal.textContent = formatCurrency(totalExpenses);
+  document.getElementById('incomes-val').textContent = formatCurrency(totalIncome);
+  document.getElementById('expenses-val').textContent = formatCurrency(totalExpenses);
+  
+  const balanceVal = document.getElementById('balance-val');
   balanceVal.textContent = formatCurrency(balance);
+  balanceVal.className = `value ${balance >= 0 ? 'up' : 'down'}`;
 
   const availableSavings = Math.max(0, balance);
-  savingsVal.textContent = formatCurrency(availableSavings);
+  document.getElementById('savings-val').textContent = formatCurrency(availableSavings);
 
   const percent = totalIncome > 0 ? ((balance / totalIncome) * 100).toFixed(1) : 0;
-  savingsPercent.textContent = `${percent}% da Renda Livre`;
-
-  balanceVal.className = `value ${balance >= 0 ? 'up' : 'down'}`;
-}
-
-function formatCurrency(val) {
-  return val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-}
-
-function formatDate(dateStr) {
-  if (!dateStr) return '';
-  const [year, month, day] = dateStr.split('-');
-  return `${day}/${month}/${year.slice(2)}`;
+  document.getElementById('savings-percent').textContent = `${percent}% da Renda Livre`;
 }
 
 function renderTransactions() {
-  transactionList.innerHTML = '';
+  const list = document.getElementById('transaction-list');
+  list.innerHTML = '';
 
   if (state.transactions.length === 0) {
-    transactionList.innerHTML = `<tr><td colspan="5" style="text-align:center; color: var(--muted);">Nenhuma transação lançada ainda.</td></tr>`;
+    list.innerHTML = `<tr><td colspan="5" style="text-align:center; color: var(--muted);">Nenhuma transação lançada ainda.</td></tr>`;
     return;
   }
 
@@ -215,25 +159,18 @@ function renderTransactions() {
     const isIncome = t.type === 'income';
 
     tr.innerHTML = `
-      <td>${formatDate(t.date)}</td>
+      <td>${t.date ? t.date.split('-').reverse().join('/') : ''}</td>
       <td>${t.description}</td>
       <td><span class="tag">${t.category}</span></td>
-      <td class="${isIncome ? 'val-pos' : 'val-neg'}">
-        ${isIncome ? '+' : '-'} ${formatCurrency(t.amount)}
-      </td>
-      <td>
-        <button class="btn-delete" onclick="deleteTransaction(${t.id})">✕</button>
-      </td>
+      <td class="${isIncome ? 'val-pos' : 'val-neg'}">${isIncome ? '+' : '-'} ${formatCurrency(t.amount)}</td>
+      <td><button class="btn-delete" onclick="deleteTransaction(${t.id})">✕</button></td>
     `;
-
-    transactionList.appendChild(tr);
+    list.appendChild(tr);
   });
 }
 
-// ==========================================
-// SIMULADOR DE IMPACTO FINANCEIRO
-// ==========================================
-simForm.addEventListener('submit', (e) => {
+// Simulador de Compra
+document.getElementById('sim-form').addEventListener('submit', (e) => {
   e.preventDefault();
 
   const title = document.getElementById('sim-title').value;
@@ -244,31 +181,161 @@ simForm.addEventListener('submit', (e) => {
   const totalIncome = state.monthlyIncome;
 
   if (totalIncome <= 0) {
-    simResults.innerHTML = `<p style="color: var(--red);">Preencha sua Renda Mensal no 'Planejamento Base' antes de simular!</p>`;
+    document.getElementById('sim-results').innerHTML = `<p style="color: var(--red);">Preencha sua Renda Mensal no Planejamento Base antes de simular!</p>`;
     return;
   }
 
   const commitmentPercent = ((installmentValue / totalIncome) * 100).toFixed(1);
+  let riskColor = commitmentPercent > 30 ? 'var(--red)' : commitmentPercent > 15 ? '#f59e0b' : 'var(--green)';
 
-  let riskColor = 'var(--green)';
-  let riskText = '🟢 Baixo impacto no orçamento';
-
-  if (commitmentPercent > 30) {
-    riskColor = 'var(--red)';
-    riskText = '🔴 Alto risco de comprometimento!';
-  } else if (commitmentPercent > 15) {
-    riskColor = '#f59e0b';
-    riskText = '🟡 Atenção ao orçamento!';
-  }
-
-  simResults.innerHTML = `
-    <h3 style="font-size: 1rem; margin-bottom: 8px;">Resultado para: <strong>${title}</strong></h3>
-    <p>• Valor total: <strong>${formatCurrency(price)}</strong></p>
+  document.getElementById('sim-results').innerHTML = `
+    <h3>Resultado para: <strong>${title}</strong></h3>
     <p>• Parcela (${installments}x): <strong>${formatCurrency(installmentValue)} / mês</strong></p>
-    <p>• Comprometimento da Renda: <strong style="color: ${riskColor};">${commitmentPercent}% ao mês</strong></p>
-    <p style="margin-top: 8px; font-size: 0.85rem; color: ${riskColor}; font-weight: 600;">Status: ${riskText}</p>
+    <p>• Comprometimento: <strong style="color: ${riskColor};">${commitmentPercent}% ao mês</strong></p>
   `;
 });
 
-// Inicialização da aplicação
+// ==========================================
+// 6. METAS & COFRES (DEPÓSITO DIRECTO/INLINE)
+// ==========================================
+document.getElementById('goal-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const newGoal = {
+    id: Date.now(),
+    title: document.getElementById('goal-title').value,
+    target: parseCurrencyInput(document.getElementById('goal-target').value),
+    saved: 0
+  };
+
+  state.goals.push(newGoal);
+  localStorage.setItem('oliva_goals', JSON.stringify(state.goals));
+  renderGoals();
+  document.getElementById('goal-form').reset();
+});
+
+// Aporte direto pelo formulário interno do card
+function handleGoalDeposit(e, id) {
+  e.preventDefault();
+  const input = document.getElementById(`deposit-input-${id}`);
+  const amount = parseCurrencyInput(input.value);
+
+  if (amount > 0) {
+    const goal = state.goals.find(g => g.id === id);
+    if (goal) {
+      goal.saved += amount;
+      localStorage.setItem('oliva_goals', JSON.stringify(state.goals));
+      renderGoals();
+    }
+  }
+}
+
+function deleteGoal(id) {
+  state.goals = state.goals.filter(g => g.id !== id);
+  localStorage.setItem('oliva_goals', JSON.stringify(state.goals));
+  renderGoals();
+}
+
+function renderGoals() {
+  const container = document.getElementById('goals-container');
+  container.innerHTML = '';
+
+  if (state.goals.length === 0) {
+    container.innerHTML = `<p style="color: var(--muted); grid-column: 1/-1; text-align: center;">Nenhuma meta criada ainda. Crie seu primeiro objetivo acima!</p>`;
+    return;
+  }
+
+  state.goals.forEach(g => {
+    const percent = Math.min(100, ((g.saved / g.target) * 100)).toFixed(1);
+    const div = document.createElement('div');
+    div.className = 'goal-card';
+    div.innerHTML = `
+      <div class="goal-header">
+        <strong>${g.title}</strong>
+        <button class="btn-delete" onclick="deleteGoal(${g.id})">✕</button>
+      </div>
+      <div>Acumulado: <strong>${formatCurrency(g.saved)}</strong> / ${formatCurrency(g.target)}</div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" style="width: ${percent}%;"></div>
+      </div>
+      <div style="font-size: 0.85rem; color: var(--muted);">${percent}% concluído</div>
+      
+      <!-- Formulário Inline de Aporte sem Pop-up -->
+      <form class="goal-deposit-form" onsubmit="handleGoalDeposit(event, ${g.id})">
+        <input type="text" id="deposit-input-${g.id}" placeholder="Valor (R$)" required>
+        <button type="submit" class="btn btn-secondary">➕ Guardar</button>
+      </form>
+    `;
+    container.appendChild(div);
+  });
+}
+
+// ==========================================
+// 7. RELATÓRIOS & JUROS COMPOSTOS (TELA 3)
+// ==========================================
+function renderReports() {
+  const container = document.getElementById('category-report');
+  container.innerHTML = '';
+
+  const expenses = state.transactions.filter(t => t.type === 'expense');
+  if (expenses.length === 0) {
+    container.innerHTML = `<p style="color: var(--muted); text-align: center;">Nenhuma despesa lançada para gerar o relatório.</p>`;
+    return;
+  }
+
+  const totals = {};
+  expenses.forEach(t => totals[t.category] = (totals[t.category] || 0) + t.amount);
+
+  Object.keys(totals).forEach(cat => {
+    const div = document.createElement('div');
+    div.className = 'report-item';
+    div.innerHTML = `<span>${cat}</span><strong>${formatCurrency(totals[cat])}</strong>`;
+    container.appendChild(div);
+  });
+}
+
+document.getElementById('compound-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const initial = parseCurrencyInput(document.getElementById('comp-initial').value);
+  const monthly = parseCurrencyInput(document.getElementById('comp-monthly').value);
+  const years = parseInt(document.getElementById('comp-years').value) || 1;
+
+  const months = years * 12;
+  const rate = 0.10 / 12; // 10% a.a.
+
+  let total = initial;
+  for (let i = 0; i < months; i++) {
+    total = (total + monthly) * (1 + rate);
+  }
+
+  document.getElementById('compound-results').innerHTML = `
+    <h3>Projeção para ${years} ano(s):</h3>
+    <p>• Total Estimado: <strong style="color: var(--green); font-size: 1.2rem;">${formatCurrency(total)}</strong></p>
+    <p style="font-size: 0.8rem; color: var(--muted); margin-top: 4px;">*Considerando taxa média anual estimada de 10% a.a.</p>
+  `;
+});
+
+// Exportação CSV
+document.getElementById('export-csv-btn').addEventListener('click', () => {
+  if (state.transactions.length === 0) {
+    alert('Não há dados no extrato para exportar.');
+    return;
+  }
+
+  let csvContent = "data:text/csv;charset=utf-8,Data,Descricao,Categoria,Tipo,Valor\n";
+  state.transactions.forEach(t => {
+    csvContent += `${t.date},"${t.description}",${t.category},${t.type},${t.amount}\n`;
+  });
+
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", "extrato_oliva_finance.csv");
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+});
+
+// Inicializa a aplicação
 init();

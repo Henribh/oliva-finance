@@ -8,189 +8,263 @@
 </head>
 <body>
 
-    <!-- Esferas de luz no fundo para dar profundidade ao vidro líquido -->
+    <!-- Esferas de luz no fundo para profundidade Liquid Glass -->
     <div class="circle circle-1"></div>
     <div class="circle circle-2"></div>
 
-    <!-- Cabeçalho -->
+    <!-- 1. Cabeçalho Principal com Navegação por Abas (SPA) -->
     <header>
-        <h1>🌿 Oliva <span>Finance</span></h1>
+        <div class="brand">
+            <h1>🌿 Oliva <span>Finance</span></h1>
+        </div>
+
+        <nav class="nav-tabs">
+            <button class="nav-btn active" onclick="switchTab('dashboard')">📊 Dashboard</button>
+            <button class="nav-btn" onclick="switchTab('metas')">🎯 Metas & Cofres</button>
+            <button class="nav-btn" onclick="switchTab('relatorios')">📈 Relatórios</button>
+        </nav>
+
         <div class="actions">
             <button class="btn" id="theme-btn">🌙 Tema</button>
-            <button class="btn btn-primary" id="open-sim-btn">💡 Simular Compra</button>
+            <button class="btn btn-danger" id="reset-btn">🗑️ Reset</button>
         </div>
     </header>
 
-    <!-- Planejamento Base (Renda e Custos Fixos + Reset) -->
-    <section class="panel setup-panel">
-        <h2>⚙️ Planejamento Mensal Base</h2>
-        <form id="setup-form" class="grid-setup">
-            <div class="input-group">
-                <label for="monthly-income">Renda Mensal Líquida (R$)</label>
-                <input type="text" id="monthly-income" placeholder="Ex: 15.000,00 ou 15000" required>
-            </div>
-            <div class="input-group">
-                <label for="fixed-costs">Custos Fixos Mensais (R$)</label>
-                <input type="text" id="fixed-costs" placeholder="Ex: 1.200,00 ou 1200" required>
-            </div>
-            <div class="setup-buttons">
+    <!-- TELA 1: DASHBOARD & TRANSAÇÕES -->
+    <main id="tab-dashboard" class="tab-content active">
+        <!-- Planejamento Base -->
+        <section class="panel setup-panel">
+            <h2>⚙️ Planejamento Mensal Base</h2>
+            <form id="setup-form" class="grid-setup">
+                <div class="input-group">
+                    <label for="monthly-income">Renda Mensal Líquida (R$)</label>
+                    <input type="text" id="monthly-income" placeholder="Ex: 15.000,00 ou 15000" required>
+                </div>
+                <div class="input-group">
+                    <label for="fixed-costs">Custos Fixos Mensais (R$)</label>
+                    <input type="text" id="fixed-costs" placeholder="Ex: 1.200,00 ou 1200" required>
+                </div>
                 <button type="submit" class="btn btn-primary">Salvar Planejamento</button>
-                <button type="button" id="reset-btn" class="btn btn-danger">🗑️ Resetar Tudo</button>
-            </div>
-        </form>
-    </section>
-
-    <!-- Cards de Resumo -->
-    <section class="cards">
-        <div class="card">
-            <div class="label">💵 Saldo Livre / Disponível</div>
-            <div class="value" id="balance-val">R$ 0,00</div>
-            <div class="delta" id="balance-delta">Orçamento calculado</div>
-        </div>
-
-        <div class="card">
-            <div class="label">📈 Renda Total</div>
-            <div class="value" id="incomes-val">R$ 0,00</div>
-            <div class="delta up">Fixos + Variáveis</div>
-        </div>
-
-        <div class="card">
-            <div class="label">📉 Custos Totais</div>
-            <div class="value" id="expenses-val">R$ 0,00</div>
-            <div class="delta down">Fixos + Variáveis</div>
-        </div>
-
-        <div class="card">
-            <div class="label">🎯 Capacidade de Economia</div>
-            <div class="value" id="savings-val">R$ 0,00</div>
-            <div class="delta" id="savings-percent">0% da Renda</div>
-        </div>
-    </section>
-
-    <!-- Simulador de Impacto Financeiro -->
-    <section class="panel simulator-panel" id="simulator-section">
-        <h2>🔮 Simulador de Compra e Impacto no Orçamento</h2>
-        <div class="sim-grid">
-            <form id="sim-form" class="sim-form-inputs">
-                <div class="input-group">
-                    <label for="sim-title">Item / Produto</label>
-                    <input type="text" id="sim-title" placeholder="O que quer comprar? (ex: PS5)" required>
-                </div>
-                
-                <div class="input-group">
-                    <label for="sim-price">Valor Total (R$)</label>
-                    <input type="text" id="sim-price" placeholder="Ex: 3.500,00" required>
-                </div>
-                
-                <div class="input-group">
-                    <label for="sim-installments">Parcelamento</label>
-                    <select id="sim-installments" required>
-                        <option value="1">À vista (1x)</option>
-                        <option value="2">Parcelado em 2x</option>
-                        <option value="3">Parcelado em 3x</option>
-                        <option value="4">Parcelado em 4x</option>
-                        <option value="5">Parcelado em 5x</option>
-                        <option value="6">Parcelado em 6x</option>
-                        <option value="7">Parcelado em 7x</option>
-                        <option value="8">Parcelado em 8x</option>
-                        <option value="9">Parcelado em 9x</option>
-                        <option value="10">Parcelado em 10x</option>
-                        <option value="11">Parcelado em 11x</option>
-                        <option value="12">Parcelado em 12x</option>
-                    </select>
-                </div>
-                
-                <button type="submit" class="btn btn-secondary">Simular Impacto</button>
             </form>
+        </section>
 
-            <div class="sim-results" id="sim-results">
-                <p class="sim-placeholder">Preencha os valores ao lado para simular o comprometimento do seu salário.</p>
+        <!-- Cards de Resumo -->
+        <section class="cards">
+            <div class="card">
+                <div class="label">💵 Saldo Livre / Disponível</div>
+                <div class="value" id="balance-val">R$ 0,00</div>
+                <div class="delta" id="balance-delta">Orçamento calculated</div>
             </div>
-        </div>
-    </section>
 
-    <!-- Painel Central (Gráfico + Lançamento de Custos) -->
-    <section class="grid-2">
-        <div class="panel">
-            <h2>📊 Gastos por Categoria</h2>
-            <div class="donut"></div>
-            <ul class="legend">
-                <li><span class="dot cat-food"></span> Alimentação</li>
-                <li><span class="dot cat-transport"></span> Transporte</li>
-                <li><span class="dot cat-leisure"></span> Lazer</li>
-                <li><span class="dot cat-housing"></span> Moradia/Fixos</li>
-                <li><span class="dot cat-others"></span> Outros</li>
-            </ul>
-        </div>
+            <div class="card">
+                <div class="label">📈 Renda Total</div>
+                <div class="value" id="incomes-val">R$ 0,00</div>
+                <div class="delta up">Fixos + Variáveis</div>
+            </div>
 
-        <div class="panel">
-            <h2>➕ Lançar Demais Custos / Receitas</h2>
-            <form id="transaction-form" class="form-stack">
+            <div class="card">
+                <div class="label">📉 Custos Totais</div>
+                <div class="value" id="expenses-val">R$ 0,00</div>
+                <div class="delta down">Fixos + Variáveis</div>
+            </div>
+
+            <div class="card">
+                <div class="label">🎯 Capacidade de Economia</div>
+                <div class="value" id="savings-val">R$ 0,00</div>
+                <div class="delta" id="savings-percent">0% da Renda</div>
+            </div>
+        </section>
+
+        <!-- Simulador & Lançamento -->
+        <section class="grid-2">
+            <div class="panel">
+                <h2>🔮 Simulador de Compra e Impacto</h2>
+                <form id="sim-form" class="form-stack">
+                    <div class="input-group">
+                        <label for="sim-title">Item / Produto</label>
+                        <input type="text" id="sim-title" placeholder="O que quer comprar? (ex: PS5)" required>
+                    </div>
+                    
+                    <div class="grid-2-inputs">
+                        <div class="input-group">
+                            <label for="sim-price">Valor Total (R$)</label>
+                            <input type="text" id="sim-price" placeholder="Ex: 3.500,00" required>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="sim-installments">Parcelamento</label>
+                            <select id="sim-installments" required>
+                                <option value="1">À vista (1x)</option>
+                                <option value="2">Parcelado em 2x</option>
+                                <option value="3">Parcelado em 3x</option>
+                                <option value="4">Parcelado em 4x</option>
+                                <option value="5">Parcelado em 5x</option>
+                                <option value="6">Parcelado em 6x</option>
+                                <option value="7">Parcelado em 7x</option>
+                                <option value="8">Parcelado em 8x</option>
+                                <option value="9">Parcelado em 9x</option>
+                                <option value="10">Parcelado em 10x</option>
+                                <option value="11">Parcelado em 11x</option>
+                                <option value="12">Parcelado em 12x</option>
+                                <option value="13">Parcelado em 13x</option>
+                                <option value="14">Parcelado em 14x</option>
+                                <option value="15">Parcelado em 15x</option>
+                                <option value="16">Parcelado em 16x</option>
+                                <option value="17">Parcelado em 17x</option>
+                                <option value="18">Parcelado em 18x</option>
+                                <option value="19">Parcelado em 19x</option>
+                                <option value="20">Parcelado em 20x</option>
+                                <option value="21">Parcelado em 21x</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-secondary">Simular Impacto</button>
+                </form>
+
+                <div class="sim-results" id="sim-results" style="margin-top: 16px;">
+                    <p class="sim-placeholder">Preencha os valores acima para simular o comprometimento do seu salário.</p>
+                </div>
+            </div>
+
+            <div class="panel">
+                <h2>➕ Lançar Custos / Receitas</h2>
+                <form id="transaction-form" class="form-stack">
+                    <div class="input-group">
+                        <label for="desc">Descrição</label>
+                        <input type="text" id="desc" placeholder="Ex: Uber, Mercado, Restaurante" required>
+                    </div>
+                    
+                    <div class="grid-2-inputs">
+                        <div class="input-group">
+                            <label for="amount">Valor (R$)</label>
+                            <input type="text" id="amount" placeholder="Ex: 150,00" required>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="type">Tipo</label>
+                            <select id="type" required>
+                                <option value="" disabled selected>Selecione...</option>
+                                <option value="income">Receita Extra</option>
+                                <option value="expense">Despesa Variável</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid-2-inputs">
+                        <div class="input-group">
+                            <label for="category">Categoria</label>
+                            <select id="category" required>
+                                <option value="" disabled selected>Selecione...</option>
+                                <option value="Alimentação">Alimentação</option>
+                                <option value="Transporte">Transporte</option>
+                                <option value="Lazer">Lazer</option>
+                                <option value="Moradia">Moradia/Fixos</option>
+                                <option value="Outros">Outros</option>
+                            </select>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="date">Data</label>
+                            <input type="date" id="date" required>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" type="submit">Adicionar ao Extrato</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Histórico de Transações -->
+        <section class="panel table-panel">
+            <h2>📋 Extrato do Mês</h2>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Descrição</th>
+                            <th>Categoria</th>
+                            <th>Valor</th>
+                            <th>Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transaction-list">
+                        <!-- Preenchido via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- TELA 2: METAS & COFRES DE INVESTIMENTO -->
+    <main id="tab-metas" class="tab-content">
+        <section class="panel">
+            <h2>🎯 Adicionar Nova Meta / Cofre</h2>
+            <form id="goal-form" class="grid-setup">
                 <div class="input-group">
-                    <label for="desc">Descrição</label>
-                    <input type="text" id="desc" placeholder="Ex: Uber, Mercado, Restaurante" required>
+                    <label for="goal-title">Nome da Meta</label>
+                    <input type="text" id="goal-title" placeholder="Ex: Reserva de Emergência, Viagem" required>
                 </div>
-                
-                <div class="grid-2-inputs">
-                    <div class="input-group">
-                        <label for="amount">Valor (R$)</label>
-                        <input type="text" id="amount" placeholder="Ex: 150,00" required>
-                    </div>
-
-                    <div class="input-group">
-                        <label for="type">Tipo</label>
-                        <select id="type" required>
-                            <option value="" disabled selected>Selecione...</option>
-                            <option value="income">Receita Extra</option>
-                            <option value="expense">Despesa Variável</option>
-                        </select>
-                    </div>
+                <div class="input-group">
+                    <label for="goal-target">Valor Objetivo (R$)</label>
+                    <input type="text" id="goal-target" placeholder="Ex: 5.000,00" required>
                 </div>
-
-                <div class="grid-2-inputs">
-                    <div class="input-group">
-                        <label for="category">Categoria</label>
-                        <select id="category" required>
-                            <option value="" disabled selected>Selecione...</option>
-                            <option value="Alimentação">Alimentação</option>
-                            <option value="Transporte">Transporte</option>
-                            <option value="Lazer">Lazer</option>
-                            <option value="Moradia">Moradia/Fixos</option>
-                            <option value="Outros">Outros</option>
-                        </select>
-                    </div>
-
-                    <div class="input-group">
-                        <label for="date">Data</label>
-                        <input type="date" id="date" required>
-                    </div>
-                </div>
-
-                <button class="btn btn-primary" type="submit">Adicionar ao Extrato</button>
+                <button type="submit" class="btn btn-primary">Criar Meta</button>
             </form>
-        </div>
-    </section>
+        </section>
 
-    <!-- Histórico de Transações -->
-    <section class="panel table-panel">
-        <h2>📋 Extrato do Mês</h2>
-        <div class="table-responsive">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Data</th>
-                        <th>Descrição</th>
-                        <th>Categoria</th>
-                        <th>Valor</th>
-                        <th>Ação</th>
-                    </tr>
-                </thead>
-                <tbody id="transaction-list">
+        <section class="panel">
+            <h2>🏦 Meus Cofres e Objetivos</h2>
+            <div id="goals-container" class="goals-grid">
+                <!-- Preenchido via JS com formulário de depósito inline -->
+            </div>
+        </section>
+    </main>
+
+    <!-- TELA 3: RELATÓRIOS & EXPORTAÇÃO -->
+    <main id="tab-relatorios" class="tab-content">
+        <section class="grid-2">
+            <!-- Gastos por Categoria -->
+            <div class="panel">
+                <h2>📊 Distribuição de Gastos</h2>
+                <div id="category-report" class="report-list">
                     <!-- Preenchido via JS -->
-                </tbody>
-            </table>
-        </div>
-    </section>
+                </div>
+            </div>
+
+            <!-- Calculadora de Juros Compostos -->
+            <div class="panel">
+                <h2>📈 Simulador de Juros Compostos</h2>
+                <form id="compound-form" class="form-stack">
+                    <div class="input-group">
+                        <label for="comp-initial">Aporte Inicial (R$)</label>
+                        <input type="text" id="comp-initial" placeholder="Ex: 1.000,00" required>
+                    </div>
+                    <div class="grid-2-inputs">
+                        <div class="input-group">
+                            <label for="comp-monthly">Aporte Mensal (R$)</label>
+                            <input type="text" id="comp-monthly" placeholder="Ex: 300,00" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="comp-years">Anos Guardando</label>
+                            <input type="number" id="comp-years" placeholder="Ex: 3" min="1" max="30" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-secondary">Calcular Futuro</button>
+                </form>
+                <div id="compound-results" class="sim-results" style="margin-top: 16px;">
+                    <p class="sim-placeholder">Calcule quanto você terá acumulado com rentabilidade média de 10% ao ano.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel" style="text-align: center;">
+            <h2>📁 Exportar Dados e Relatório</h2>
+            <p style="color: var(--muted); margin-bottom: 16px;">Baixe todo o seu extrato e planejamento diretamente em um arquivo CSV compatível com o Excel.</p>
+            <button class="btn btn-primary" id="export-csv-btn">📥 Baixar Extrato em CSV (Excel)</button>
+        </section>
+    </main>
 
     <script src="script.js"></script>
 </body>
