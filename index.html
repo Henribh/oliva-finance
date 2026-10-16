@@ -8,7 +8,11 @@
 </head>
 <body>
 
-    <!-- 1. Cabeçalho -->
+    <!--Esferas de luz no fundo para dar profundidade ao vidro líquido-->
+    <div class="circle circle-1"></div>
+    <div class="circle circle-2"></div>
+
+    <!--Cabeçalho -->
     <header>
         <h1>🌿 Oliva <span>Finance</span></h1>
         <div class="actions">
@@ -17,17 +21,17 @@
         </div>
     </header>
 
-    <!-- 2. Planejamento Base (Renda e Custos Fixos + Reset) -->
+    <!--Planejamento Base (Renda e Custos Fixos + Reset) -->
     <section class="panel setup-panel">
         <h2>⚙️ Planejamento Mensal Base</h2>
         <form id="setup-form" class="grid-inputs">
             <div class="input-group">
                 <label for="monthly-income">Renda Mensal Líquida (R$)</label>
-                <input type="number" id="monthly-income" placeholder="Ex: 5000,00" step="0.01" min="0" required>
+                <input type="text" id="monthly-income" placeholder="Ex: 15.000,00 ou 15000" required>
             </div>
             <div class="input-group">
                 <label for="fixed-costs">Custos Fixos Mensais (R$)</label>
-                <input type="number" id="fixed-costs" placeholder="Ex: 2200,00 (Aluguel, Luz, Internet)" step="0.01" min="0" required>
+                <input type="text" id="fixed-costs" placeholder="Ex: 1.200,00 ou 1200" required>
             </div>
             <div class="setup-actions" style="display: flex; gap: 10px; width: 100%;">
                 <button type="submit" class="btn btn-primary" style="flex: 1;">Salvar Planejamento</button>
@@ -36,12 +40,12 @@
         </form>
     </section>
 
-    <!-- 3. Cards de Resumo -->
+    <!-- Cards de Resumo -->
     <section class="cards">
         <div class="card">
             <div class="label">💵 Saldo Livre / Disponível</div>
             <div class="value" id="balance-val">R$ 0,00</div>
-            <div class="delta" id="balance-delta">Orçamento calculated</div>
+            <div class="delta" id="balance-delta">Orçamento calculado</div>
         </div>
 
         <div class="card">
@@ -63,13 +67,13 @@
         </div>
     </section>
 
-    <!-- 4. Simulador de Impacto Financeiro -->
+    <!-- Simulador de Impacto Financeiro -->
     <section class="panel simulator-panel" id="simulator-section">
         <h2>🔮 Simulador de Compra e Impacto no Orçamento</h2>
         <div class="sim-grid">
             <form id="sim-form">
                 <input type="text" id="sim-title" placeholder="O que você quer comprar? (ex: Notebook)" required>
-                <input type="number" id="sim-price" placeholder="Valor Total (R$)" step="0.01" min="0.01" required>
+                <input type="text" id="sim-price" placeholder="Valor Total em R$ (ex: 3.500,00)" required>
                 
                 <select id="sim-installments" required>
                     <option value="1">À vista (1x)</option>
@@ -95,7 +99,7 @@
         </div>
     </section>
 
-    <!-- 5. Painel Central (Gráfico + Lançamento de Custos) -->
+    <!-- Painel Central (Gráfico + Lançamento de Custos) -->
     <section class="grid-2">
         <div class="panel">
             <h2>📊 Gastos por Categoria</h2>
@@ -113,7 +117,7 @@
             <h2>➕ Lançar Demais Custos / Receitas</h2>
             <form id="transaction-form">
                 <input type="text" id="desc" placeholder="Descrição (ex: Uber, Restaurante)" required>
-                <input type="number" id="amount" placeholder="Valor em R$" step="0.01" min="0.01" required>
+                <input type="text" id="amount" placeholder="Valor em R$ (ex: 150,00 ou 150)" required>
                 
                 <select id="type" required>
                     <option value="" disabled selected>Tipo</option>

@@ -1,11 +1,40 @@
+// ==========================================
+// TRATAMENTO DE VALORES NUMÉRICOS
+// ==========================================
+function parseCurrencyInput(value) {
+  if (!value) return 0;
+  
+  let cleanValue = value.toString().trim();
+
+  if (cleanValue.includes('.') && cleanValue.includes(',')) {
+    cleanValue = cleanValue.replace(/\./g, '').replace(',', '.');
+  } 
+  else if (cleanValue.includes(',')) {
+    cleanValue = cleanValue.replace(',', '.');
+  } 
+  else if (cleanValue.includes('.')) {
+    const parts = cleanValue.split('.');
+    if (parts.length > 1 && parts[parts.length - 1].length === 3) {
+      cleanValue = cleanValue.replace(/\./g, '');
+    }
+  }
+
+  return parseFloat(cleanValue) || 0;
+}
+
+// ==========================================
+// ESTADO GLOBAL DA APLICAÇÃO
+// ==========================================
 let state = {
-  monthlyIncome: parseFloat(localStorage.getItem('oliva_income')) || 0,
-  fixedCosts: parseFloat(localStorage.getItem('oliva_fixed')) || 0,
+  monthlyIncome: parseCurrencyInput(localStorage.getItem('oliva_income')),
+  fixedCosts: parseCurrencyInput(localStorage.getItem('oliva_fixed')),
   transactions: JSON.parse(localStorage.getItem('oliva_transactions')) || [],
   theme: localStorage.getItem('oliva_theme') || 'light'
 };
 
-// 2. SELEÇÃO DE ELEMENTOS DO DOM
+// ==========================================
+// SELEÇÃO DE ELEMENTOS DO DOM
+// ==========================================
 const themeBtn = document.getElementById('theme-btn');
 const openSimBtn = document.getElementById('open-sim-btn');
 const simulatorSection = document.getElementById('simulator-section');
@@ -27,8 +56,9 @@ const expensesVal = document.getElementById('expenses-val');
 const savingsVal = document.getElementById('savings-val');
 const savingsPercent = document.getElementById('savings-percent');
 
-// 3. INICIALIZAÇÃO E TEMA
-
+// ==========================================
+// INICIALIZAÇÃO E TEMA
+// ==========================================
 function init() {
   document.documentElement.dataset.theme = state.theme;
   updateThemeButtonText();
@@ -51,7 +81,6 @@ function updateThemeButtonText() {
   themeBtn.textContent = state.theme === 'dark' ? '☀️ Tema' : '🌙 Tema';
 }
 
-// Rolagem suave até o simulador
 if (openSimBtn && simulatorSection) {
   openSimBtn.addEventListener('click', () => {
     simulatorSection.scrollIntoView({ behavior: 'smooth' });
@@ -59,12 +88,14 @@ if (openSimBtn && simulatorSection) {
   });
 }
 
+// ==========================================
 // PLANEJAMENTO BASE E RESET DE DADOS
+// ==========================================
 setupForm.addEventListener('submit', (e) => {
   e.preventDefault();
 
-  state.monthlyIncome = parseFloat(incomeInput.value) || 0;
-  state.fixedCosts = parseFloat(fixedInput.value) || 0;
+  state.monthlyIncome = parseCurrencyInput(incomeInput.value);
+  state.fixedCosts = parseCurrencyInput(fixedInput.value);
 
   localStorage.setItem('oliva_income', state.monthlyIncome);
   localStorage.setItem('oliva_fixed', state.fixedCosts);
@@ -97,14 +128,17 @@ if (resetBtn) {
     }
   });
 }
-//  GERENCIAMENTO DE TRANSAÇÕES
+
+// ==========================================
+// GERENCIAMENTO DE TRANSAÇÕES
+// ==========================================
 transactionForm.addEventListener('submit', (e) => {
   e.preventDefault();
 
   const newTransaction = {
     id: Date.now(),
     description: document.getElementById('desc').value,
-    amount: parseFloat(document.getElementById('amount').value),
+    amount: parseCurrencyInput(document.getElementById('amount').value),
     type: document.getElementById('type').value,
     category: document.getElementById('category').value,
     date: document.getElementById('date').value
@@ -128,7 +162,10 @@ function deleteTransaction(id) {
   renderTransactions();
   updateTotals();
 }
-//  CÁLCULOS DOS PAINÉIS
+
+// ==========================================
+// CÁLCULOS DOS PAINÉIS
+// ==========================================
 function updateTotals() {
   const extraIncomes = state.transactions
     .filter(t => t.type === 'income')
@@ -193,12 +230,14 @@ function renderTransactions() {
   });
 }
 
+// ==========================================
 // SIMULADOR DE IMPACTO FINANCEIRO
+// ==========================================
 simForm.addEventListener('submit', (e) => {
   e.preventDefault();
 
   const title = document.getElementById('sim-title').value;
-  const price = parseFloat(document.getElementById('sim-price').value) || 0;
+  const price = parseCurrencyInput(document.getElementById('sim-price').value);
   const installments = parseInt(document.getElementById('sim-installments').value) || 1;
 
   const installmentValue = price / installments;
@@ -231,5 +270,5 @@ simForm.addEventListener('submit', (e) => {
   `;
 });
 
-// Executa na carga da página
+// Inicialização
 init();

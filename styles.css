@@ -1,50 +1,106 @@
+/* ==========================================
+   PALETA DE CORES & GLASSMORPHISM
+   ========================================== */
 :root {
-  --bg: #f4f6f3;
-  --card-bg: #ffffff;
-  --text: #1c241b;
-  --muted: #667061;
+  --bg-gradient: linear-gradient(135deg, #eef2eb 0%, #d5e0d1 100%);
   
-  --primary: #556b2f;     
+  --glass-bg: rgba(255, 255, 255, 0.45);
+  --glass-border: rgba(255, 255, 255, 0.6);
+  --glass-shadow: 0 8px 32px 0 rgba(85, 107, 47, 0.1);
+  --inset-light: inset 0 1px 1px 0 rgba(255, 255, 255, 0.8);
+  
+  --text: #1c241b;
+  --muted: #526150;
+  
+  --primary: #556b2f;       /* Verde Oliva */
   --primary-hover: #3e5022;
-  --accent: #6b8e23;    
-  --accent-light: rgba(107, 142, 35, 0.15);
+  --accent-light: rgba(107, 142, 35, 0.18);
   
   --green: #2e7d32;
   --red: #d32f2f;
-  --border: #e2e8f0;
-  --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-  --radius: 16px;
+  --radius: 20px;
 }
 
 [data-theme="dark"] {
-  --bg: #0d120e;
-  --card-bg: #161e17;
+  --bg-gradient: linear-gradient(135deg, #090e0a 0%, #111a12 100%);
+  
+  --glass-bg: rgba(20, 28, 21, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+  --inset-light: inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
+  
   --text: #e8ece7;
   --muted: #94a395;
 
-  --primary: #7a9a43;
-  --primary-hover: #8eb150;
-  --accent: #8eb150;
-  --accent-light: rgba(138, 177, 80, 0.2);
-  
-  --border: #253327;
-  --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  --primary: #8eb150;
+  --primary-hover: #a3c95e;
+  --accent-light: rgba(142, 177, 80, 0.22);
 }
 
+/* ==========================================
+   RESET & ESTRUTURA
+   ========================================== */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
 }
 
 body {
-  background-color: var(--bg);
+  background: var(--bg-gradient);
+  background-attachment: fixed;
   color: var(--text);
-  transition: background-color 0.3s, color 0.3s;
-  padding: 16px;
+  transition: background 0.4s, color 0.4s;
+  padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* ==========================================
+   LUZES DE FUNDO (EFEITO VIDRO)
+   ========================================== */
+.circle {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(90px);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.circle-1 {
+  width: 350px;
+  height: 350px;
+  background: rgba(107, 142, 35, 0.35);
+  top: -80px;
+  right: -80px;
+}
+
+.circle-2 {
+  width: 450px;
+  height: 450px;
+  background: rgba(85, 107, 47, 0.25);
+  bottom: -100px;
+  left: -100px;
+}
+
+/* ==========================================
+   LIQUID GLASS CARDS & PAINÉIS
+   ========================================== */
+.panel, 
+.card, 
+header,
+.sim-results {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px) saturate(190%);
+  -webkit-backdrop-filter: blur(20px) saturate(190%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow), var(--inset-light);
+  border-radius: var(--radius);
+  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s;
 }
 
 header {
@@ -52,13 +108,15 @@ header {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
+  padding: 16px 24px;
   flex-wrap: wrap;
   gap: 12px;
 }
 
 header h1 {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: 700;
+  letter-spacing: -0.5px;
 }
 
 header h1 span {
@@ -71,19 +129,23 @@ header h1 span {
 }
 
 .btn {
-  padding: 10px 16px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
+  padding: 12px 20px;
+  border-radius: 14px;
   cursor: pointer;
-  background: var(--card-bg);
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
   color: var(--text);
-  box-shadow: var(--shadow);
   font-weight: 600;
-  transition: transform 0.2s, background-color 0.2s;
+  font-size: 0.9rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  transition: all 0.2s ease;
 }
 
 .btn:hover {
   transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
 }
 
 .btn-primary {
@@ -96,25 +158,18 @@ header h1 span {
   background: var(--primary-hover);
 }
 
-.btn-secondary {
-  background: var(--accent-light);
-  color: var(--primary);
-  border: 1px solid var(--primary);
-}
-
+/* ==========================================
+   PAINÉIS & INPUTS
+   ========================================== */
 .panel {
-  background: var(--card-bg);
-  padding: 20px;
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  margin-bottom: 20px;
-  border: 1px solid var(--border);
+  padding: 24px;
+  margin-bottom: 24px;
 }
 
 .panel h2 {
-  font-size: 1.1rem;
-  margin-bottom: 16px;
-  color: var(--text);
+  font-size: 1.15rem;
+  margin-bottom: 20px;
+  font-weight: 600;
 }
 
 .grid-inputs {
@@ -127,7 +182,7 @@ header h1 span {
 .input-group {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
 .input-group label {
@@ -137,33 +192,39 @@ header h1 span {
 }
 
 input, select {
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  background: var(--card-bg);
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.25);
   color: var(--text);
   font-size: 0.95rem;
   width: 100%;
+  outline: none;
+  transition: border 0.2s, background 0.2s;
+}
+
+[data-theme="dark"] input, 
+[data-theme="dark"] select {
+  background: rgba(0, 0, 0, 0.25);
 }
 
 input:focus, select:focus {
-  outline: 2px solid var(--primary);
+  border-color: var(--primary);
+  background: rgba(255, 255, 255, 0.4);
 }
 
+/* ==========================================
+   CARDS DE RESUMO
+   ========================================== */
 .cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 16px;
   margin-bottom: 24px;
 }
 
 .card {
-  background: var(--card-bg);
-  padding: 20px;
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  border: 1px solid var(--border);
-  transition: transform 0.2s;
+  padding: 22px;
 }
 
 .card:hover {
@@ -173,12 +234,14 @@ input:focus, select:focus {
 .card .label {
   color: var(--muted);
   font-size: 0.85rem;
+  font-weight: 500;
   margin-bottom: 8px;
 }
 
 .card .value {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: 700;
+  letter-spacing: -0.5px;
 }
 
 .card .delta {
@@ -189,30 +252,23 @@ input:focus, select:focus {
 
 .up { color: var(--green); }
 .down { color: var(--red); }
-
 .val-pos { color: var(--green); font-weight: 600; }
 .val-neg { color: var(--red); font-weight: 600; }
 
-.sim-grid {
+/* ==========================================
+   SIMULADOR & TABELA
+   ========================================== */
+.sim-grid, .grid-2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
 }
 
 .sim-results {
-  background: var(--accent-light);
-  padding: 16px;
-  border-radius: 12px;
-  border: 1px dashed var(--primary);
+  padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-}
-
-.grid-2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
 }
 
 .table-responsive {
@@ -222,13 +278,13 @@ input:focus, select:focus {
 table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 500px; 
+  min-width: 500px;
 }
 
 th, td {
-  padding: 12px;
+  padding: 14px;
   text-align: left;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--glass-border);
 }
 
 th {
@@ -238,7 +294,7 @@ th {
 }
 
 .tag {
-  padding: 4px 10px;
+  padding: 6px 12px;
   border-radius: 20px;
   font-size: 0.75rem;
   background: var(--accent-light);
@@ -252,6 +308,7 @@ th {
   color: var(--red);
   cursor: pointer;
   font-weight: bold;
+  font-size: 1rem;
 }
 
 @media (max-width: 768px) {
@@ -263,13 +320,16 @@ th {
     grid-template-columns: 1fr;
   }
 
+  header {
+    padding: 16px;
+  }
+
   header h1 {
     font-size: 1.3rem;
   }
 
   .actions {
     width: 100%;
-    justify-content: space-between;
   }
 
   .btn {
