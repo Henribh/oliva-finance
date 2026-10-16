@@ -24,7 +24,7 @@
     <!-- Planejamento Base (Renda e Custos Fixos + Reset) -->
     <section class="panel setup-panel">
         <h2>⚙️ Planejamento Mensal Base</h2>
-        <form id="setup-form" class="grid-inputs">
+        <form id="setup-form" class="grid-setup">
             <div class="input-group">
                 <label for="monthly-income">Renda Mensal Líquida (R$)</label>
                 <input type="text" id="monthly-income" placeholder="Ex: 15.000,00 ou 15000" required>
@@ -33,14 +33,14 @@
                 <label for="fixed-costs">Custos Fixos Mensais (R$)</label>
                 <input type="text" id="fixed-costs" placeholder="Ex: 1.200,00 ou 1200" required>
             </div>
-            <div class="setup-actions" style="display: flex; gap: 10px; width: 100%;">
-                <button type="submit" class="btn btn-primary" style="flex: 1;">Salvar Planejamento</button>
-                <button type="button" id="reset-btn" class="btn" style="color: var(--red); border-color: var(--red);">🗑️ Resetar Tudo</button>
+            <div class="setup-buttons">
+                <button type="submit" class="btn btn-primary">Salvar Planejamento</button>
+                <button type="button" id="reset-btn" class="btn btn-danger">🗑️ Resetar Tudo</button>
             </div>
         </form>
     </section>
 
-    <!-- Cards de Resumo -->
+    <!-- Cards de Resumo em Grade (4 Colunas) -->
     <section class="cards">
         <div class="card">
             <div class="label">💵 Saldo Livre / Disponível</div>
@@ -71,24 +71,34 @@
     <section class="panel simulator-panel" id="simulator-section">
         <h2>🔮 Simulador de Compra e Impacto no Orçamento</h2>
         <div class="sim-grid">
-            <form id="sim-form">
-                <input type="text" id="sim-title" placeholder="O que você quer comprar? (ex: Notebook)" required>
-                <input type="text" id="sim-price" placeholder="Valor Total em R$ (ex: 3.500,00)" required>
+            <form id="sim-form" class="sim-form-inputs">
+                <div class="input-group">
+                    <label for="sim-title">Item / Produto</label>
+                    <input type="text" id="sim-title" placeholder="O que quer comprar? (ex: PS5)" required>
+                </div>
                 
-                <select id="sim-installments" required>
-                    <option value="1">À vista (1x)</option>
-                    <option value="2">Parcelado em 2x</option>
-                    <option value="3">Parcelado em 3x</option>
-                    <option value="4">Parcelado em 4x</option>
-                    <option value="5">Parcelado em 5x</option>
-                    <option value="6">Parcelado em 6x</option>
-                    <option value="7">Parcelado em 7x</option>
-                    <option value="8">Parcelado em 8x</option>
-                    <option value="9">Parcelado em 9x</option>
-                    <option value="10">Parcelado em 10x</option>
-                    <option value="11">Parcelado em 11x</option>
-                    <option value="12">Parcelado em 12x</option>
-                </select>
+                <div class="input-group">
+                    <label for="sim-price">Valor Total (R$)</label>
+                    <input type="text" id="sim-price" placeholder="Ex: 3.500,00" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="sim-installments">Parcelamento</label>
+                    <select id="sim-installments" required>
+                        <option value="1">À vista (1x)</option>
+                        <option value="2">Parcelado em 2x</option>
+                        <option value="3">Parcelado em 3x</option>
+                        <option value="4">Parcelado em 4x</option>
+                        <option value="5">Parcelado em 5x</option>
+                        <option value="6">Parcelado em 6x</option>
+                        <option value="7">Parcelado em 7x</option>
+                        <option value="8">Parcelado em 8x</option>
+                        <option value="9">Parcelado em 9x</option>
+                        <option value="10">Parcelado em 10x</option>
+                        <option value="11">Parcelado em 11x</option>
+                        <option value="12">Parcelado em 12x</option>
+                    </select>
+                </div>
                 
                 <button type="submit" class="btn btn-secondary">Simular Impacto</button>
             </form>
@@ -115,28 +125,45 @@
 
         <div class="panel">
             <h2>➕ Lançar Demais Custos / Receitas</h2>
-            <form id="transaction-form">
-                <input type="text" id="desc" placeholder="Descrição (ex: Uber, Restaurante)" required>
-                <input type="text" id="amount" placeholder="Valor em R$ (ex: 150,00 ou 150)" required>
-                
-                <select id="type" required>
-                    <option value="" disabled selected>Tipo</option>
-                    <option value="income">Receita Extra</option>
-                    <option value="expense">Despesa Variável</option>
-                </select>
-
-                <select id="category" required>
-                    <option value="" disabled selected>Categoria</option>
-                    <option value="Alimentação">Alimentação</option>
-                    <option value="Transporte">Transporte</option>
-                    <option value="Lazer">Lazer</option>
-                    <option value="Moradia">Moradia/Fixos</option>
-                    <option value="Outros">Outros</option>
-                </select>
-
+            <form id="transaction-form" class="form-stack">
                 <div class="input-group">
-                    <label for="date">Data da Transação</label>
-                    <input type="date" id="date" required>
+                    <label for="desc">Descrição</label>
+                    <input type="text" id="desc" placeholder="Ex: Uber, Mercado, Restaurante" required>
+                </div>
+                
+                <div class="grid-2-inputs">
+                    <div class="input-group">
+                        <label for="amount">Valor (R$)</label>
+                        <input type="text" id="amount" placeholder="Ex: 150,00" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="type">Tipo</label>
+                        <select id="type" required>
+                            <option value="" disabled selected>Selecione...</option>
+                            <option value="income">Receita Extra</option>
+                            <option value="expense">Despesa Variável</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid-2-inputs">
+                    <div class="input-group">
+                        <label for="category">Categoria</label>
+                        <select id="category" required>
+                            <option value="" disabled selected>Selecione...</option>
+                            <option value="Alimentação">Alimentação</option>
+                            <option value="Transporte">Transporte</option>
+                            <option value="Lazer">Lazer</option>
+                            <option value="Moradia">Moradia/Fixos</option>
+                            <option value="Outros">Outros</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="date">Data</label>
+                        <input type="date" id="date" required>
+                    </div>
                 </div>
 
                 <button class="btn btn-primary" type="submit">Adicionar ao Extrato</button>

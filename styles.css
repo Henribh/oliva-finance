@@ -1,45 +1,51 @@
 /* ==========================================
-   PALETA DE CORES & GLASSMORPHISM EQUILIBRADO
+   PALETA DE CORES & VARIÁVEIS GLASS
    ========================================== */
 :root {
-  --bg-gradient: linear-gradient(135deg, #eef2eb 0%, #d5e0d1 100%);
+  --bg-gradient: linear-gradient(135deg, #eef3ec 0%, #d2ded0 100%);
   
-  --glass-bg: rgba(255, 255, 255, 0.45);
-  --glass-border: rgba(255, 255, 255, 0.6);
-  --glass-shadow: 0 8px 32px 0 rgba(85, 107, 47, 0.1);
-  --inset-light: inset 0 1px 1px 0 rgba(255, 255, 255, 0.8);
+  --glass-bg: rgba(255, 255, 255, 0.42);
+  --glass-border: rgba(255, 255, 255, 0.75);
+  --glass-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+  --inset-light: inset 0 1px 1px rgba(255, 255, 255, 0.9);
   
-  --text: #1c241b;
-  --muted: #526150;
+  --input-bg: rgba(255, 255, 255, 0.55);
+  --input-border: rgba(0, 0, 0, 0.12);
   
-  --primary: #556b2f;       /* Verde Oliva */
-  --primary-hover: #3e5022;
-  --accent-light: rgba(107, 142, 35, 0.18);
+  --text: #182218;
+  --muted: #586657;
   
-  --green: #2e7d32;
-  --red: #d32f2f;
-  --radius: 20px;
+  --primary: #4d632b;       /* Verde Oliva Premium */
+  --primary-hover: #3a4b20;
+  --accent-light: rgba(77, 99, 43, 0.12);
+  
+  --green: #257029;
+  --red: #c62828;
+  --radius: 18px;
 }
 
 [data-theme="dark"] {
-  --bg-gradient: linear-gradient(135deg, #0d120e 0%, #161e17 100%);
+  --bg-gradient: linear-gradient(135deg, #090e0a 0%, #121c13 100%);
   
-  /* Equilíbrio perfeito entre vidro transparente e nitidez */
-  --glass-bg: rgba(22, 30, 23, 0.65);
+  --glass-bg: rgba(18, 26, 19, 0.62);
   --glass-border: rgba(255, 255, 255, 0.12);
-  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
-  --inset-light: inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
+  --glass-shadow: 0 12px 40px rgba(0, 0, 0, 0.55);
+  --inset-light: inset 0 1px 0 rgba(255, 255, 255, 0.15);
   
-  --text: #e8ece7;
-  --muted: #94a395;
+  /* Inputs no modo escuro: Vidro translúcido elegante sem branco estourado */
+  --input-bg: rgba(0, 0, 0, 0.28);
+  --input-border: rgba(255, 255, 255, 0.15);
+  
+  --text: #eaefe9;
+  --muted: #8e9e8f;
 
-  --primary: #8eb150;
-  --primary-hover: #a3c95e;
-  --accent-light: rgba(142, 177, 80, 0.22);
+  --primary: #83aa49;
+  --primary-hover: #98c255;
+  --accent-light: rgba(131, 170, 73, 0.18);
 }
 
 /* ==========================================
-   RESET & ESTRUTURA
+   RESET & LAYOUT GLOBAL
    ========================================== */
 * {
   margin: 0;
@@ -53,7 +59,7 @@ body {
   background-attachment: fixed;
   color: var(--text);
   transition: background 0.4s, color 0.4s;
-  padding: 20px;
+  padding: 24px;
   max-width: 1200px;
   margin: 0 auto;
   min-height: 100vh;
@@ -61,55 +67,44 @@ body {
   overflow-x: hidden;
 }
 
-/* ==========================================
-   LUZES DE FUNDO (PROFUNDIDADE DO VIDRO)
-   ========================================== */
+/* Esferas luminosas no fundo */
 .circle {
   position: fixed;
   border-radius: 50%;
-  filter: blur(80px);
+  filter: blur(90px);
   z-index: -1;
   pointer-events: none;
 }
 
 .circle-1 {
-  width: 350px;
-  height: 350px;
-  background: rgba(107, 142, 35, 0.35);
-  top: -80px;
+  width: 380px;
+  height: 380px;
+  background: rgba(107, 142, 35, 0.3);
+  top: -100px;
   right: -80px;
 }
 
 .circle-2 {
   width: 450px;
   height: 450px;
-  background: rgba(85, 107, 47, 0.25);
-  bottom: -100px;
+  background: rgba(85, 107, 47, 0.22);
+  bottom: -120px;
   left: -100px;
 }
 
-[data-theme="dark"] .circle-1 {
-  background: rgba(122, 154, 67, 0.25);
-}
-
-[data-theme="dark"] .circle-2 {
-  background: rgba(85, 107, 47, 0.2);
-}
-
 /* ==========================================
-   LIQUID GLASS CARDS & PAINÉIS
+   CONTAINER GLASS (PAINÉIS E CARDS)
    ========================================== */
 .panel, 
 .card, 
 header,
 .sim-results {
   background: var(--glass-bg);
-  backdrop-filter: blur(18px) saturate(180%);
-  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow), var(--inset-light);
   border-radius: var(--radius);
-  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s;
 }
 
 header {
@@ -117,7 +112,7 @@ header {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
-  padding: 16px 24px;
+  padding: 18px 26px;
   flex-wrap: wrap;
   gap: 12px;
 }
@@ -134,27 +129,104 @@ header h1 span {
 
 .actions {
   display: flex;
-  gap: 10px;
+  gap: 12px;
 }
 
+/* ==========================================
+   ESTILIZAÇÃO ELEGANTE DE INPUTS & FORMULÁRIOS
+   ========================================== */
+.panel {
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.panel h2 {
+  font-size: 1.15rem;
+  margin-bottom: 20px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.input-group label {
+  font-size: 0.82rem;
+  color: var(--muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+input, select {
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--input-border);
+  background: var(--input-bg);
+  color: var(--text);
+  font-size: 0.95rem;
+  width: 100%;
+  outline: none;
+  transition: all 0.25s ease;
+  box-sizing: border-box;
+}
+
+input::placeholder {
+  color: var(--muted);
+  opacity: 0.75;
+}
+
+input:focus, select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--accent-light);
+}
+
+select option {
+  background: var(--bg-gradient);
+  color: var(--text);
+}
+
+/* Ajuste específico para input de data */
+input[type="date"] {
+  min-height: 44px;
+  color: var(--text);
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+[data-theme="dark"] input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.9);
+}
+
+/* ==========================================
+   BOTÕES DESIGN
+   ========================================== */
 .btn {
-  padding: 12px 20px;
-  border-radius: 14px;
+  padding: 12px 22px;
+  border-radius: 12px;
   cursor: pointer;
   background: var(--glass-bg);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   border: 1px solid var(--glass-border);
   color: var(--text);
   font-weight: 600;
   font-size: 0.9rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
   transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 .btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
 }
 
 .btn-primary {
@@ -167,39 +239,226 @@ header h1 span {
   background: var(--primary-hover);
 }
 
+.btn-secondary {
+  background: var(--accent-light);
+  color: var(--primary);
+  border: 1px solid var(--primary);
+}
+
+.btn-danger {
+  background: rgba(198, 40, 40, 0.12);
+  color: var(--red);
+  border: 1px solid rgba(198, 40, 40, 0.3);
+}
+
+.btn-danger:hover {
+  background: var(--red);
+  color: #ffffff;
+}
+
 /* ==========================================
-   PAINÉIS & INPUTS (AJUSTADOS PARA IOS/ANDROID)
+   GRID DE PLANEJAMENTO BASE
    ========================================== */
-.panel {
-  padding: 24px;
-  margin-bottom: 24px;
-}
-
-.panel h2 {
-  font-size: 1.15rem;
-  margin-bottom: 20px;
-  font-weight: 600;
-}
-
-.grid-inputs {
+.grid-setup {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: 1fr 1fr auto;
   gap: 16px;
   align-items: end;
 }
 
-.input-group {
+.setup-buttons {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
-.input-group label {
-  font-size: 0.85rem;
+/* ==========================================
+   CARDS DE RESUMO (4 COLUNAS PERFEITAS)
+   ========================================== */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.card {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 120px;
+}
+
+.card .label {
   color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.card .value {
+  font-size: 1.55rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin: 4px 0;
+}
+
+.card .delta {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.up { color: var(--green); font-weight: 600; }
+.down { color: var(--red); font-weight: 600; }
+.val-pos { color: var(--green); font-weight: 600; }
+.val-neg { color: var(--red); font-weight: 600; }
+
+/* ==========================================
+   SIMULADOR & PAINÉIS LADO A LADO
+   ========================================== */
+.sim-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.sim-form-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.sim-results {
+  padding: 22px;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--accent-light);
+  border: 1px dashed var(--primary);
+}
+
+.sim-placeholder {
+  color: var(--muted);
+  font-size: 0.9rem;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.form-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.grid-2-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* ==========================================
+   TABELA DE EXTRATO
+   ========================================== */
+.table-responsive {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 500px;
+}
+
+th, td {
+  padding: 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+th {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.tag {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  background: var(--accent-light);
+  color: var(--primary);
   font-weight: 600;
 }
 
-input, select {
-  padding: 12px 16px;
-  border-radius: 1
+.btn-delete {
+  background: transparent;
+  border: none;
+  color: var(--red);
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+/* ==========================================
+   RESPONSIVIDADE (TABLETS E SMARTPHONES)
+   ========================================== */
+@media (max-width: 1024px) {
+  .cards {
+    grid-template-columns: repeat(2, 1fr); /* 2 colunas em telas médias */
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 14px;
+  }
+
+  .grid-setup {
+    grid-template-columns: 1fr; /* Viram 1 coluna no celular */
+  }
+
+  .setup-buttons {
+    width: 100%;
+  }
+
+  .setup-buttons .btn {
+    flex: 1;
+  }
+
+  .cards {
+    grid-template-columns: 1fr; /* 1 coluna no celular */
+  }
+
+  .sim-grid, .grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .grid-2-inputs {
+    grid-template-columns: 1fr;
+  }
+
+  header {
+    padding: 16px;
+  }
+
+  header h1 {
+    font-size: 1.3rem;
+  }
+
+  .actions {
+    width: 100%;
+  }
+
+  .btn {
+    flex: 1;
+  }
+}
