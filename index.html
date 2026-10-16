@@ -8,11 +8,11 @@
 </head>
 <body>
 
-    <!--Esferas de luz no fundo para dar profundidade ao vidro líquido-->
+    <!-- Esferas de luz no fundo para dar profundidade ao vidro líquido -->
     <div class="circle circle-1"></div>
     <div class="circle circle-2"></div>
 
-    <!--Cabeçalho -->
+    <!-- Cabeçalho -->
     <header>
         <h1>🌿 Oliva <span>Finance</span></h1>
         <div class="actions">
@@ -21,7 +21,7 @@
         </div>
     </header>
 
-    <!--Planejamento Base (Renda e Custos Fixos + Reset) -->
+    <!-- Planejamento Base (Renda e Custos Fixos + Reset) -->
     <section class="panel setup-panel">
         <h2>⚙️ Planejamento Mensal Base</h2>
         <form id="setup-form" class="grid-inputs">
@@ -134,7 +134,10 @@
                     <option value="Outros">Outros</option>
                 </select>
 
-                <input type="date" id="date" required>
+                <div class="input-group">
+                    <label for="date">Data da Transação</label>
+                    <input type="date" id="date" required>
+                </div>
 
                 <button class="btn btn-primary" type="submit">Adicionar ao Extrato</button>
             </form>
