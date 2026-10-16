@@ -1,5 +1,5 @@
 // ==========================================
-// TRATAMENTO DE VALORES NUMÉRICOS
+// TRATAMENTO DE VALORES NUMÉRICOS (PONTOS E VÍRGULAS)
 // ==========================================
 function parseCurrencyInput(value) {
   if (!value) return 0;
@@ -270,5 +270,5 @@ simForm.addEventListener('submit', (e) => {
   `;
 });
 
-// Inicialização
+// Inicialização da aplicação
 init();
