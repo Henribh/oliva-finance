@@ -1,6 +1,3 @@
-// ==========================================
-// 1. TRATAMENTO DE VALORES NUMÉRICOS
-// ==========================================
 function parseCurrencyInput(value) {
   if (!value) return 0;
   let cleanValue = value.toString().trim();
@@ -23,9 +20,7 @@ function formatCurrency(val) {
   return val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 }
 
-// ==========================================
-// 2. ESTADO GLOBAL DA APLICAÇÃO
-// ==========================================
+
 let state = {
   monthlyIncome: parseCurrencyInput(localStorage.getItem('oliva_income')),
   fixedCosts: parseCurrencyInput(localStorage.getItem('oliva_fixed')),
@@ -34,9 +29,7 @@ let state = {
   theme: localStorage.getItem('oliva_theme') || 'light'
 };
 
-// ==========================================
-// 3. NAVEGAÇÃO DE TELA (SPA)
-// ==========================================
+
 function switchTab(tabId) {
   document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
@@ -47,9 +40,6 @@ function switchTab(tabId) {
   if (tabId === 'relatorios') renderReports();
 }
 
-// ==========================================
-// 4. INICIALIZAÇÃO E TEMA
-// ==========================================
 function init() {
   document.documentElement.dataset.theme = state.theme;
   updateThemeButtonText();
@@ -81,9 +71,7 @@ document.getElementById('reset-btn').addEventListener('click', () => {
   }
 });
 
-// ==========================================
-// 5. DASHBOARD & TRANSAÇÕES
-// ==========================================
+
 document.getElementById('setup-form').addEventListener('submit', (e) => {
   e.preventDefault();
   state.monthlyIncome = parseCurrencyInput(document.getElementById('monthly-income').value);
@@ -169,7 +157,6 @@ function renderTransactions() {
   });
 }
 
-// Simulador de Compra
 document.getElementById('sim-form').addEventListener('submit', (e) => {
   e.preventDefault();
 
@@ -195,9 +182,7 @@ document.getElementById('sim-form').addEventListener('submit', (e) => {
   `;
 });
 
-// ==========================================
-// 6. METAS & COFRES (DEPÓSITO DIRECTO/INLINE)
-// ==========================================
+
 document.getElementById('goal-form').addEventListener('submit', (e) => {
   e.preventDefault();
 
@@ -214,7 +199,6 @@ document.getElementById('goal-form').addEventListener('submit', (e) => {
   document.getElementById('goal-form').reset();
 });
 
-// Aporte direto pelo formulário interno do card
 function handleGoalDeposit(e, id) {
   e.preventDefault();
   const input = document.getElementById(`deposit-input-${id}`);
@@ -270,9 +254,6 @@ function renderGoals() {
   });
 }
 
-// ==========================================
-// 7. RELATÓRIOS & JUROS COMPOSTOS (TELA 3)
-// ==========================================
 function renderReports() {
   const container = document.getElementById('category-report');
   container.innerHTML = '';

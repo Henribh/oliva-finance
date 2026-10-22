@@ -30,7 +30,6 @@
         </div>
     </header>
 
-    <!-- TELA 1: DASHBOARD & TRANSAÇÕES -->
     <main id="tab-dashboard" class="tab-content active">
         <!-- Planejamento Base -->
         <section class="panel setup-panel">
@@ -48,7 +47,6 @@
             </form>
         </section>
 
-        <!-- Cards de Resumo -->
         <section class="cards">
             <div class="card">
                 <div class="label">💵 Saldo Livre / Disponível</div>
@@ -75,7 +73,6 @@
             </div>
         </section>
 
-        <!-- Simulador & Lançamento -->
         <section class="grid-2">
             <div class="panel">
                 <h2>🔮 Simulador de Compra e Impacto</h2>
@@ -175,7 +172,6 @@
             </div>
         </section>
 
-        <!-- Histórico de Transações -->
         <section class="panel table-panel">
             <h2>📋 Extrato do Mês</h2>
             <div class="table-responsive">
@@ -190,14 +186,12 @@
                         </tr>
                     </thead>
                     <tbody id="transaction-list">
-                        <!-- Preenchido via JS -->
                     </tbody>
                 </table>
             </div>
         </section>
     </main>
 
-    <!-- TELA 2: METAS & COFRES DE INVESTIMENTO -->
     <main id="tab-metas" class="tab-content">
         <section class="panel">
             <h2>🎯 Adicionar Nova Meta / Cofre</h2>
@@ -217,23 +211,18 @@
         <section class="panel">
             <h2>🏦 Meus Cofres e Objetivos</h2>
             <div id="goals-container" class="goals-grid">
-                <!-- Preenchido via JS com formulário de depósito inline -->
             </div>
         </section>
     </main>
 
-    <!-- TELA 3: RELATÓRIOS & EXPORTAÇÃO -->
     <main id="tab-relatorios" class="tab-content">
         <section class="grid-2">
-            <!-- Gastos por Categoria -->
             <div class="panel">
                 <h2>📊 Distribuição de Gastos</h2>
                 <div id="category-report" class="report-list">
-                    <!-- Preenchido via JS -->
                 </div>
             </div>
 
-            <!-- Calculadora de Juros Compostos -->
             <div class="panel">
                 <h2>📈 Simulador de Juros Compostos</h2>
                 <form id="compound-form" class="form-stack">
