@@ -30,14 +30,17 @@ let state = {
 };
 
 
-function switchTab(tabId) {
+function switchTab(tabId, element) {
   document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
 
   document.getElementById(`tab-${tabId}`).classList.add('active');
-  event.currentTarget.classList.add('active');
 
-  if (tabId === 'relatorios') renderReports();
+  if (element) {
+    element.classList.add('active');
+  } else if (window.event && window.event.currentTarget) {
+    window.event.currentTarget.classList.add('active');
+  }
 }
 
 function init() {
