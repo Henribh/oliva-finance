@@ -93,7 +93,7 @@ function updateThemeButtonText() {
 }
 
 document.getElementById('reset-btn').addEventListener('click', () => {
-  if (confirm('Tens a certeza de que desejas apagar TODOS os dados da aplicação?')) {
+  if (confirm('Tem certeza de que deseja apagar TODOS os dados da aplicação?')) {
     localStorage.clear();
     location.reload();
   }
@@ -111,7 +111,7 @@ document.getElementById('setup-form').addEventListener('submit', (e) => {
   localStorage.setItem('oliva_fixed', state.fixedCosts);
 
   updateTotals();
-  alert('Planeamento salvo com sucesso! 🌿');
+  alert('Planejamento salvo com sucesso! 🌿');
 });
 
 document.getElementById('transaction-form').addEventListener('submit', (e) => {
@@ -199,7 +199,7 @@ document.getElementById('sim-form').addEventListener('submit', (e) => {
   const totalIncome = state.monthlyIncome;
 
   if (totalIncome <= 0) {
-    document.getElementById('sim-results').innerHTML = `<p style="color: var(--red);">Preenche a tua Renda Mensal no Planeamento Base antes de simular!</p>`;
+    document.getElementById('sim-results').innerHTML = `<p style="color: var(--red);">Preencha a sua Renda Mensal no Planejamento Base antes de simular!</p>`;
     return;
   }
 
@@ -258,7 +258,7 @@ function renderGoals() {
   container.innerHTML = '';
 
   if (state.goals.length === 0) {
-    container.innerHTML = `<p style="color: var(--muted); grid-column: 1/-1; text-align: center;">Nenhuma meta criada ainda. Cria o teu primeiro objetivo acima!</p>`;
+    container.innerHTML = `<p style="color: var(--muted); grid-column: 1/-1; text-align: center;">Nenhuma meta criada ainda. Crie o seu primeiro objetivo acima!</p>`;
     return;
   }
 

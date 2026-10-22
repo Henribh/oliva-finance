@@ -66,7 +66,6 @@ body {
   overflow-x: hidden;
 }
 
-/* Esferas luminosas no fundo */
 .circle {
   position: fixed;
   border-radius: 50%;
@@ -101,7 +100,6 @@ body {
    ========================================== */
 .panel, 
 .card, 
-header, 
 .sim-results, 
 .goal-card {
   background: var(--glass-bg);
@@ -114,7 +112,7 @@ header,
 }
 
 /* ==========================================
-   4. CABEÇALHO & NAVEGAÇÃO MINIMALISTA (DESKTOP)
+   4. CABEÇALHO & NAVEGAÇÃO MINIMALISTA
    ========================================== */
 header {
   display: flex;
@@ -125,6 +123,7 @@ header {
   flex-wrap: wrap;
   gap: 12px;
   position: relative;
+  z-index: 999; /* CORREÇÃO: Força o header e o menu a ficarem sempre por cima */
 }
 
 header h1 {
@@ -139,12 +138,10 @@ header h1 span {
   opacity: 0.9;
 }
 
-/* Esconde o botão hambúrguer no Desktop */
 .menu-toggle {
   display: none; 
 }
 
-/* Pílula de Navegação Menor e Mais Discreta */
 .nav-tabs {
   display: flex;
   gap: 4px;
@@ -194,7 +191,7 @@ header h1 span {
 }
 
 /* ==========================================
-   5. FORMULÁRIOS & INPUTS TINTED
+   5. FORMULÁRIOS & INPUTS
    ========================================== */
 .panel {
   padding: 24px;
@@ -270,7 +267,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 /* ==========================================
-   6. BOTÕES ESTILO IOS
+   6. BOTÕES
    ========================================== */
 .btn {
   padding: 12px 22px;
@@ -522,12 +519,10 @@ th {
     padding: 12px;
   }
 
-  /* Ajustes do Header no telemóvel */
   header {
     padding: 10px 12px;
   }
 
-  /* Remove os textos dos botões de ação para poupar espaço */
   .action-text {
     display: none;
   }
@@ -538,7 +533,6 @@ th {
     border-radius: 12px;
   }
 
-  /* Exibe o Botão Hambúrguer (Menu) */
   .menu-toggle {
     display: inline-flex;
     background: rgba(255, 255, 255, 0.25);
@@ -554,11 +548,10 @@ th {
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   }
 
-  /* Transforma a barra de abas num Menu Dropdown Flutuante */
   .nav-tabs {
-    display: none; /* Escondido por padrão */
+    display: none; 
     position: absolute;
-    top: 65px; /* Altura exata abaixo do header */
+    top: 65px; 
     left: 50%;
     transform: translateX(-50%);
     flex-direction: column;
@@ -569,16 +562,14 @@ th {
     border: 1px solid var(--glass-border);
     border-radius: 20px;
     padding: 12px;
-    z-index: 100;
+    z-index: 1000; /* Garante que os botões dentro do menu são clicáveis */
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255,255,255,0.4);
   }
 
-  /* Classe acionada pelo JavaScript para abrir o menu */
   .nav-tabs.open {
     display: flex;
   }
 
-  /* Ajusta os botões dentro do menu mobile */
   .nav-btn {
     width: 100%;
     justify-content: flex-start;
