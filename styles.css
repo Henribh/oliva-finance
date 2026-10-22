@@ -1,64 +1,69 @@
 /* ==========================================
-   1. PALETA DE CORES & VARIÁVEIS GLASS
+   1. PALETA DE CORES & VARIÁVEIS iOS TINTED GLASS
    ========================================== */
 :root {
-  --bg-gradient: linear-gradient(135deg, #eef3ec 0%, #d2ded0 100%);
+  /* Fundo degradê fosco inspirado no fundo da imagem */
+  --bg-gradient: radial-gradient(circle at 50% 20%, #a4a99b 0%, #7d8574 40%, #545c4f 100%);
   
-  --glass-bg: rgba(255, 255, 255, 0.42);
-  --glass-border: rgba(255, 255, 255, 0.75);
-  --glass-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
-  --inset-light: inset 0 1px 1px rgba(255, 255, 255, 0.9);
+  /* Vidro Claro Tonalizado em Verde Oliva (Light Tinted Glass) */
+  --glass-bg: rgba(148, 168, 133, 0.45);
+  --glass-border: rgba(255, 255, 255, 0.35);
+  --glass-shadow: 0 12px 32px 0 rgba(0, 0, 0, 0.18);
+  --inset-light: inset 0 1px 1px 0 rgba(255, 255, 255, 0.4);
   
-  --input-bg: rgba(255, 255, 255, 0.55);
-  --input-border: rgba(0, 0, 0, 0.12);
+  /* Inputs em tom de vidro suave */
+  --input-bg: rgba(255, 255, 255, 0.22);
+  --input-border: rgba(255, 255, 255, 0.3);
   
-  --text: #182218;
-  --muted: #586657;
+  --text: #ffffff;
+  --muted: #e0e8dc;
   
-  --primary: #4d632b;       /* Verde Oliva Premium */
-  --primary-hover: #3a4b20;
-  --accent-light: rgba(77, 99, 43, 0.12);
+  --primary: #597d47;       /* Verde Oliva iOS */
+  --primary-hover: #486838;
+  --accent-light: rgba(255, 255, 255, 0.2);
   
-  --green: #257029;
-  --red: #c62828;
-  --radius: 18px;
+  --green: #81c784;
+  --red: #ef5350;
+  --radius: 24px;          /* Curvas arredondadas estilo ícones do iPhone */
 }
 
 [data-theme="dark"] {
-  --bg-gradient: linear-gradient(135deg, #090e0a 0%, #121c13 100%);
+  /* Fundo noturno profundo em tons de vidro escuro */
+  --bg-gradient: radial-gradient(circle at 50% 20%, #2a3328 0%, #1a2219 50%, #0d120d 100%);
   
-  --glass-bg: rgba(18, 26, 19, 0.62);
-  --glass-border: rgba(255, 255, 255, 0.12);
-  --glass-shadow: 0 12px 40px rgba(0, 0, 0, 0.55);
-  --inset-light: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  /* Vidro Escuro Tonalizado (Dark Tinted Glass) */
+  --glass-bg: rgba(38, 52, 36, 0.65);
+  --glass-border: rgba(255, 255, 255, 0.15);
+  --glass-shadow: 0 16px 40px 0 rgba(0, 0, 0, 0.55);
+  --inset-light: inset 0 1px 1px 0 rgba(255, 255, 255, 0.15);
   
-  --input-bg: rgba(0, 0, 0, 0.28);
+  --input-bg: rgba(0, 0, 0, 0.3);
   --input-border: rgba(255, 255, 255, 0.15);
   
-  --text: #eaefe9;
-  --muted: #8e9e8f;
+  --text: #f0f5ee;
+  --muted: #aab8a6;
 
-  --primary: #83aa49;
-  --primary-hover: #98c255;
-  --accent-light: rgba(131, 170, 73, 0.18);
+  --primary: #8cb877;
+  --primary-hover: #a2cf8c;
+  --accent-light: rgba(140, 184, 119, 0.2);
 }
 
 /* ==========================================
-   2. RESET & LAYOUT GLOBAL
+   2. RESET & ESTRUTURA BASE
    ========================================== */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box !important;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;
 }
 
 body {
   background: var(--bg-gradient);
   background-attachment: fixed;
   color: var(--text);
-  transition: background 0.4s, color 0.4s;
-  padding: 24px;
+  transition: background 0.5s ease, color 0.5s ease;
+  padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
   min-height: 100vh;
@@ -66,47 +71,56 @@ body {
   overflow-x: hidden;
 }
 
-/* Esferas luminosas no fundo */
+/* Esferas de iluminação volumétrica ao fundo */
 .circle {
   position: fixed;
   border-radius: 50%;
-  filter: blur(90px);
+  filter: blur(100px);
   z-index: -1;
   pointer-events: none;
 }
 
 .circle-1 {
-  width: 380px;
-  height: 380px;
-  background: rgba(107, 142, 35, 0.3);
+  width: 450px;
+  height: 450px;
+  background: rgba(138, 168, 120, 0.4);
   top: -100px;
   right: -80px;
 }
 
 .circle-2 {
-  width: 450px;
-  height: 450px;
-  background: rgba(85, 107, 47, 0.22);
+  width: 500px;
+  height: 500px;
+  background: rgba(80, 105, 70, 0.35);
   bottom: -120px;
   left: -100px;
 }
 
+/* Trava contra vazamentos no iPhone */
 .panel, .card, .input-group, .grid-2-inputs, .form-stack, .sim-grid, .grid-setup {
   min-width: 0;
   max-width: 100%;
 }
 
-.panel, .card, header, .sim-results, .goal-card {
+/* ==========================================
+   3. PAINÉIS & CARDS TINTED GLASS (ESTILO IPHONE)
+   ========================================== */
+.panel, 
+.card, 
+header, 
+.sim-results, 
+.goal-card {
   background: var(--glass-bg);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(30px) saturate(210%);
+  -webkit-backdrop-filter: blur(30px) saturate(210%);
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow), var(--inset-light);
   border-radius: var(--radius);
+  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease;
 }
 
 /* ==========================================
-   3. NAVEGAÇÃO POR ABAS (SPA)
+   4. CABEÇALHO & DOCK DE NAVEGAÇÃO (PÍLULA)
    ========================================== */
 header {
   display: flex;
@@ -121,34 +135,44 @@ header {
 header h1 {
   font-size: 1.5rem;
   font-weight: 700;
+  letter-spacing: -0.5px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
 
 header h1 span {
-  color: var(--primary);
+  color: #ffffff;
+  opacity: 0.9;
 }
 
+/* Navegação em estilo Pílula / Dock do iOS */
 .nav-tabs {
   display: flex;
-  gap: 8px;
-  background: var(--accent-light);
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.18);
   padding: 6px;
-  border-radius: 14px;
+  border-radius: 30px; /* Formato pílula iOS */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
 .nav-btn {
-  padding: 8px 16px;
+  padding: 8px 20px;
   border: none;
   background: transparent;
   color: var(--text);
   font-weight: 600;
-  border-radius: 10px;
+  font-size: 0.88rem;
+  border-radius: 20px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
 }
 
 .nav-btn.active {
-  background: var(--primary);
+  background: rgba(255, 255, 255, 0.35);
   color: #ffffff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
 }
 
 .tab-content {
@@ -165,7 +189,7 @@ header h1 span {
 }
 
 /* ==========================================
-   4. FORMULÁRIOS & INPUTS
+   5. FORMULÁRIOS & INPUTS TINTED
    ========================================== */
 .panel {
   padding: 24px;
@@ -176,6 +200,8 @@ header h1 span {
   font-size: 1.15rem;
   margin-bottom: 20px;
   font-weight: 600;
+  letter-spacing: -0.3px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .input-group {
@@ -186,15 +212,16 @@ header h1 span {
 }
 
 .input-group label {
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   color: var(--muted);
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 input, select {
-  padding: 12px 14px;
-  border-radius: 12px;
+  padding: 12px 16px;
+  border-radius: 16px;
   border: 1px solid var(--input-border);
   background: var(--input-bg);
   color: var(--text);
@@ -207,53 +234,93 @@ input, select {
   box-sizing: border-box !important;
   -webkit-appearance: none;
   appearance: none;
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+}
+
+input::placeholder {
+  color: var(--muted);
+  opacity: 0.8;
 }
 
 input:focus, select:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px var(--accent-light);
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.35);
 }
 
 select option {
-  background: var(--bg-gradient);
-  color: var(--text);
+  background: #4a5446;
+  color: #ffffff;
 }
 
 input[type="date"] {
-  min-height: 44px;
+  min-height: 46px;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0.8;
+  cursor: pointer;
+  filter: invert(1);
 }
 
 /* ==========================================
-   5. BOTÕES
+   6. BOTÕES ESTILO IOS
    ========================================== */
 .btn {
   padding: 12px 22px;
-  border-radius: 12px;
+  border-radius: 16px;
   cursor: pointer;
-  background: var(--glass-bg);
+  background: rgba(255, 255, 255, 0.25);
   border: 1px solid var(--glass-border);
-  color: var(--text);
+  color: #ffffff;
   font-weight: 600;
   font-size: 0.9rem;
-  transition: all 0.2s ease;
+  transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
 .btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+  background: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
 }
 
-.btn-primary { background: var(--primary); color: #ffffff; border: none; }
-.btn-primary:hover { background: var(--primary-hover); }
-.btn-secondary { background: var(--accent-light); color: var(--primary); border: 1px solid var(--primary); }
-.btn-danger { background: rgba(198, 40, 40, 0.12); color: var(--red); border: 1px solid rgba(198, 40, 40, 0.3); }
+.btn-primary {
+  background: var(--primary);
+  color: #ffffff;
+  border: none;
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.btn-danger {
+  background: rgba(239, 83, 80, 0.25);
+  color: #ffffff;
+  border: 1px solid rgba(239, 83, 80, 0.4);
+}
+
+.btn-danger:hover {
+  background: var(--red);
+  color: #ffffff;
+}
 
 /* ==========================================
-   6. CARDS & GRIDS
+   7. CARDS DE RESUMO & GRIDS
    ========================================== */
 .grid-setup {
   display: grid;
@@ -277,9 +344,29 @@ input[type="date"] {
   min-height: 120px;
 }
 
-.card .label { color: var(--muted); font-size: 0.82rem; font-weight: 600; }
-.card .value { font-size: 1.55rem; font-weight: 700; margin: 4px 0; }
-.card .delta { font-size: 0.78rem; color: var(--muted); }
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.22);
+}
+
+.card .label {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.card .value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin: 4px 0;
+  letter-spacing: -0.5px;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.card .delta {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
 
 .up { color: var(--green); font-weight: 600; }
 .down { color: var(--red); font-weight: 600; }
@@ -306,13 +393,13 @@ input[type="date"] {
 
 .sim-results {
   padding: 18px;
-  background: var(--accent-light);
-  border: 1px dashed var(--primary);
-  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px dashed rgba(255, 255, 255, 0.4);
+  border-radius: 16px;
 }
 
 /* ==========================================
-   7. METAS & COFRES (INLINE INPUT)
+   8. METAS & COFRES (TELA 2)
    ========================================== */
 .goals-grid {
   display: grid;
@@ -336,19 +423,19 @@ input[type="date"] {
 .progress-bar-bg {
   width: 100%;
   height: 12px;
-  background: var(--accent-light);
+  background: rgba(0, 0, 0, 0.2);
   border-radius: 20px;
   overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);
 }
 
 .progress-bar-fill {
   height: 100%;
-  background: var(--primary);
+  background: linear-gradient(90deg, #81c784 0%, #aed581 100%);
   border-radius: 20px;
-  transition: width 0.4s ease;
+  transition: width 0.5s ease;
 }
 
-/* Formulário de Depósito Direto no Card */
 .goal-deposit-form {
   display: flex;
   gap: 8px;
@@ -358,7 +445,7 @@ input[type="date"] {
 .goal-deposit-form input {
   padding: 8px 12px;
   font-size: 0.85rem;
-  border-radius: 10px;
+  border-radius: 12px;
 }
 
 .goal-deposit-form button {
@@ -368,7 +455,7 @@ input[type="date"] {
 }
 
 /* ==========================================
-   8. RELATÓRIOS & TABELAS (TELA 3)
+   9. RELATÓRIOS & TABELAS (TELA 3)
    ========================================== */
 .report-item {
   display: flex;
@@ -377,17 +464,34 @@ input[type="date"] {
   border-bottom: 1px solid var(--glass-border);
 }
 
-.table-responsive { overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; min-width: 500px; }
-th, td { padding: 14px; text-align: left; border-bottom: 1px solid var(--glass-border); }
-th { color: var(--muted); font-size: 0.82rem; text-transform: uppercase; }
+.table-responsive {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 500px;
+}
+
+th, td {
+  padding: 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+th {
+  color: var(--muted);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+}
 
 .tag {
-  padding: 4px 10px;
+  padding: 4px 12px;
   border-radius: 20px;
   font-size: 0.75rem;
-  background: var(--accent-light);
-  color: var(--primary);
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
   font-weight: 600;
 }
 
@@ -400,16 +504,33 @@ th { color: var(--muted); font-size: 0.82rem; text-transform: uppercase; }
 }
 
 /* ==========================================
-   9. RESPONSIVIDADE (MOBILE)
+   10. RESPONSIVIDADE (MOBILE & TABLETS)
    ========================================== */
 @media (max-width: 1024px) {
-  .cards { grid-template-columns: repeat(2, 1fr); }
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 768px) {
-  body { padding: 12px; }
-  header { flex-direction: column; align-items: stretch; }
-  .nav-tabs { justify-content: center; }
-  .grid-setup, .cards, .grid-2, .grid-2-inputs { grid-template-columns: 1fr; }
-  .btn { width: 100%; }
+  body {
+    padding: 12px;
+  }
+
+  header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .nav-tabs {
+    justify-content: center;
+  }
+
+  .grid-setup, .cards, .grid-2, .grid-2-inputs {
+    grid-template-columns: 1fr;
+  }
+
+  .btn {
+    width: 100%;
+  }
 }
