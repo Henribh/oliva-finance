@@ -1,46 +1,48 @@
 /* ==========================================
-   1. PALETA DE CORES & VARIÁVEIS iOS TINTED GLASS
+   1. MODO ESCURO (AZUL MARINHO DOMINANTE & ESMERALDA)
    ========================================== */
 :root {
-  --bg-gradient: radial-gradient(circle at 50% 20%, #a4a99b 0%, #7d8574 40%, #545c4f 100%);
+  /* Azul Marinho mais denso e forte, ocupando mais espaço */
+  --bg-gradient: radial-gradient(circle at 50% 10%, #0A1128 0%, #050814 60%, #010308 100%);
   
-  --glass-bg: rgba(148, 168, 133, 0.45);
-  --glass-border: rgba(255, 255, 255, 0.35);
-  --glass-shadow: 0 12px 32px 0 rgba(0, 0, 0, 0.18);
-  --inset-light: inset 0 1px 1px 0 rgba(255, 255, 255, 0.4);
+  /* Fundos dos painéis: Azul Marinho translúcido */
+  --glass-bg: rgba(10, 17, 40, 0.65);
   
-  --input-bg: rgba(255, 255, 255, 0.22);
-  --input-border: rgba(255, 255, 255, 0.3);
+  /* Contornos e detalhes em Verde Esmeralda */
+  --glass-border: rgba(16, 185, 129, 0.35);
+  --glass-shadow: 0 16px 40px 0 rgba(0, 0, 0, 0.7);
+  --inset-light: inset 0 1px 1px 0 rgba(16, 185, 129, 0.25);
   
-  --text: #ffffff;
-  --muted: #e0e8dc;
+  --input-bg: rgba(5, 8, 20, 0.5);
+  --input-border: rgba(16, 185, 129, 0.3);
   
-  --primary: #597d47;
-  --primary-hover: #486838;
-  --accent-light: rgba(255, 255, 255, 0.2);
+  --text: #F1F5F9;
+  --muted: #94A3B8;
   
-  --green: #81c784;
-  --red: #ef5350;
+  --primary: #1E3A8A; /* Azul Marinho Brilhante */
+  --primary-hover: #1E40AF;
+  --emerald: #10B981; /* Verde Esmeralda Destaque */
+  --accent-light: rgba(16, 185, 129, 0.15); /* Fundo sutil esmeralda */
+  
+  --green: #10B981;
+  --red: #EF4444;
   --radius: 24px;
 }
 
-[data-theme="dark"] {
-  --bg-gradient: radial-gradient(circle at 50% 20%, #2a3328 0%, #1a2219 50%, #0d120d 100%);
-  
-  --glass-bg: rgba(38, 52, 36, 0.65);
-  --glass-border: rgba(255, 255, 255, 0.15);
-  --glass-shadow: 0 16px 40px 0 rgba(0, 0, 0, 0.55);
-  --inset-light: inset 0 1px 1px 0 rgba(255, 255, 255, 0.15);
-  
-  --input-bg: rgba(0, 0, 0, 0.3);
-  --input-border: rgba(255, 255, 255, 0.15);
-  
-  --text: #f0f5ee;
-  --muted: #aab8a6;
-
-  --primary: #8cb877;
-  --primary-hover: #a2cf8c;
-  --accent-light: rgba(140, 184, 119, 0.2);
+/* MODO CLARO (Opcional, com tons invertidos) */
+[data-theme="light"] {
+  --bg-gradient: radial-gradient(circle at 50% 20%, #F8FAFC 0%, #E2E8F0 60%, #A7F3D0 100%);
+  --glass-bg: rgba(241, 245, 249, 0.55);
+  --glass-border: rgba(16, 185, 129, 0.5);
+  --glass-shadow: 0 12px 32px 0 rgba(15, 23, 42, 0.12);
+  --inset-light: inset 0 1px 1px 0 rgba(255, 255, 255, 0.8);
+  --input-bg: rgba(255, 255, 255, 0.6);
+  --input-border: rgba(16, 185, 129, 0.3);
+  --text: #0F172A;
+  --muted: #475569;
+  --primary: #1E3A8A; 
+  --primary-hover: #1D4ED8;
+  --accent-light: rgba(16, 185, 129, 0.15);
 }
 
 /* ==========================================
@@ -50,22 +52,23 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box !important;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 body {
   background: var(--bg-gradient);
   background-attachment: fixed;
   color: var(--text);
-  transition: background 0.5s ease, color 0.5s ease;
+  transition: background 0.6s ease, color 0.6s ease;
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
   min-height: 100vh;
   position: relative;
-  overflow-x: hidden;
+  overflow-x: hidden; /* Evita rolagem horizontal com o menu mobile */
 }
 
+/* Esferas de luz no fundo: Azul e Esmeralda */
 .circle {
   position: fixed;
   border-radius: 50%;
@@ -73,46 +76,63 @@ body {
   z-index: -1;
   pointer-events: none;
 }
-
 .circle-1 {
-  width: 450px;
-  height: 450px;
-  background: rgba(138, 168, 120, 0.4);
-  top: -100px;
-  right: -80px;
+  width: 450px; height: 450px;
+  background: rgba(16, 185, 129, 0.2); 
+  top: -100px; right: -80px;
 }
-
 .circle-2 {
-  width: 500px;
-  height: 500px;
-  background: rgba(80, 105, 70, 0.35);
-  bottom: -120px;
-  left: -100px;
-}
-
-.panel, .card, .input-group, .grid-2-inputs, .form-stack, .sim-grid, .grid-setup {
-  min-width: 0;
-  max-width: 100%;
+  width: 500px; height: 500px;
+  background: rgba(30, 58, 138, 0.25); 
+  bottom: -120px; left: -100px;
 }
 
 /* ==========================================
-   3. PAINÉIS & CARDS TINTED GLASS
+   3. PAINÉIS, CARDS & EFEITO PRISMA (GLASS SWEEP)
    ========================================== */
-.panel, 
-.card, 
-.sim-results, 
-.goal-card {
+.panel, .card, .sim-results, .goal-card {
   background: var(--glass-bg);
-  backdrop-filter: blur(30px) saturate(210%);
-  -webkit-backdrop-filter: blur(30px) saturate(210%);
+  backdrop-filter: blur(35px) saturate(150%);
+  -webkit-backdrop-filter: blur(35px) saturate(150%);
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow), var(--inset-light);
   border-radius: var(--radius);
-  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease;
+  
+  /* Necessário para o efeito prisma não vazar do cartão */
+  position: relative;
+  overflow: hidden; 
+}
+
+/* EFEITO PRISMA: O reflexo de vidro inclinado */
+.panel::before, .card::before, .sim-results::before, .goal-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 50%;
+  height: 100%;
+  /* Gradiente translúcido simulando a luz no vidro */
+  background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(16, 185, 129, 0.15) 50%, rgba(255,255,255,0) 100%);
+  transform: skewX(-25deg);
+  transition: left 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Quando passa o mouse, o prisma cruza o elemento */
+.panel:hover::before, .card:hover::before, .sim-results:hover::before, .goal-card:hover::before {
+  left: 150%;
+}
+
+.panel:hover, .card:hover {
+  transform: translateY(-3px);
+  border-color: var(--emerald);
+  box-shadow: 0 20px 45px rgba(16, 185, 129, 0.15);
 }
 
 /* ==========================================
-   4. CABEÇALHO & NAVEGAÇÃO MINIMALISTA
+   4. CABEÇALHO & EFEITO "SPACE" NAVBAR
    ========================================== */
 header {
   display: flex;
@@ -123,103 +143,162 @@ header {
   flex-wrap: wrap;
   gap: 12px;
   position: relative;
-  z-index: 999; /* CORREÇÃO: Força o header e o menu a ficarem sempre por cima */
+  z-index: 999;
 }
 
-header h1 {
-  font-size: 1.3rem;
-  font-weight: 700;
-  letter-spacing: -0.5px;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.15);
-}
-
-header h1 span {
-  color: #ffffff;
-  opacity: 0.9;
-}
-
-.menu-toggle {
-  display: none; 
-}
+header h1 { font-size: 1.3rem; font-weight: 700; letter-spacing: -0.5px; }
+header h1 span { color: var(--emerald); }
+.menu-toggle { display: none; }
 
 .nav-tabs {
   display: flex;
-  gap: 4px;
-  background: rgba(0, 0, 0, 0.15);
-  padding: 4px;
-  border-radius: 30px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  gap: 12px;
+  background: var(--glass-bg);
+  padding: 8px 12px;
+  border-radius: 40px;
+  border: 1px solid var(--glass-border);
   backdrop-filter: blur(25px);
-  -webkit-backdrop-filter: blur(25px);
   justify-content: center;
   align-items: center;
-  transition: all 0.3s ease;
 }
 
+/* BOTÃO SPACE ANIMADO (Adaptado de Uiverse) */
 .nav-btn {
-  padding: 6px 14px;
-  border: none;
-  background: transparent;
-  color: var(--text);
-  font-weight: 600;
-  font-size: 0.82rem;
-  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 150px;
+  padding: 0 24px;
+  height: 42px;
+  background-size: 300% 300%;
   cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
-  display: inline-flex;
+  backdrop-filter: blur(1rem);
+  border-radius: 5rem;
+  transition: transform 0.3s ease, border 0.3s ease;
+  animation: gradient_301 5s ease infinite;
+  border: double 2px transparent;
+  
+  /* Cores ajustadas: Fundo Escuro Naval, Bordas em Gradiente Azul e Esmeralda */
+  background-image: linear-gradient(#0A1128, #0A1128),
+    linear-gradient(137.48deg, var(--emerald) 10%, var(--primary) 45%, #047857 67%, #0044ff 87%);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  
+  position: relative;
+  overflow: hidden;
+  
+  /* Para inativos, ficarem um pouco mais opacos */
+  filter: saturate(0.5) opacity(0.8);
+}
+
+.nav-btn.active, .nav-btn:hover {
+  filter: saturate(1.2) opacity(1);
+}
+
+.nav-btn:hover {
+  transform: scale(1.05);
+}
+
+.nav-btn.active {
+  border: double 2px var(--emerald);
+  animation: none;
+}
+
+/* Contêiner das Estrelas (Só aparece no Hover ou Ativo) */
+.container-stars {
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  transition: 0.5s;
+  backdrop-filter: blur(1rem);
+  border-radius: 5rem;
+  opacity: 0; /* Invisível por padrão */
+}
+
+.nav-btn:hover .container-stars,
+.nav-btn.active .container-stars {
+  opacity: 1;
+  background-color: rgba(10, 17, 40, 0.9);
+}
+
+.nav-btn strong {
+  z-index: 2;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: #ffffff;
+  text-shadow: 0 0 4px rgba(255, 255, 255, 0.4);
+  display: flex;
   align-items: center;
   gap: 6px;
 }
 
-.nav-btn.active {
-  background: rgba(255, 255, 255, 0.35);
-  color: #ffffff;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-}
-
-.tab-content {
-  display: none;
-}
-
-.tab-content.active {
-  display: block;
-}
-
-.actions {
+/* O Brilho (Glow) por trás do botão ativo */
+.glow {
+  position: absolute;
   display: flex;
-  gap: 10px;
+  width: 100%;
 }
+
+.circle-glow {
+  width: 100%;
+  height: 30px;
+  filter: blur(2rem);
+  animation: pulse_3011 4s infinite;
+  z-index: -1;
+}
+
+.circle-glow:nth-of-type(1) { background: rgba(16, 185, 129, 0.6); } /* Esmeralda */
+.circle-glow:nth-of-type(2) { background: rgba(30, 58, 138, 0.7); } /* Marinho */
+
+/* Animação das Estrelas */
+.stars {
+  position: relative;
+  background: transparent;
+  width: 200rem;
+  height: 200rem;
+}
+
+.stars::after, .stars::before {
+  content: "";
+  position: absolute;
+  background-image: radial-gradient(#ffffff 1px, transparent 1%);
+  background-size: 50px 50px;
+}
+
+.stars::after {
+  top: -10rem; left: -100rem;
+  width: 100%; height: 100%;
+  animation: animStarRotate 90s linear infinite;
+}
+
+.stars::before {
+  top: 0; left: -50%;
+  width: 170%; height: 500%;
+  animation: animStar 60s linear infinite;
+  opacity: 0.5;
+}
+
+@keyframes animStar { from { transform: translateY(0); } to { transform: translateY(-135rem); } }
+@keyframes animStarRotate { from { transform: rotate(360deg); } to { transform: rotate(0); } }
+@keyframes gradient_301 { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+@keyframes pulse_3011 { 0% { transform: scale(0.75); } 70% { transform: scale(1); } 100% { transform: scale(0.75); } }
+
+.tab-content { display: none; }
+.tab-content.active { display: block; animation: fadeIn 0.5s ease forwards; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.actions { display: flex; gap: 10px; }
 
 /* ==========================================
    5. FORMULÁRIOS & INPUTS
    ========================================== */
-.panel {
-  padding: 24px;
-  margin-bottom: 24px;
-}
-
-.panel h2 {
-  font-size: 1.15rem;
-  margin-bottom: 20px;
-  font-weight: 600;
-  letter-spacing: -0.3px;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-}
-
-.input-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  width: 100%;
-}
-
-.input-group label {
-  font-size: 0.8rem;
-  color: var(--muted);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
+.panel { padding: 24px; margin-bottom: 24px; }
+.panel h2 { font-size: 1.15rem; margin-bottom: 20px; font-weight: 600; }
+.input-group { display: flex; flex-direction: column; gap: 6px; width: 100%; }
+.input-group label { font-size: 0.8rem; color: var(--muted); font-weight: 700; text-transform: uppercase; }
 
 input, select {
   padding: 12px 16px;
@@ -228,356 +307,144 @@ input, select {
   background: var(--input-bg);
   color: var(--text);
   font-size: 0.95rem;
-  width: 100% !important;
-  max-width: 100% !important;
-  min-width: 0 !important;
   outline: none;
   transition: all 0.25s ease;
-  box-sizing: border-box !important;
-  -webkit-appearance: none;
-  appearance: none;
+  width: 100% !important;
   backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
+  position: relative;
+  z-index: 2; /* Para o input ficar clicável sobre o prisma */
 }
 
-input::placeholder {
-  color: var(--muted);
-  opacity: 0.8;
-}
-
-input:focus, select:focus {
-  border-color: rgba(255, 255, 255, 0.6);
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.25);
-  background: rgba(255, 255, 255, 0.35);
-}
-
-select option {
-  background: #4a5446;
-  color: #ffffff;
-}
-
-input[type="date"] {
-  min-height: 46px;
-}
-
-input[type="date"]::-webkit-calendar-picker-indicator {
-  opacity: 0.8;
-  cursor: pointer;
-  filter: invert(1);
-}
+input::placeholder { color: var(--muted); opacity: 0.8; }
+input:focus, select:focus { border-color: var(--emerald); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25); background: var(--accent-light); }
+select option { background: #0A1128; color: var(--text); }
+input[type="date"] { min-height: 46px; }
 
 /* ==========================================
    6. BOTÕES
    ========================================== */
 .btn {
-  padding: 12px 22px;
-  border-radius: 16px;
-  cursor: pointer;
-  background: rgba(255, 255, 255, 0.25);
-  border: 1px solid var(--glass-border);
-  color: #ffffff;
-  font-weight: 600;
-  font-size: 0.9rem;
-  transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  padding: 12px 22px; border-radius: 16px; cursor: pointer;
+  background: var(--glass-bg); border: 1px solid var(--glass-border);
+  color: var(--text); font-weight: 600; font-size: 0.9rem;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 8px; backdrop-filter: blur(10px); z-index: 2; position: relative;
 }
-
-.btn:hover {
-  transform: translateY(-2px);
-  background: rgba(255, 255, 255, 0.35);
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
-}
-
-.btn-primary {
-  background: var(--primary);
-  color: #ffffff;
-  border: none;
-}
-
-.btn-primary:hover {
-  background: var(--primary-hover);
-}
-
-.btn-secondary {
-  background: rgba(255, 255, 255, 0.2);
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-}
-
-.btn-danger {
-  background: rgba(239, 83, 80, 0.25);
-  color: #ffffff;
-  border: 1px solid rgba(239, 83, 80, 0.4);
-}
-
-.btn-danger:hover {
-  background: var(--red);
-  color: #ffffff;
-}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(0, 0, 0, 0.3); border-color: var(--emerald); }
+.btn-primary { background: var(--primary); color: #ffffff; border: 1px solid var(--emerald); }
+.btn-primary:hover { background: var(--primary-hover); }
+.btn-secondary { background: var(--accent-light); color: var(--text); border: 1px solid var(--emerald); }
+.btn-danger { background: rgba(239, 68, 68, 0.15); color: var(--red); border: 1px solid rgba(239, 68, 68, 0.3); }
+.btn-danger:hover { background: var(--red); color: #ffffff; }
 
 /* ==========================================
    7. CARDS DE RESUMO & GRIDS
    ========================================== */
-.grid-setup {
-  display: grid;
-  grid-template-columns: 1fr 1fr auto;
-  gap: 16px;
-  align-items: end;
-}
-
-.cards {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin-bottom: 24px;
-}
-
-.card {
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 120px;
-}
-
-.card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.22);
-}
-
-.card .label {
-  color: var(--muted);
-  font-size: 0.82rem;
-  font-weight: 600;
-}
-
-.card .value {
-  font-size: 1.6rem;
-  font-weight: 700;
-  margin: 4px 0;
-  letter-spacing: -0.5px;
-  text-shadow: 0 2px 6px rgba(0,0,0,0.15);
-}
-
-.card .delta {
-  font-size: 0.78rem;
-  color: var(--muted);
-}
-
-.up { color: var(--green); font-weight: 600; }
-.down { color: var(--red); font-weight: 600; }
-.val-pos { color: var(--green); font-weight: 600; }
-.val-neg { color: var(--red); font-weight: 600; }
-
-.grid-2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-}
-
-.form-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.grid-2-inputs {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.sim-results {
-  padding: 18px;
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px dashed rgba(255, 255, 255, 0.4);
-  border-radius: 16px;
-}
+.grid-setup { display: grid; grid-template-columns: 1fr 1fr auto; gap: 16px; align-items: end; z-index: 2; position: relative;}
+.cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+.card { padding: 20px; display: flex; flex-direction: column; justify-content: space-between; min-height: 120px; }
+.card .label { color: var(--muted); font-size: 0.82rem; font-weight: 600; z-index: 2; position: relative;}
+.card .value { font-size: 1.6rem; font-weight: 700; margin: 4px 0; z-index: 2; position: relative;}
+.card .delta { font-size: 0.78rem; color: var(--muted); z-index: 2; position: relative;}
+.up, .val-pos { color: var(--green); font-weight: 600; }
+.down, .val-neg { color: var(--red); font-weight: 600; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.form-stack { display: flex; flex-direction: column; gap: 14px; z-index: 2; position: relative;}
+.grid-2-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.sim-results { padding: 18px; background: var(--glass-bg); border: 1px dashed var(--emerald); border-radius: 16px; }
 
 /* ==========================================
-   8. METAS & COFRES
+   8. METAS, COFRES & TABELAS
    ========================================== */
-.goals-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 16px;
-}
-
-.goal-card {
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.goal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.progress-bar-bg {
-  width: 100%;
-  height: 12px;
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);
-}
-
-.progress-bar-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #81c784 0%, #aed581 100%);
-  border-radius: 20px;
-  transition: width 0.5s ease;
-}
-
-.goal-deposit-form {
-  display: flex;
-  gap: 8px;
-  margin-top: 6px;
-}
-
-.goal-deposit-form input {
-  padding: 8px 12px;
-  font-size: 0.85rem;
-  border-radius: 12px;
-}
-
-.goal-deposit-form button {
-  padding: 8px 14px;
-  font-size: 0.8rem;
-  white-space: nowrap;
-}
+.goals-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; z-index: 2; position: relative;}
+.goal-card { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+.goal-header { display: flex; justify-content: space-between; align-items: center; z-index: 2; position: relative;}
+.progress-bar-bg { width: 100%; height: 12px; background: rgba(0, 0, 0, 0.4); border-radius: 20px; overflow: hidden; z-index: 2; position: relative;}
+.progress-bar-fill { height: 100%; background: var(--emerald); border-radius: 20px; transition: width 0.5s ease; }
+.goal-deposit-form { display: flex; gap: 8px; margin-top: 6px; z-index: 2; position: relative;}
+.goal-deposit-form input { padding: 8px 12px; font-size: 0.85rem; border-radius: 12px; }
+.goal-deposit-form button { padding: 8px 14px; font-size: 0.8rem; }
+.table-responsive { overflow-x: auto; z-index: 2; position: relative;}
+table { width: 100%; border-collapse: collapse; min-width: 500px; }
+th, td { padding: 14px; text-align: left; border-bottom: 1px solid var(--glass-border); }
+th { color: var(--muted); font-size: 0.82rem; text-transform: uppercase; }
+.tag { padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; background: var(--accent-light); border: 1px solid var(--emerald); color: var(--text); }
+.btn-delete { background: transparent; border: none; color: var(--red); cursor: pointer; font-weight: bold; }
 
 /* ==========================================
-   9. RELATÓRIOS & TABELAS
-   ========================================== */
-.report-item {
-  display: flex;
-  justify-content: space-between;
-  padding: 12px 0;
-  border-bottom: 1px solid var(--glass-border);
-}
-
-.table-responsive {
-  overflow-x: auto;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  min-width: 500px;
-}
-
-th, td {
-  padding: 14px;
-  text-align: left;
-  border-bottom: 1px solid var(--glass-border);
-}
-
-th {
-  color: var(--muted);
-  font-size: 0.82rem;
-  text-transform: uppercase;
-}
-
-.tag {
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  background: rgba(255, 255, 255, 0.25);
-  color: #ffffff;
-  font-weight: 600;
-}
-
-.btn-delete {
-  background: transparent;
-  border: none;
-  color: var(--red);
-  cursor: pointer;
-  font-weight: bold;
-}
-
-/* ==========================================
-   10. RESPONSIVIDADE & MENU FLUTUANTE (MOBILE)
+   10. RESPONSIVIDADE & SIDEBAR APP (MOBILE)
    ========================================== */
 @media (max-width: 1024px) {
-  .cards {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  .cards { grid-template-columns: repeat(2, 1fr); }
 }
 
+/* O Overlay que escurece o fundo quando a sidebar abre */
+.mobile-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px);
+  z-index: 999;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.mobile-overlay.active { display: block; opacity: 1; }
+
 @media (max-width: 768px) {
-  body {
-    padding: 12px;
-  }
+  body { padding: 12px; }
+  header { padding: 10px 12px; z-index: 1001; /* Fica acima da sidebar */ }
+  .action-text { display: none; }
+  .actions .btn { padding: 8px 12px; font-size: 1rem; border-radius: 12px; }
 
-  header {
-    padding: 10px 12px;
-  }
-
-  .action-text {
-    display: none;
-  }
-
-  .actions .btn {
-    padding: 8px 12px;
-    font-size: 1rem;
-    border-radius: 12px;
-  }
-
+  /* Botão Menu agora abre a Gaveta Lateral */
   .menu-toggle {
     display: inline-flex;
-    background: rgba(255, 255, 255, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.35);
+    background: var(--glass-bg);
+    border: 1px solid var(--emerald);
     color: var(--text);
     padding: 8px 14px;
     border-radius: 14px;
     font-size: 0.85rem;
     font-weight: 600;
     backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
     cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   }
 
+  /* NAVBAR LATERAL (APP DRAWER) */
   .nav-tabs {
-    display: none; 
-    position: absolute;
-    top: 65px; 
-    left: 50%;
-    transform: translateX(-50%);
+    position: fixed;
+    top: 0; 
+    left: -300px; /* Escondida fora da tela à esquerda */
+    width: 260px;
+    height: 100vh;
+    
     flex-direction: column;
-    width: 92%;
-    background: var(--glass-bg);
-    backdrop-filter: blur(35px) saturate(220%);
-    -webkit-backdrop-filter: blur(35px) saturate(220%);
-    border: 1px solid var(--glass-border);
-    border-radius: 20px;
-    padding: 12px;
-    z-index: 1000; /* Garante que os botões dentro do menu são clicáveis */
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255,255,255,0.4);
+    justify-content: flex-start;
+    padding: 80px 20px 20px 20px; /* Espaço pro cabeçalho */
+    
+    background: rgba(5, 8, 20, 0.85); /* Fundo escuro sólido */
+    border: none;
+    border-right: 1px solid var(--emerald);
+    border-radius: 0;
+    
+    transition: left 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    z-index: 1000;
+    box-shadow: 10px 0 30px rgba(0,0,0,0.8);
   }
 
+  /* Quando o menu abre, a sidebar desliza pra dentro */
   .nav-tabs.open {
-    display: flex;
+    left: 0;
   }
 
+  /* Ajustes dos botões SPACE dentro da Sidebar */
   .nav-btn {
     width: 100%;
+    margin-bottom: 12px;
     justify-content: flex-start;
-    padding: 14px 20px;
-    font-size: 1rem;
   }
   
-  .grid-setup, .cards, .grid-2, .grid-2-inputs {
-    grid-template-columns: 1fr;
-  }
+  .grid-setup, .cards, .grid-2, .grid-2-inputs { grid-template-columns: 1fr; }
 }

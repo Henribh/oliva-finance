@@ -8,30 +8,46 @@
 </head>
 <body>
 
+    <!-- Esferas de luz no fundo para profundidade Liquid Glass -->
     <div class="circle circle-1"></div>
     <div class="circle circle-2"></div>
 
     <header>
         <div class="brand">
-            <h1>🌿 Oliva <span>Finance</span></h1>
+            <h1>🌿Oliva <span>Finance</span></h1>
         </div>
 
         <button class="menu-toggle" id="menu-toggle-btn" onclick="toggleMenu()">
             ☰ Menu
         </button>
 
+        <!-- Barra de Navegação Animada (Efeito SPACE / StealthWorm) -->
         <nav class="nav-tabs" id="nav-tabs">
             <button class="nav-btn active" onclick="switchTab('dashboard', this); closeMenu()">
                 <span class="nav-icon">📊</span>
                 <span class="nav-text">Dashboard</span>
             </button>
+
             <button class="nav-btn" onclick="switchTab('metas', this); closeMenu()">
-                <span class="nav-icon">🎯</span>
-                <span class="nav-text">Metas & Cofres</span>
+                <strong><span class="nav-icon">🎯</span> <span class="nav-text">Metas & Cofres</span></strong>
+                <div class="container-stars">
+                    <div class="stars"></div>
+                </div>
+                <div class="glow">
+                    <div class="circle-glow"></div>
+                    <div class="circle-glow"></div>
+                </div>
             </button>
+
             <button class="nav-btn" onclick="switchTab('relatorios', this); closeMenu()">
-                <span class="nav-icon">📈</span>
-                <span class="nav-text">Relatórios</span>
+                <strong><span class="nav-icon">📈</span> <span class="nav-text">Relatórios</span></strong>
+                <div class="container-stars">
+                    <div class="stars"></div>
+                </div>
+                <div class="glow">
+                    <div class="circle-glow"></div>
+                    <div class="circle-glow"></div>
+                </div>
             </button>
         </nav>
 
@@ -40,13 +56,16 @@
                 <span class="nav-icon">🧮</span> <span class="action-text">Calc</span>
             </a>
             <button class="btn" id="theme-btn">
-                <span class="nav-icon">🌙</span> <span class="action-text">Tema</span>
+                <span class="nav-icon" id="theme-icon">☀️</span> <span class="action-text">Tema</span>
             </button>
             <button class="btn btn-danger" id="reset-btn">
                 <span class="nav-icon">🗑️</span> <span class="action-text">Reset</span>
             </button>
         </div>
     </header>
+
+    <!-- Overlay escura para quando o menu mobile abrir -->
+    <div class="mobile-overlay" id="mobile-overlay" onclick="closeMenu()"></div>
 
     <main id="tab-dashboard" class="tab-content active">
         <section class="panel setup-panel">
@@ -189,7 +208,6 @@
         </section>
     </main>
 
-    <!-- TELA 2: METAS & COFRES DE INVESTIMENTO -->
     <main id="tab-metas" class="tab-content">
         <section class="panel">
             <h2>🎯 Adicionar Nova Meta / Cofre</h2>
@@ -213,7 +231,6 @@
         </section>
     </main>
 
-    <!-- TELA 3: RELATÓRIOS & EXPORTAÇÃO -->
     <main id="tab-relatorios" class="tab-content">
         <section class="grid-2">
             <div class="panel">

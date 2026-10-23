@@ -31,11 +31,11 @@ let state = {
   fixedCosts: parseCurrencyInput(localStorage.getItem('oliva_fixed')),
   transactions: JSON.parse(localStorage.getItem('oliva_transactions')) || [],
   goals: JSON.parse(localStorage.getItem('oliva_goals')) || [],
-  theme: localStorage.getItem('oliva_theme') || 'light'
+  theme: localStorage.getItem('oliva_theme') || 'dark'
 };
 
 // ==========================================
-// 3. NAVEGAÇÃO DE TELA SPA & MENU MOBILE
+// 3. NAVEGAÇÃO DE TELA SPA & MENU SIDEBAR APP
 // ==========================================
 function switchTab(tabId, element) {
   document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
@@ -54,13 +54,24 @@ function switchTab(tabId, element) {
 
 function toggleMenu() {
   const menu = document.getElementById('nav-tabs');
+  const overlay = document.getElementById('mobile-overlay');
+  
   menu.classList.toggle('open');
+  
+  // Ativa/Desativa o fundo escuro do mobile
+  if (menu.classList.contains('open')) {
+    overlay.classList.add('active');
+  } else {
+    overlay.classList.remove('active');
+  }
 }
 
 function closeMenu() {
   if (window.innerWidth <= 768) {
     const menu = document.getElementById('nav-tabs');
+    const overlay = document.getElementById('mobile-overlay');
     menu.classList.remove('open');
+    overlay.classList.remove('active');
   }
 }
 
@@ -68,7 +79,12 @@ function closeMenu() {
 // 4. INICIALIZAÇÃO E TEMA
 // ==========================================
 function init() {
-  document.documentElement.dataset.theme = state.theme;
+  if (state.theme === 'light') {
+    document.documentElement.setAttribute('data-theme', 'light');
+  } else {
+    document.documentElement.removeAttribute('data-theme');
+  }
+  
   updateThemeButtonText();
 
   if (state.monthlyIncome > 0) document.getElementById('monthly-income').value = state.monthlyIncome;
@@ -81,15 +97,20 @@ function init() {
 
 document.getElementById('theme-btn').addEventListener('click', () => {
   state.theme = state.theme === 'dark' ? 'light' : 'dark';
-  document.documentElement.dataset.theme = state.theme;
+  
+  if (state.theme === 'light') {
+    document.documentElement.setAttribute('data-theme', 'light');
+  } else {
+    document.documentElement.removeAttribute('data-theme');
+  }
+  
   localStorage.setItem('oliva_theme', state.theme);
   updateThemeButtonText();
 });
 
 function updateThemeButtonText() {
-  document.getElementById('theme-btn').innerHTML = state.theme === 'dark' 
-    ? '<span class="nav-icon">☀️</span> <span class="action-text">Tema</span>' 
-    : '<span class="nav-icon">🌙</span> <span class="action-text">Tema</span>';
+  const icon = document.getElementById('theme-icon');
+  icon.textContent = state.theme === 'dark' ? '☀️' : '🌙';
 }
 
 document.getElementById('reset-btn').addEventListener('click', () => {
@@ -214,7 +235,7 @@ document.getElementById('sim-form').addEventListener('submit', (e) => {
 });
 
 // ==========================================
-// 6. METAS & COFRES (DEPÓSITO DIRECTO/INLINE)
+// 6. METAS & COFRES
 // ==========================================
 document.getElementById('goal-form').addEventListener('submit', (e) => {
   e.preventDefault();
