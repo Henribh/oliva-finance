@@ -2,13 +2,8 @@
    1. MODO ESCURO (AZUL MARINHO DOMINANTE & ESMERALDA)
    ========================================== */
 :root {
-  /* Azul Marinho mais denso e forte, ocupando mais espaço */
   --bg-gradient: radial-gradient(circle at 50% 10%, #0A1128 0%, #050814 60%, #010308 100%);
-  
-  /* Fundos dos painéis: Azul Marinho translúcido */
   --glass-bg: rgba(10, 17, 40, 0.65);
-  
-  /* Contornos e detalhes em Verde Esmeralda */
   --glass-border: rgba(16, 185, 129, 0.35);
   --glass-shadow: 0 16px 40px 0 rgba(0, 0, 0, 0.7);
   --inset-light: inset 0 1px 1px 0 rgba(16, 185, 129, 0.25);
@@ -19,17 +14,16 @@
   --text: #F1F5F9;
   --muted: #94A3B8;
   
-  --primary: #1E3A8A; /* Azul Marinho Brilhante */
+  --primary: #1E3A8A; 
   --primary-hover: #1E40AF;
-  --emerald: #10B981; /* Verde Esmeralda Destaque */
-  --accent-light: rgba(16, 185, 129, 0.15); /* Fundo sutil esmeralda */
+  --emerald: #10B981; 
+  --accent-light: rgba(16, 185, 129, 0.15); 
   
   --green: #10B981;
   --red: #EF4444;
   --radius: 24px;
 }
 
-/* MODO CLARO (Opcional, com tons invertidos) */
 [data-theme="light"] {
   --bg-gradient: radial-gradient(circle at 50% 20%, #F8FAFC 0%, #E2E8F0 60%, #A7F3D0 100%);
   --glass-bg: rgba(241, 245, 249, 0.55);
@@ -65,10 +59,9 @@ body {
   margin: 0 auto;
   min-height: 100vh;
   position: relative;
-  overflow-x: hidden; /* Evita rolagem horizontal com o menu mobile */
+  overflow-x: hidden; 
 }
 
-/* Esferas de luz no fundo: Azul e Esmeralda */
 .circle {
   position: fixed;
   border-radius: 50%;
@@ -88,7 +81,7 @@ body {
 }
 
 /* ==========================================
-   3. PAINÉIS, CARDS & EFEITO PRISMA (GLASS SWEEP)
+   3. PAINÉIS, CARDS & EFEITO PRISMA
    ========================================== */
 .panel, .card, .sim-results, .goal-card {
   background: var(--glass-bg);
@@ -98,13 +91,10 @@ body {
   box-shadow: var(--glass-shadow), var(--inset-light);
   border-radius: var(--radius);
   transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease;
-  
-  /* Necessário para o efeito prisma não vazar do cartão */
   position: relative;
   overflow: hidden; 
 }
 
-/* EFEITO PRISMA: O reflexo de vidro inclinado */
 .panel::before, .card::before, .sim-results::before, .goal-card::before {
   content: "";
   position: absolute;
@@ -112,7 +102,6 @@ body {
   left: -150%;
   width: 50%;
   height: 100%;
-  /* Gradiente translúcido simulando a luz no vidro */
   background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(16, 185, 129, 0.15) 50%, rgba(255,255,255,0) 100%);
   transform: skewX(-25deg);
   transition: left 0.7s cubic-bezier(0.25, 1, 0.5, 1);
@@ -120,7 +109,6 @@ body {
   pointer-events: none;
 }
 
-/* Quando passa o mouse, o prisma cruza o elemento */
 .panel:hover::before, .card:hover::before, .sim-results:hover::before, .goal-card:hover::before {
   left: 150%;
 }
@@ -155,14 +143,14 @@ header h1 span { color: var(--emerald); }
   gap: 12px;
   background: var(--glass-bg);
   padding: 8px 12px;
-  border-radius: 40px;
+  border-radius: var(--radius); /* ATUALIZADO: Borda alinhada aos painéis */
   border: 1px solid var(--glass-border);
   backdrop-filter: blur(25px);
   justify-content: center;
   align-items: center;
 }
 
-/* BOTÃO SPACE ANIMADO (Adaptado de Uiverse) */
+/* BOTÃO SPACE ANIMADO */
 .nav-btn {
   display: flex;
   justify-content: center;
@@ -173,12 +161,11 @@ header h1 span { color: var(--emerald); }
   background-size: 300% 300%;
   cursor: pointer;
   backdrop-filter: blur(1rem);
-  border-radius: 5rem;
+  border-radius: 16px; /* ATUALIZADO: Arredondado suave, não mais formato pílula */
   transition: transform 0.3s ease, border 0.3s ease;
   animation: gradient_301 5s ease infinite;
   border: double 2px transparent;
   
-  /* Cores ajustadas: Fundo Escuro Naval, Bordas em Gradiente Azul e Esmeralda */
   background-image: linear-gradient(#0A1128, #0A1128),
     linear-gradient(137.48deg, var(--emerald) 10%, var(--primary) 45%, #047857 67%, #0044ff 87%);
   background-origin: border-box;
@@ -186,8 +173,6 @@ header h1 span { color: var(--emerald); }
   
   position: relative;
   overflow: hidden;
-  
-  /* Para inativos, ficarem um pouco mais opacos */
   filter: saturate(0.5) opacity(0.8);
 }
 
@@ -204,7 +189,6 @@ header h1 span { color: var(--emerald); }
   animation: none;
 }
 
-/* Contêiner das Estrelas (Só aparece no Hover ou Ativo) */
 .container-stars {
   position: absolute;
   z-index: 1;
@@ -213,8 +197,8 @@ header h1 span { color: var(--emerald); }
   overflow: hidden;
   transition: 0.5s;
   backdrop-filter: blur(1rem);
-  border-radius: 5rem;
-  opacity: 0; /* Invisível por padrão */
+  border-radius: 16px; /* ATUALIZADO */
+  opacity: 0; 
 }
 
 .nav-btn:hover .container-stars,
@@ -235,7 +219,6 @@ header h1 span { color: var(--emerald); }
   gap: 6px;
 }
 
-/* O Brilho (Glow) por trás do botão ativo */
 .glow {
   position: absolute;
   display: flex;
@@ -250,10 +233,9 @@ header h1 span { color: var(--emerald); }
   z-index: -1;
 }
 
-.circle-glow:nth-of-type(1) { background: rgba(16, 185, 129, 0.6); } /* Esmeralda */
-.circle-glow:nth-of-type(2) { background: rgba(30, 58, 138, 0.7); } /* Marinho */
+.circle-glow:nth-of-type(1) { background: rgba(16, 185, 129, 0.6); } 
+.circle-glow:nth-of-type(2) { background: rgba(30, 58, 138, 0.7); } 
 
-/* Animação das Estrelas */
 .stars {
   position: relative;
   background: transparent;
@@ -293,7 +275,7 @@ header h1 span { color: var(--emerald); }
 .actions { display: flex; gap: 10px; }
 
 /* ==========================================
-   5. FORMULÁRIOS & INPUTS
+   5. FORMULÁRIOS & INPUTS (CORREÇÃO iOS BUG)
    ========================================== */
 .panel { padding: 24px; margin-bottom: 24px; }
 .panel h2 { font-size: 1.15rem; margin-bottom: 20px; font-weight: 600; }
@@ -309,16 +291,37 @@ input, select {
   font-size: 0.95rem;
   outline: none;
   transition: all 0.25s ease;
+  
+  /* ATUALIZADO: Força o input a não passar do limite no iPhone */
   width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  -webkit-appearance: none; 
+  appearance: none;
+  
   backdrop-filter: blur(15px);
   position: relative;
-  z-index: 2; /* Para o input ficar clicável sobre o prisma */
+  z-index: 2; 
 }
 
 input::placeholder { color: var(--muted); opacity: 0.8; }
 input:focus, select:focus { border-color: var(--emerald); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25); background: var(--accent-light); }
 select option { background: #0A1128; color: var(--text); }
-input[type="date"] { min-height: 46px; }
+
+/* ATUALIZADO: Configuração estrita para o input de data no Safari/iOS */
+input[type="date"] { 
+  min-height: 46px; 
+  display: block; 
+}
+
+/* Move o ícone do calendário para evitar que quebre o layout no Safari mobile */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  position: absolute;
+  right: 16px;
+  filter: invert(1);
+  opacity: 0.8;
+  cursor: pointer;
+}
 
 /* ==========================================
    6. BOTÕES
@@ -379,7 +382,6 @@ th { color: var(--muted); font-size: 0.82rem; text-transform: uppercase; }
   .cards { grid-template-columns: repeat(2, 1fr); }
 }
 
-/* O Overlay que escurece o fundo quando a sidebar abre */
 .mobile-overlay {
   display: none;
   position: fixed;
@@ -394,11 +396,10 @@ th { color: var(--muted); font-size: 0.82rem; text-transform: uppercase; }
 
 @media (max-width: 768px) {
   body { padding: 12px; }
-  header { padding: 10px 12px; z-index: 1001; /* Fica acima da sidebar */ }
+  header { padding: 10px 12px; z-index: 1001; }
   .action-text { display: none; }
   .actions .btn { padding: 8px 12px; font-size: 1rem; border-radius: 12px; }
 
-  /* Botão Menu agora abre a Gaveta Lateral */
   .menu-toggle {
     display: inline-flex;
     background: var(--glass-bg);
@@ -412,34 +413,28 @@ th { color: var(--muted); font-size: 0.82rem; text-transform: uppercase; }
     cursor: pointer;
   }
 
-  /* NAVBAR LATERAL (APP DRAWER) */
   .nav-tabs {
     position: fixed;
     top: 0; 
-    left: -300px; /* Escondida fora da tela à esquerda */
+    left: -300px; 
     width: 260px;
     height: 100vh;
-    
     flex-direction: column;
     justify-content: flex-start;
-    padding: 80px 20px 20px 20px; /* Espaço pro cabeçalho */
-    
-    background: rgba(5, 8, 20, 0.85); /* Fundo escuro sólido */
+    padding: 80px 20px 20px 20px; 
+    background: rgba(5, 8, 20, 0.85); 
     border: none;
     border-right: 1px solid var(--emerald);
-    border-radius: 0;
-    
+    border-radius: 0; /* Sidebar reta na esquerda */
     transition: left 0.4s cubic-bezier(0.25, 1, 0.5, 1);
     z-index: 1000;
     box-shadow: 10px 0 30px rgba(0,0,0,0.8);
   }
 
-  /* Quando o menu abre, a sidebar desliza pra dentro */
   .nav-tabs.open {
     left: 0;
   }
 
-  /* Ajustes dos botões SPACE dentro da Sidebar */
   .nav-btn {
     width: 100%;
     margin-bottom: 12px;
