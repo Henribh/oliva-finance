@@ -68,6 +68,7 @@ body {
   filter: blur(100px);
   z-index: -1;
   pointer-events: none;
+  transition: all 0.5s ease;
 }
 .circle-1 {
   width: 450px; height: 450px;
@@ -134,8 +135,26 @@ header {
   z-index: 999;
 }
 
-header h1 { font-size: 1.3rem; font-weight: 700; letter-spacing: -0.5px; }
-header h1 span { color: var(--emerald); }
+/* ATUALIZADO: Contraste perfeito para a logomarca */
+header h1 { 
+  font-size: 1.4rem; 
+  font-weight: 800; 
+  letter-spacing: -0.5px; 
+  color: #FFFFFF; /* Fixo Branco no Modo Escuro */
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* Sombra para não ofuscar com a luz de fundo */
+  transition: color 0.3s ease;
+}
+
+[data-theme="light"] header h1 {
+  color: var(--primary); /* Azul Marinho no Tema Claro */
+  text-shadow: none; /* Remove a sombra no tema claro */
+}
+
+header h1 span { 
+  color: var(--emerald); 
+  text-shadow: none;
+}
+
 .menu-toggle { display: none; }
 
 .nav-tabs {
@@ -143,7 +162,7 @@ header h1 span { color: var(--emerald); }
   gap: 12px;
   background: var(--glass-bg);
   padding: 8px 12px;
-  border-radius: var(--radius); /* ATUALIZADO: Borda alinhada aos painéis */
+  border-radius: var(--radius);
   border: 1px solid var(--glass-border);
   backdrop-filter: blur(25px);
   justify-content: center;
@@ -161,7 +180,7 @@ header h1 span { color: var(--emerald); }
   background-size: 300% 300%;
   cursor: pointer;
   backdrop-filter: blur(1rem);
-  border-radius: 16px; /* ATUALIZADO: Arredondado suave, não mais formato pílula */
+  border-radius: 16px; 
   transition: transform 0.3s ease, border 0.3s ease;
   animation: gradient_301 5s ease infinite;
   border: double 2px transparent;
@@ -197,7 +216,7 @@ header h1 span { color: var(--emerald); }
   overflow: hidden;
   transition: 0.5s;
   backdrop-filter: blur(1rem);
-  border-radius: 16px; /* ATUALIZADO */
+  border-radius: 16px; 
   opacity: 0; 
 }
 
@@ -292,7 +311,6 @@ input, select {
   outline: none;
   transition: all 0.25s ease;
   
-  /* ATUALIZADO: Força o input a não passar do limite no iPhone */
   width: 100% !important;
   max-width: 100% !important;
   box-sizing: border-box !important;
@@ -308,13 +326,11 @@ input::placeholder { color: var(--muted); opacity: 0.8; }
 input:focus, select:focus { border-color: var(--emerald); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25); background: var(--accent-light); }
 select option { background: #0A1128; color: var(--text); }
 
-/* ATUALIZADO: Configuração estrita para o input de data no Safari/iOS */
 input[type="date"] { 
   min-height: 46px; 
   display: block; 
 }
 
-/* Move o ícone do calendário para evitar que quebre o layout no Safari mobile */
 input[type="date"]::-webkit-calendar-picker-indicator {
   position: absolute;
   right: 16px;
@@ -400,6 +416,10 @@ th { color: var(--muted); font-size: 0.82rem; text-transform: uppercase; }
   .action-text { display: none; }
   .actions .btn { padding: 8px 12px; font-size: 1rem; border-radius: 12px; }
 
+  /* ATUALIZADO: Reduz o tamanho das luzes de fundo no mobile para não ofuscar o texto */
+  .circle-1 { width: 250px; height: 250px; opacity: 0.5; top: -50px; right: -50px; }
+  .circle-2 { width: 250px; height: 250px; opacity: 0.5; bottom: -50px; left: -50px; }
+
   .menu-toggle {
     display: inline-flex;
     background: var(--glass-bg);
@@ -425,7 +445,7 @@ th { color: var(--muted); font-size: 0.82rem; text-transform: uppercase; }
     background: rgba(5, 8, 20, 0.85); 
     border: none;
     border-right: 1px solid var(--emerald);
-    border-radius: 0; /* Sidebar reta na esquerda */
+    border-radius: 0; 
     transition: left 0.4s cubic-bezier(0.25, 1, 0.5, 1);
     z-index: 1000;
     box-shadow: 10px 0 30px rgba(0,0,0,0.8);

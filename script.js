@@ -76,16 +76,19 @@ function closeMenu() {
 }
 
 // ==========================================
-// 4. INICIALIZAÇÃO E TEMA
+// 4. INICIALIZAÇÃO E CONTROLE DE TEMA (SINCRONIZADO)
 // ==========================================
-function init() {
-  if (state.theme === 'light') {
+function applyTheme(themeName) {
+  if (themeName === 'light') {
     document.documentElement.setAttribute('data-theme', 'light');
   } else {
     document.documentElement.removeAttribute('data-theme');
   }
-  
   updateThemeButtonText();
+}
+
+function init() {
+  applyTheme(state.theme);
 
   if (state.monthlyIncome > 0) document.getElementById('monthly-income').value = state.monthlyIncome;
   if (state.fixedCosts > 0) document.getElementById('fixed-costs').value = state.fixedCosts;
@@ -97,21 +100,24 @@ function init() {
 
 document.getElementById('theme-btn').addEventListener('click', () => {
   state.theme = state.theme === 'dark' ? 'light' : 'dark';
-  
-  if (state.theme === 'light') {
-    document.documentElement.setAttribute('data-theme', 'light');
-  } else {
-    document.documentElement.removeAttribute('data-theme');
-  }
-  
+  applyTheme(state.theme);
   localStorage.setItem('oliva_theme', state.theme);
-  updateThemeButtonText();
 });
 
 function updateThemeButtonText() {
   const icon = document.getElementById('theme-icon');
-  icon.textContent = state.theme === 'dark' ? '☀️' : '🌙';
+  if (icon) {
+    icon.textContent = state.theme === 'dark' ? '☀️' : '🌙';
+  }
 }
+
+// ATUALIZADO: Escuta mudanças no localStorage feitas por outras abas (Ex: Calculadora)
+window.addEventListener('storage', (e) => {
+  if (e.key === 'oliva_theme') {
+    state.theme = e.newValue;
+    applyTheme(state.theme);
+  }
+});
 
 document.getElementById('reset-btn').addEventListener('click', () => {
   if (confirm('Tem certeza de que deseja apagar TODOS os dados da aplicação?')) {

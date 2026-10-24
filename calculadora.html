@@ -9,8 +9,7 @@
 </head>
 <body>
 
-    <div class="circle circle-1"></div>
-    <div class="circle circle-2"></div>
+    <!-- Removido as esferas blurradas da calculadora para um visual mais "focado/clean" ao fazer contas -->
 
     <header>
         <div class="brand">
@@ -22,7 +21,7 @@
         </div>
     </header>
 
-    <main style="display: grid; gap: 24px; max-width: 800px; margin: 0 auto;">
+    <main style="display: grid; gap: 24px; max-width: 800px; margin: 0 auto; padding-top: 20px;">
         
         <!-- FERRAMENTA 1: EMPRÉSTIMO / FINANCIAMENTO -->
         <section class="panel">
@@ -98,7 +97,7 @@
 
     </main>
 
-    <!-- Script específico da Calculadora -->
+    <!-- Script específico da Calculadora com Lógica de Sincronização de Tema -->
     <script>
         // Função para formatar moeda e limpar entradas (mesma do sistema)
         function parseCurrencyInput(value) {
@@ -121,10 +120,31 @@
             return val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
         }
 
-        // Recupera o tema do localStorage para manter igual ao sistema principal
-        document.documentElement.dataset.theme = localStorage.getItem('oliva_theme') || 'light';
+        // ==========================================
+        // SINCRONIZAÇÃO DE TEMA (Em tempo real com a aba principal)
+        // ==========================================
+        function applyLocalTheme(themeName) {
+            if (themeName === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+            }
+        }
 
+        // 1. Aplica o tema ao carregar a página
+        const initialTheme = localStorage.getItem('oliva_theme') || 'dark';
+        applyLocalTheme(initialTheme);
+
+        // 2. Escuta mudanças caso o usuário altere o tema na aba principal enquanto a calculadora está aberta
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'oliva_theme') {
+                applyLocalTheme(e.newValue);
+            }
+        });
+
+        // ==========================================
         // Lógica: 1. Financiamento (Tabela Price Simplificada)
+        // ==========================================
         document.getElementById('calc-loan-form').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -135,7 +155,6 @@
 
             const totalFinanced = amount + extraFees;
             
-            // Fórmula Tabela Price: PMT = PV * (i * (1 + i)^n) / ((1 + i)^n - 1)
             let installmentValue = 0;
             if (interestRate > 0) {
                 installmentValue = totalFinanced * (interestRate * Math.pow(1 + interestRate, months)) / (Math.pow(1 + interestRate, months) - 1);
@@ -156,7 +175,9 @@
             `;
         });
 
+        // ==========================================
         // Lógica: 2. Boleto Atrasado (Pro-rata)
+        // ==========================================
         document.getElementById('calc-boleto-form').addEventListener('submit', function(e) {
             e.preventDefault();
             
