@@ -5,72 +5,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oliva Finance</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- Adicionando a biblioteca de Gráficos (Chart.js) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
-    <!-- Esferas de luz no fundo para profundidade Liquid Glass -->
     <div class="circle circle-1"></div>
     <div class="circle circle-2"></div>
 
     <header>
-        <div class="brand">
-            <h1>🌿Oliva <span>Finance</span></h1>
+        <div class="header-left">
+            <div class="brand">
+                <h1>🌿Oliva <span>Finance</span></h1>
+            </div>
+            <!-- API: Ticker de Cotações em Tempo Real -->
+            <div class="crypto-ticker">
+                <span id="ticker-usd">USD: Carregando...</span>
+                <span id="ticker-eur">EUR: --</span>
+                <span id="ticker-btc">BTC: --</span>
+            </div>
         </div>
 
         <button class="menu-toggle" id="menu-toggle-btn" onclick="toggleMenu()">
             ☰ Menu
         </button>
 
-        <!-- Barra de Navegação Animada (Efeito SPACE / StealthWorm) -->
+        <!-- Barra de Navegação: Efeito Clean com Faíscas nas Letras -->
         <nav class="nav-tabs" id="nav-tabs">
             <button class="nav-btn active" onclick="switchTab('dashboard', this); closeMenu()">
-                <strong><span class="nav-icon">📊</span> <span class="nav-text">Dashboard</span></strong>
-                <div class="container-stars">
-                    <div class="stars"></div>
-                </div>
-                <div class="glow">
-                    <div class="circle-glow"></div>
-                    <div class="circle-glow"></div>
-                </div>
+                <span class="nav-icon">📊</span> <strong class="spark-text">Dashboard</strong>
             </button>
-
             <button class="nav-btn" onclick="switchTab('metas', this); closeMenu()">
-                <strong><span class="nav-icon">🎯</span> <span class="nav-text">Metas & Cofres</span></strong>
-                <div class="container-stars">
-                    <div class="stars"></div>
-                </div>
-                <div class="glow">
-                    <div class="circle-glow"></div>
-                    <div class="circle-glow"></div>
-                </div>
+                <span class="nav-icon">🎯</span> <strong class="spark-text">Metas & Cofres</strong>
             </button>
-
             <button class="nav-btn" onclick="switchTab('relatorios', this); closeMenu()">
-                <strong><span class="nav-icon">📈</span> <span class="nav-text">Relatórios</span></strong>
-                <div class="container-stars">
-                    <div class="stars"></div>
-                </div>
-                <div class="glow">
-                    <div class="circle-glow"></div>
-                    <div class="circle-glow"></div>
-                </div>
+                <span class="nav-icon">📈</span> <strong class="spark-text">Relatórios</strong>
             </button>
         </nav>
 
         <div class="actions">
+            <!-- Botão Modo Privacidade (Olho) -->
+            <button class="btn btn-icon" id="privacy-btn" title="Ocultar Valores">
+                <span class="nav-icon" id="privacy-icon">👁️</span>
+            </button>
             <a href="calculadora.html" target="_blank" class="btn btn-secondary" style="text-decoration: none;">
                 <span class="nav-icon">🧮</span> <span class="action-text">Calc</span>
             </a>
-            <button class="btn" id="theme-btn">
-                <span class="nav-icon" id="theme-icon">☀️</span> <span class="action-text">Tema</span>
+            <button class="btn btn-icon" id="theme-btn" title="Mudar Tema">
+                <span class="nav-icon" id="theme-icon">☀️</span>
             </button>
-            <button class="btn btn-danger" id="reset-btn">
-                <span class="nav-icon">🗑️</span> <span class="action-text">Reset</span>
+            <button class="btn btn-danger btn-icon" id="reset-btn" title="Apagar Dados">
+                <span class="nav-icon">🗑️</span>
             </button>
         </div>
     </header>
 
-    <!-- Overlay escura para quando o menu mobile abrir -->
     <div class="mobile-overlay" id="mobile-overlay" onclick="closeMenu()"></div>
 
     <main id="tab-dashboard" class="tab-content active">
@@ -85,78 +74,72 @@
                     <label for="fixed-costs">Custos Fixos Mensais (R$)</label>
                     <input type="text" id="fixed-costs" placeholder="Ex: 1.200,00 ou 1200" required>
                 </div>
-                <button type="submit" class="btn btn-primary">Salvar Planejamento</button>
+                <button type="submit" class="btn btn-primary">Salvar</button>
             </form>
         </section>
 
+        <!-- A classe 'sensitive' foi adicionada onde os valores financeiros aparecem para borrar no Modo Privacidade -->
         <section class="cards">
             <div class="card">
-                <div class="label">💵 Saldo Livre / Disponível</div>
-                <div class="value" id="balance-val">R$ 0,00</div>
+                <div class="label">💵 Saldo Livre</div>
+                <div class="value sensitive" id="balance-val">R$ 0,00</div>
                 <div class="delta" id="balance-delta">Orçamento calculado</div>
             </div>
             <div class="card">
                 <div class="label">📈 Renda Total</div>
-                <div class="value" id="incomes-val">R$ 0,00</div>
+                <div class="value sensitive" id="incomes-val">R$ 0,00</div>
                 <div class="delta up">Fixos + Variáveis</div>
             </div>
             <div class="card">
                 <div class="label">📉 Custos Totais</div>
-                <div class="value" id="expenses-val">R$ 0,00</div>
+                <div class="value sensitive" id="expenses-val">R$ 0,00</div>
                 <div class="delta down">Fixos + Variáveis</div>
             </div>
             <div class="card">
-                <div class="label">🎯 Capacidade de Economia</div>
-                <div class="value" id="savings-val">R$ 0,00</div>
+                <div class="label">🎯 Potencial de Economia</div>
+                <div class="value sensitive" id="savings-val">R$ 0,00</div>
                 <div class="delta" id="savings-percent">0% da Renda</div>
             </div>
         </section>
 
         <section class="grid-2">
             <div class="panel">
-                <h2>🔮 Simulador de Compra e Impacto</h2>
+                <h2>🔮 Simulador de Compra</h2>
                 <form id="sim-form" class="form-stack">
                     <div class="input-group">
                         <label for="sim-title">Item / Produto</label>
-                        <input type="text" id="sim-title" placeholder="O que deseja comprar? (ex: PS5)" required>
+                        <input type="text" id="sim-title" placeholder="O que deseja comprar?" required>
                     </div>
                     
                     <div class="grid-2-inputs">
                         <div class="input-group">
-                            <label for="sim-price">Valor Total (R$)</label>
+                            <label for="sim-price">Valor (R$)</label>
                             <input type="text" id="sim-price" placeholder="Ex: 3.500,00" required>
                         </div>
                         <div class="input-group">
                             <label for="sim-installments">Parcelamento</label>
                             <select id="sim-installments" required>
                                 <option value="1">À vista (1x)</option>
-                                <option value="2">Parcelado em 2x</option>
-                                <option value="3">Parcelado em 3x</option>
-                                <option value="4">Parcelado em 4x</option>
-                                <option value="5">Parcelado em 5x</option>
-                                <option value="6">Parcelado em 6x</option>
-                                <option value="7">Parcelado em 7x</option>
-                                <option value="8">Parcelado em 8x</option>
-                                <option value="9">Parcelado em 9x</option>
-                                <option value="10">Parcelado em 10x</option>
-                                <option value="11">Parcelado em 11x</option>
-                                <option value="12">Parcelado em 12x</option>
+                                <option value="2">2x</option>
+                                <option value="3">3x</option>
+                                <option value="6">6x</option>
+                                <option value="12">12x</option>
                             </select>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-secondary">Simular Impacto</button>
                 </form>
-                <div class="sim-results" id="sim-results" style="margin-top: 16px;">
-                    <p class="sim-placeholder">Preencha os valores acima para simular o comprometimento do seu salário.</p>
+                <div class="sim-results sensitive" id="sim-results" style="margin-top: 16px;">
+                    <p class="sim-placeholder">Preencha para simular o comprometimento do salário.</p>
                 </div>
             </div>
 
             <div class="panel">
-                <h2>➕ Lançar Custos / Receitas</h2>
+                <h2>➕ Lançar Transação</h2>
                 <form id="transaction-form" class="form-stack">
                     <div class="input-group">
                         <label for="desc">Descrição</label>
-                        <input type="text" id="desc" placeholder="Ex: Uber, Mercado, Restaurante" required>
+                        <input type="text" id="desc" placeholder="Ex: Mercado, Uber" required>
                     </div>
                     <div class="grid-2-inputs">
                         <div class="input-group">
@@ -167,8 +150,8 @@
                             <label for="type">Tipo</label>
                             <select id="type" required>
                                 <option value="" disabled selected>Selecione...</option>
-                                <option value="income">Receita Extra</option>
-                                <option value="expense">Despesa Variável</option>
+                                <option value="income">Receita Extra (+)</option>
+                                <option value="expense">Despesa Variável (-)</option>
                             </select>
                         </div>
                     </div>
@@ -180,7 +163,7 @@
                                 <option value="Alimentação">Alimentação</option>
                                 <option value="Transporte">Transporte</option>
                                 <option value="Lazer">Lazer</option>
-                                <option value="Moradia">Moradia/Fixos</option>
+                                <option value="Moradia">Moradia</option>
                                 <option value="Outros">Outros</option>
                             </select>
                         </div>
@@ -216,22 +199,22 @@
 
     <main id="tab-metas" class="tab-content">
         <section class="panel">
-            <h2>🎯 Adicionar Nova Meta / Cofre</h2>
+            <h2>🎯 Novo Cofre</h2>
             <form id="goal-form" class="grid-setup">
                 <div class="input-group">
                     <label for="goal-title">Nome da Meta</label>
-                    <input type="text" id="goal-title" placeholder="Ex: Reserva de Emergência, Viagem" required>
+                    <input type="text" id="goal-title" placeholder="Ex: Viagem" required>
                 </div>
                 <div class="input-group">
                     <label for="goal-target">Valor Objetivo (R$)</label>
                     <input type="text" id="goal-target" placeholder="Ex: 5.000,00" required>
                 </div>
-                <button type="submit" class="btn btn-primary">Criar Meta</button>
+                <button type="submit" class="btn btn-primary">Criar Cofre</button>
             </form>
         </section>
 
         <section class="panel">
-            <h2>🏦 Meus Cofres e Objetivos</h2>
+            <h2>🏦 Cofres (Conquistas)</h2>
             <div id="goals-container" class="goals-grid">
             </div>
         </section>
@@ -240,40 +223,35 @@
     <main id="tab-relatorios" class="tab-content">
         <section class="grid-2">
             <div class="panel">
-                <h2>📊 Distribuição de Gastos</h2>
-                <div id="category-report" class="report-list">
+                <h2>📊 Distribuição Visual</h2>
+                <!-- Canvas para o Chart.js -->
+                <div style="position: relative; height: 250px; width: 100%; margin-top: 20px;">
+                    <canvas id="expenseChart"></canvas>
                 </div>
             </div>
 
             <div class="panel">
-                <h2>📈 Simulador de Juros Compostos</h2>
+                <h2>📈 Projeção (Juros Compostos)</h2>
                 <form id="compound-form" class="form-stack">
                     <div class="input-group">
                         <label for="comp-initial">Aporte Inicial (R$)</label>
-                        <input type="text" id="comp-initial" placeholder="Ex: 1.000,00" required>
+                        <input type="text" id="comp-initial" required>
                     </div>
                     <div class="grid-2-inputs">
                         <div class="input-group">
                             <label for="comp-monthly">Aporte Mensal (R$)</label>
-                            <input type="text" id="comp-monthly" placeholder="Ex: 300,00" required>
+                            <input type="text" id="comp-monthly" required>
                         </div>
                         <div class="input-group">
-                            <label for="comp-years">Anos Guardando</label>
-                            <input type="number" id="comp-years" placeholder="Ex: 3" min="1" max="30" required>
+                            <label for="comp-years">Anos</label>
+                            <input type="number" id="comp-years" min="1" max="30" required>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-secondary">Calcular Futuro</button>
                 </form>
-                <div id="compound-results" class="sim-results" style="margin-top: 16px;">
-                    <p class="sim-placeholder">Calcule quanto você terá acumulado com rentabilidade média de 10% ao ano.</p>
+                <div id="compound-results" class="sim-results sensitive" style="margin-top: 16px;">
                 </div>
             </div>
-        </section>
-
-        <section class="panel" style="text-align: center;">
-            <h2>📁 Exportar Dados e Relatório</h2>
-            <p style="color: var(--muted); margin-bottom: 16px;">Baixe todo o seu extrato e planejamento diretamente em um arquivo CSV compatível com o Excel.</p>
-            <button class="btn btn-primary" id="export-csv-btn">📥 Baixar Extrato em CSV (Excel)</button>
         </section>
     </main>
 

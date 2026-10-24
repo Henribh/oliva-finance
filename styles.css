@@ -7,18 +7,14 @@
   --glass-border: rgba(16, 185, 129, 0.35);
   --glass-shadow: 0 16px 40px 0 rgba(0, 0, 0, 0.7);
   --inset-light: inset 0 1px 1px 0 rgba(16, 185, 129, 0.25);
-  
   --input-bg: rgba(5, 8, 20, 0.5);
   --input-border: rgba(16, 185, 129, 0.3);
-  
   --text: #F1F5F9;
   --muted: #94A3B8;
-  
   --primary: #1E3A8A; 
   --primary-hover: #1E40AF;
   --emerald: #10B981; 
   --accent-light: rgba(16, 185, 129, 0.15); 
-  
   --green: #10B981;
   --red: #EF4444;
   --radius: 24px;
@@ -39,327 +35,116 @@
   --accent-light: rgba(16, 185, 129, 0.15);
 }
 
+* { margin: 0; padding: 0; box-sizing: border-box !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+body { background: var(--bg-gradient); background-attachment: fixed; color: var(--text); transition: background 0.6s ease, color 0.6s ease; padding: 20px; max-width: 1200px; margin: 0 auto; min-height: 100vh; overflow-x: hidden; }
+
+.circle { position: fixed; border-radius: 50%; filter: blur(100px); z-index: -1; pointer-events: none; transition: all 0.5s ease; }
+.circle-1 { width: 450px; height: 450px; background: rgba(16, 185, 129, 0.2); top: -100px; right: -80px; }
+.circle-2 { width: 500px; height: 500px; background: rgba(30, 58, 138, 0.25); bottom: -120px; left: -100px; }
+
 /* ==========================================
-   2. RESET & ESTRUTURA BASE
+   EFEITO MODO PRIVACIDADE (Nível Bancário)
    ========================================== */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box !important;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-}
-
-body {
-  background: var(--bg-gradient);
-  background-attachment: fixed;
-  color: var(--text);
-  transition: background 0.6s ease, color 0.6s ease;
-  padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
-  min-height: 100vh;
-  position: relative;
-  overflow-x: hidden; 
-}
-
-.circle {
-  position: fixed;
-  border-radius: 50%;
-  filter: blur(100px);
-  z-index: -1;
+body.privacy-active .sensitive {
+  filter: blur(8px);
+  opacity: 0.5;
+  user-select: none;
   pointer-events: none;
-  transition: all 0.5s ease;
-}
-.circle-1 {
-  width: 450px; height: 450px;
-  background: rgba(16, 185, 129, 0.2); 
-  top: -100px; right: -80px;
-}
-.circle-2 {
-  width: 500px; height: 500px;
-  background: rgba(30, 58, 138, 0.25); 
-  bottom: -120px; left: -100px;
+  transition: all 0.3s ease;
 }
 
 /* ==========================================
-   3. PAINÉIS, CARDS & EFEITO PRISMA
+   HEADER, TICKER (Cotações) & NAVBAR
    ========================================== */
-.panel, .card, .sim-results, .goal-card {
-  background: var(--glass-bg);
-  backdrop-filter: blur(35px) saturate(150%);
-  -webkit-backdrop-filter: blur(35px) saturate(150%);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-shadow), var(--inset-light);
-  border-radius: var(--radius);
-  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease;
-  position: relative;
-  overflow: hidden; 
-}
+header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding: 12px 20px; flex-wrap: wrap; gap: 12px; position: relative; z-index: 999; }
+.header-left { display: flex; flex-direction: column; gap: 4px; }
+header h1 { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.5px; color: #FFFFFF; text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); }
+[data-theme="light"] header h1 { color: var(--primary); text-shadow: none; }
+header h1 span { color: var(--emerald); text-shadow: none; }
 
-.panel::before, .card::before, .sim-results::before, .goal-card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -150%;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(16, 185, 129, 0.15) 50%, rgba(255,255,255,0) 100%);
-  transform: skewX(-25deg);
-  transition: left 0.7s cubic-bezier(0.25, 1, 0.5, 1);
-  z-index: 1;
-  pointer-events: none;
-}
-
-.panel:hover::before, .card:hover::before, .sim-results:hover::before, .goal-card:hover::before {
-  left: 150%;
-}
-
-.panel:hover, .card:hover {
-  transform: translateY(-3px);
-  border-color: var(--emerald);
-  box-shadow: 0 20px 45px rgba(16, 185, 129, 0.15);
-}
-
-/* ==========================================
-   4. CABEÇALHO & EFEITO "SPACE" NAVBAR
-   ========================================== */
-header {
+/* O letreiro (Ticker) com cotações da API */
+.crypto-ticker {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--muted);
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-  padding: 12px 20px;
-  flex-wrap: wrap;
   gap: 12px;
-  position: relative;
-  z-index: 999;
+  background: var(--glass-bg);
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--glass-border);
 }
-
-/* ATUALIZADO: Contraste perfeito para a logomarca */
-header h1 { 
-  font-size: 1.4rem; 
-  font-weight: 800; 
-  letter-spacing: -0.5px; 
-  color: #FFFFFF; /* Fixo Branco no Modo Escuro */
-  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* Sombra para não ofuscar com a luz de fundo */
-  transition: color 0.3s ease;
-}
-
-[data-theme="light"] header h1 {
-  color: var(--primary); /* Azul Marinho no Tema Claro */
-  text-shadow: none; /* Remove a sombra no tema claro */
-}
-
-header h1 span { 
-  color: var(--emerald); 
-  text-shadow: none;
-}
+.crypto-ticker span { color: var(--emerald); }
 
 .menu-toggle { display: none; }
+.nav-tabs { display: flex; gap: 12px; background: var(--glass-bg); padding: 8px; border-radius: var(--radius); border: 1px solid var(--glass-border); backdrop-filter: blur(25px); align-items: center; }
 
-.nav-tabs {
-  display: flex;
-  gap: 12px;
-  background: var(--glass-bg);
-  padding: 8px 12px;
-  border-radius: var(--radius);
-  border: 1px solid var(--glass-border);
-  backdrop-filter: blur(25px);
-  justify-content: center;
-  align-items: center;
-}
-
-/* BOTÃO SPACE ANIMADO */
+/* MUDANÇA: Nav Bar Clean sem neon, apenas vidro */
 .nav-btn {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-width: 150px;
-  padding: 0 24px;
-  height: 42px;
-  background-size: 300% 300%;
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 20px;
+  background: transparent;
+  border: none;
+  border-radius: 16px;
   cursor: pointer;
-  backdrop-filter: blur(1rem);
-  border-radius: 16px; 
-  transition: transform 0.3s ease, border 0.3s ease;
-  animation: gradient_301 5s ease infinite;
-  border: double 2px transparent;
-  
-  background-image: linear-gradient(#0A1128, #0A1128),
-    linear-gradient(137.48deg, var(--emerald) 10%, var(--primary) 45%, #047857 67%, #0044ff 87%);
-  background-origin: border-box;
-  background-clip: content-box, border-box;
-  
-  position: relative;
-  overflow: hidden;
-  filter: saturate(0.5) opacity(0.8);
+  color: var(--muted);
+  transition: all 0.3s ease;
 }
 
-.nav-btn.active, .nav-btn:hover {
-  filter: saturate(1.2) opacity(1);
-}
-
-.nav-btn:hover {
-  transform: scale(1.05);
-}
+.nav-btn:hover { background: var(--accent-light); }
 
 .nav-btn.active {
-  border: double 2px var(--emerald);
-  animation: none;
+  background: var(--glass-bg);
+  border: 1px solid var(--emerald);
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.15);
 }
 
-.container-stars {
-  position: absolute;
-  z-index: 1;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  transition: 0.5s;
-  backdrop-filter: blur(1rem);
-  border-radius: 16px; 
-  opacity: 0; 
-}
-
-.nav-btn:hover .container-stars,
-.nav-btn.active .container-stars {
-  opacity: 1;
-  background-color: rgba(10, 17, 40, 0.9);
-}
-
-.nav-btn strong {
-  z-index: 2;
-  font-size: 0.85rem;
+/* EFEITO FAÍSCA (SPARK) PASSANDO PELAS LETRAS */
+.nav-btn strong.spark-text {
+  font-size: 0.9rem;
   font-weight: 600;
-  letter-spacing: 1px;
-  color: #ffffff;
-  text-shadow: 0 0 4px rgba(255, 255, 255, 0.4);
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  color: var(--text);
+  letter-spacing: 0.5px;
 }
 
-.glow {
-  position: absolute;
-  display: flex;
-  width: 100%;
+.nav-btn.active strong.spark-text {
+  /* Gradiente criando o raio de luz */
+  background: linear-gradient(120deg, var(--text) 30%, var(--emerald) 50%, #ffffff 60%, var(--text) 70%);
+  background-size: 250% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: shine-spark 3s linear infinite;
 }
 
-.circle-glow {
-  width: 100%;
-  height: 30px;
-  filter: blur(2rem);
-  animation: pulse_3011 4s infinite;
-  z-index: -1;
+@keyframes shine-spark {
+  0% { background-position: 200% center; }
+  100% { background-position: -50% center; }
 }
-
-.circle-glow:nth-of-type(1) { background: rgba(16, 185, 129, 0.6); } 
-.circle-glow:nth-of-type(2) { background: rgba(30, 58, 138, 0.7); } 
-
-.stars {
-  position: relative;
-  background: transparent;
-  width: 200rem;
-  height: 200rem;
-}
-
-.stars::after, .stars::before {
-  content: "";
-  position: absolute;
-  background-image: radial-gradient(#ffffff 1px, transparent 1%);
-  background-size: 50px 50px;
-}
-
-.stars::after {
-  top: -10rem; left: -100rem;
-  width: 100%; height: 100%;
-  animation: animStarRotate 90s linear infinite;
-}
-
-.stars::before {
-  top: 0; left: -50%;
-  width: 170%; height: 500%;
-  animation: animStar 60s linear infinite;
-  opacity: 0.5;
-}
-
-@keyframes animStar { from { transform: translateY(0); } to { transform: translateY(-135rem); } }
-@keyframes animStarRotate { from { transform: rotate(360deg); } to { transform: rotate(0); } }
-@keyframes gradient_301 { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-@keyframes pulse_3011 { 0% { transform: scale(0.75); } 70% { transform: scale(1); } 100% { transform: scale(0.75); } }
 
 .tab-content { display: none; }
 .tab-content.active { display: block; animation: fadeIn 0.5s ease forwards; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-.actions { display: flex; gap: 10px; }
+.actions { display: flex; gap: 8px; }
 
 /* ==========================================
-   5. FORMULÁRIOS & INPUTS (CORREÇÃO iOS BUG)
+   PAINÉIS & EFEITO PRISMA
    ========================================== */
-.panel { padding: 24px; margin-bottom: 24px; }
-.panel h2 { font-size: 1.15rem; margin-bottom: 20px; font-weight: 600; }
-.input-group { display: flex; flex-direction: column; gap: 6px; width: 100%; }
-.input-group label { font-size: 0.8rem; color: var(--muted); font-weight: 700; text-transform: uppercase; }
-
-input, select {
-  padding: 12px 16px;
-  border-radius: 16px;
-  border: 1px solid var(--input-border);
-  background: var(--input-bg);
-  color: var(--text);
-  font-size: 0.95rem;
-  outline: none;
-  transition: all 0.25s ease;
-  
-  width: 100% !important;
-  max-width: 100% !important;
-  box-sizing: border-box !important;
-  -webkit-appearance: none; 
-  appearance: none;
-  
-  backdrop-filter: blur(15px);
-  position: relative;
-  z-index: 2; 
+.panel, .card, .sim-results, .goal-card {
+  background: var(--glass-bg); backdrop-filter: blur(35px) saturate(150%);
+  border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow), var(--inset-light);
+  border-radius: var(--radius); transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  position: relative; overflow: hidden; 
 }
-
-input::placeholder { color: var(--muted); opacity: 0.8; }
-input:focus, select:focus { border-color: var(--emerald); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25); background: var(--accent-light); }
-select option { background: #0A1128; color: var(--text); }
-
-input[type="date"] { 
-  min-height: 46px; 
-  display: block; 
+.panel::before, .card::before, .sim-results::before, .goal-card::before {
+  content: ""; position: absolute; top: 0; left: -150%; width: 50%; height: 100%;
+  background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(16, 185, 129, 0.15) 50%, rgba(255,255,255,0) 100%);
+  transform: skewX(-25deg); transition: left 0.7s cubic-bezier(0.25, 1, 0.5, 1); z-index: 1; pointer-events: none;
 }
+.panel:hover::before, .card:hover::before, .sim-results:hover::before, .goal-card:hover::before { left: 150%; }
+.card:hover { border-color: var(--emerald); }
 
-input[type="date"]::-webkit-calendar-picker-indicator {
-  position: absolute;
-  right: 16px;
-  filter: invert(1);
-  opacity: 0.8;
-  cursor: pointer;
-}
-
-/* ==========================================
-   6. BOTÕES
-   ========================================== */
-.btn {
-  padding: 12px 22px; border-radius: 16px; cursor: pointer;
-  background: var(--glass-bg); border: 1px solid var(--glass-border);
-  color: var(--text); font-weight: 600; font-size: 0.9rem;
-  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-  display: inline-flex; align-items: center; justify-content: center;
-  gap: 8px; backdrop-filter: blur(10px); z-index: 2; position: relative;
-}
-.btn:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(0, 0, 0, 0.3); border-color: var(--emerald); }
-.btn-primary { background: var(--primary); color: #ffffff; border: 1px solid var(--emerald); }
-.btn-primary:hover { background: var(--primary-hover); }
-.btn-secondary { background: var(--accent-light); color: var(--text); border: 1px solid var(--emerald); }
-.btn-danger { background: rgba(239, 68, 68, 0.15); color: var(--red); border: 1px solid rgba(239, 68, 68, 0.3); }
-.btn-danger:hover { background: var(--red); color: #ffffff; }
-
-/* ==========================================
-   7. CARDS DE RESUMO & GRIDS
-   ========================================== */
 .grid-setup { display: grid; grid-template-columns: 1fr 1fr auto; gap: 16px; align-items: end; z-index: 2; position: relative;}
 .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
 .card { padding: 20px; display: flex; flex-direction: column; justify-content: space-between; min-height: 120px; }
@@ -371,19 +156,52 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 .form-stack { display: flex; flex-direction: column; gap: 14px; z-index: 2; position: relative;}
 .grid-2-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.sim-results { padding: 18px; background: var(--glass-bg); border: 1px dashed var(--emerald); border-radius: 16px; }
 
 /* ==========================================
-   8. METAS, COFRES & TABELAS
+   INPUTS & BOTOES
    ========================================== */
+.panel { padding: 24px; margin-bottom: 24px; }
+.panel h2 { font-size: 1.15rem; margin-bottom: 20px; font-weight: 600; }
+.input-group { display: flex; flex-direction: column; gap: 6px; width: 100%; }
+.input-group label { font-size: 0.8rem; color: var(--muted); font-weight: 700; text-transform: uppercase; }
+
+input, select {
+  padding: 12px 16px; border-radius: 16px; border: 1px solid var(--input-border);
+  background: var(--input-bg); color: var(--text); font-size: 0.95rem; outline: none;
+  transition: all 0.25s ease; width: 100% !important; max-width: 100% !important; box-sizing: border-box !important;
+  -webkit-appearance: none; appearance: none; backdrop-filter: blur(15px); position: relative; z-index: 2; 
+}
+input:focus, select:focus { border-color: var(--emerald); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25); }
+select option { background: #0A1128; color: var(--text); }
+input[type="date"] { min-height: 46px; display: block; }
+input[type="date"]::-webkit-calendar-picker-indicator { position: absolute; right: 16px; filter: invert(1); cursor: pointer; opacity: 0.8;}
+
+.btn {
+  padding: 12px 22px; border-radius: 16px; cursor: pointer; background: var(--glass-bg); border: 1px solid var(--glass-border);
+  color: var(--text); font-weight: 600; font-size: 0.9rem; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 8px; position: relative; z-index: 2;
+}
+.btn.btn-icon { padding: 12px; }
+.btn:hover { border-color: var(--emerald); transform: translateY(-2px); }
+.btn-primary { background: var(--primary); color: #ffffff; border-color: var(--emerald); }
+.btn-secondary { background: var(--accent-light); border-color: var(--emerald); }
+.btn-danger { color: var(--red); }
+
+/* Gamificação: Badges nos Cofres */
+.badge-gamification {
+  padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+}
+.badge-gold { background: rgba(245, 158, 11, 0.2); color: #F59E0B; border: 1px solid #F59E0B; }
+.badge-silver { background: rgba(59, 130, 246, 0.2); color: #3B82F6; border: 1px solid #3B82F6; }
+.badge-bronze { background: rgba(16, 185, 129, 0.2); color: var(--emerald); border: 1px solid var(--emerald); }
+
 .goals-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; z-index: 2; position: relative;}
 .goal-card { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
 .goal-header { display: flex; justify-content: space-between; align-items: center; z-index: 2; position: relative;}
 .progress-bar-bg { width: 100%; height: 12px; background: rgba(0, 0, 0, 0.4); border-radius: 20px; overflow: hidden; z-index: 2; position: relative;}
-.progress-bar-fill { height: 100%; background: var(--emerald); border-radius: 20px; transition: width 0.5s ease; }
+.progress-bar-fill { height: 100%; background: var(--emerald); border-radius: 20px; transition: width 0.8s cubic-bezier(0.25, 1, 0.5, 1); }
 .goal-deposit-form { display: flex; gap: 8px; margin-top: 6px; z-index: 2; position: relative;}
 .goal-deposit-form input { padding: 8px 12px; font-size: 0.85rem; border-radius: 12px; }
-.goal-deposit-form button { padding: 8px 14px; font-size: 0.8rem; }
+
 .table-responsive { overflow-x: auto; z-index: 2; position: relative;}
 table { width: 100%; border-collapse: collapse; min-width: 500px; }
 th, td { padding: 14px; text-align: left; border-bottom: 1px solid var(--glass-border); }
@@ -392,74 +210,30 @@ th { color: var(--muted); font-size: 0.82rem; text-transform: uppercase; }
 .btn-delete { background: transparent; border: none; color: var(--red); cursor: pointer; font-weight: bold; }
 
 /* ==========================================
-   10. RESPONSIVIDADE & SIDEBAR APP (MOBILE)
+   MOBILE RESPONSIVO
    ========================================== */
-@media (max-width: 1024px) {
-  .cards { grid-template-columns: repeat(2, 1fr); }
-}
-
-.mobile-overlay {
-  display: none;
-  position: fixed;
-  top: 0; left: 0; width: 100vw; height: 100vh;
-  background: rgba(0,0,0,0.5);
-  backdrop-filter: blur(4px);
-  z-index: 999;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
+@media (max-width: 1024px) { .cards { grid-template-columns: repeat(2, 1fr); } }
+.mobile-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); z-index: 999; opacity: 0; transition: opacity 0.3s ease; }
 .mobile-overlay.active { display: block; opacity: 1; }
 
 @media (max-width: 768px) {
   body { padding: 12px; }
   header { padding: 10px 12px; z-index: 1001; }
   .action-text { display: none; }
-  .actions .btn { padding: 8px 12px; font-size: 1rem; border-radius: 12px; }
-
-  /* ATUALIZADO: Reduz o tamanho das luzes de fundo no mobile para não ofuscar o texto */
+  
   .circle-1 { width: 250px; height: 250px; opacity: 0.5; top: -50px; right: -50px; }
   .circle-2 { width: 250px; height: 250px; opacity: 0.5; bottom: -50px; left: -50px; }
 
   .menu-toggle {
-    display: inline-flex;
-    background: var(--glass-bg);
-    border: 1px solid var(--emerald);
-    color: var(--text);
-    padding: 8px 14px;
-    border-radius: 14px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    backdrop-filter: blur(15px);
-    cursor: pointer;
+    display: inline-flex; background: var(--glass-bg); border: 1px solid var(--emerald); color: var(--text);
+    padding: 8px 14px; border-radius: 14px; font-size: 0.85rem; font-weight: 600; cursor: pointer;
   }
-
   .nav-tabs {
-    position: fixed;
-    top: 0; 
-    left: -300px; 
-    width: 260px;
-    height: 100vh;
-    flex-direction: column;
-    justify-content: flex-start;
-    padding: 80px 20px 20px 20px; 
-    background: rgba(5, 8, 20, 0.85); 
-    border: none;
-    border-right: 1px solid var(--emerald);
-    border-radius: 0; 
-    transition: left 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-    z-index: 1000;
-    box-shadow: 10px 0 30px rgba(0,0,0,0.8);
+    position: fixed; top: 0; left: -300px; width: 260px; height: 100vh; flex-direction: column; justify-content: flex-start;
+    padding: 80px 20px 20px 20px; background: rgba(5, 8, 20, 0.95); border: none; border-right: 1px solid var(--emerald);
+    border-radius: 0; transition: left 0.4s cubic-bezier(0.25, 1, 0.5, 1); z-index: 1000; box-shadow: 10px 0 30px rgba(0,0,0,0.8);
   }
-
-  .nav-tabs.open {
-    left: 0;
-  }
-
-  .nav-btn {
-    width: 100%;
-    margin-bottom: 12px;
-    justify-content: flex-start;
-  }
-  
+  .nav-tabs.open { left: 0; }
+  .nav-btn { width: 100%; margin-bottom: 12px; justify-content: flex-start; }
   .grid-setup, .cards, .grid-2, .grid-2-inputs { grid-template-columns: 1fr; }
 }
