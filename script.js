@@ -1,3 +1,6 @@
+// ==========================================
+// 1. TRATAMENTO DE VALORES NUMÉRICOS
+// ==========================================
 function parseCurrencyInput(value) {
   if (!value) return 0;
   let cleanValue = value.toString().trim();
@@ -14,7 +17,9 @@ function formatCurrency(val) {
   return val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 }
 
-// 2. ESTADO GLOBAL E GRÁFICO
+// ==========================================
+// 2. ESTADO GLOBAL DA APLICAÇÃO
+// ==========================================
 let state = {
   monthlyIncome: parseCurrencyInput(localStorage.getItem('oliva_income')),
   fixedCosts: parseCurrencyInput(localStorage.getItem('oliva_fixed')),
@@ -24,19 +29,19 @@ let state = {
   privacy: false // Controle do Modo Privacidade
 };
 
-let expenseChartInstance = null; // Variável para o gráfico Chart.js
+let expenseChartInstance = null; 
 
-// 3. API EM TEMPO REAL (Cotações Dólar, Euro, Bitcoin)
+// ==========================================
+// 3. API EM TEMPO REAL (Cotações USD, EUR, BTC)
+// ==========================================
 async function fetchExchangeRates() {
   try {
     const response = await fetch('https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL,BTC-BRL');
     const data = await response.json();
     
-    // Atualiza o letreiro superior (Ticker)
     document.getElementById('ticker-usd').textContent = `USD: R$ ${parseFloat(data.USDBRL.bid).toFixed(2)}`;
     document.getElementById('ticker-eur').textContent = `EUR: R$ ${parseFloat(data.EURBRL.bid).toFixed(2)}`;
     
-    // Formata o Bitcoin para ter separadores de milhar
     const btcValue = parseFloat(data.BTCBRL.bid).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
     document.getElementById('ticker-btc').textContent = `BTC: R$ ${btcValue}`;
   } catch (error) {
@@ -46,21 +51,25 @@ async function fetchExchangeRates() {
   }
 }
 
+// ==========================================
 // 4. MODO PRIVACIDADE (Olho Mágico)
+// ==========================================
 document.getElementById('privacy-btn').addEventListener('click', () => {
   state.privacy = !state.privacy;
   const icon = document.getElementById('privacy-icon');
   
   if (state.privacy) {
     document.body.classList.add('privacy-active');
-    icon.textContent = '🙈'; // Fechado
+    icon.textContent = '🙈';
   } else {
     document.body.classList.remove('privacy-active');
-    icon.textContent = '👁️'; // Aberto
+    icon.textContent = '👁️';
   }
 });
 
-// 5. NAVEGAÇÃO SPA
+// ==========================================
+// 5. NAVEGAÇÃO SPA E MENU MOBILE
+// ==========================================
 function switchTab(tabId, element) {
   document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
@@ -69,7 +78,7 @@ function switchTab(tabId, element) {
   if (element) element.classList.add('active');
   else if (window.event && window.event.currentTarget) window.event.currentTarget.classList.add('active');
 
-  if (tabId === 'relatorios') renderReportsChart(); // Chama o gráfico ao abrir a aba
+  if (tabId === 'relatorios') renderReportsChart(); 
 }
 
 function toggleMenu() {
@@ -87,7 +96,9 @@ function closeMenu() {
   }
 }
 
-// 6. INICIALIZAÇÃO
+// ==========================================
+// 6. INICIALIZAÇÃO E SINCRONIZAÇÃO DE TEMA
+// ==========================================
 function applyTheme(themeName) {
   if (themeName === 'light') document.documentElement.setAttribute('data-theme', 'light');
   else document.documentElement.removeAttribute('data-theme');
@@ -95,7 +106,6 @@ function applyTheme(themeName) {
   const icon = document.getElementById('theme-icon');
   if (icon) icon.textContent = themeName === 'dark' ? '☀️' : '🌙';
 
-  // Se trocar o tema e estiver na aba de relatório, redesenha o gráfico com as cores novas
   if (expenseChartInstance && document.getElementById('tab-relatorios').classList.contains('active')) {
       renderReportsChart();
   }
@@ -103,7 +113,7 @@ function applyTheme(themeName) {
 
 function init() {
   applyTheme(state.theme);
-  fetchExchangeRates(); // Chama a API de Cotação
+  fetchExchangeRates(); 
   
   if (state.monthlyIncome > 0) document.getElementById('monthly-income').value = state.monthlyIncome;
   if (state.fixedCosts > 0) document.getElementById('fixed-costs').value = state.fixedCosts;
@@ -126,7 +136,16 @@ window.addEventListener('storage', (e) => {
   }
 });
 
-// 7. DASHBOARD E GRIDS
+document.getElementById('reset-btn').addEventListener('click', () => {
+  if (confirm('Tem certeza de que deseja apagar TODOS os dados?')) {
+    localStorage.clear();
+    location.reload();
+  }
+});
+
+// ==========================================
+// 7. DASHBOARD & TRANSAÇÕES
+// ==========================================
 document.getElementById('setup-form').addEventListener('submit', (e) => {
   e.preventDefault();
   state.monthlyIncome = parseCurrencyInput(document.getElementById('monthly-income').value);
@@ -171,6 +190,7 @@ function updateTotals() {
   document.getElementById('incomes-val').textContent = formatCurrency(totalIncome);
   document.getElementById('expenses-val').textContent = formatCurrency(totalExpenses);
   
+  // Classe sensitive mantida para o modo privacidade
   const balanceVal = document.getElementById('balance-val');
   balanceVal.textContent = formatCurrency(balance);
   balanceVal.className = `value sensitive ${balance >= 0 ? 'up' : 'down'}`;
@@ -194,7 +214,7 @@ function renderTransactions() {
   state.transactions.forEach((t) => {
     const tr = document.createElement('tr');
     const isIncome = t.type === 'income';
-    // Classe sensitive adicionada no TD do valor
+    // Classe sensitive no valor da tabela
     tr.innerHTML = `
       <td>${t.date ? t.date.split('-').reverse().join('/') : ''}</td>
       <td>${t.description}</td>
@@ -206,7 +226,35 @@ function renderTransactions() {
   });
 }
 
-// 8. GAMIFICAÇÃO & METAS
+// ==========================================
+// 8. SIMULADOR DE COMPRAS
+// ==========================================
+document.getElementById('sim-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const title = document.getElementById('sim-title').value;
+  const price = parseCurrencyInput(document.getElementById('sim-price').value);
+  const installments = parseInt(document.getElementById('sim-installments').value) || 1;
+  const installmentValue = price / installments;
+  const totalIncome = state.monthlyIncome;
+
+  if (totalIncome <= 0) {
+    document.getElementById('sim-results').innerHTML = `<p style="color: var(--red); font-weight: bold;">Preencha a sua Renda Mensal no topo da página antes de simular!</p>`;
+    return;
+  }
+
+  const commitmentPercent = ((installmentValue / totalIncome) * 100).toFixed(1);
+  let riskColor = commitmentPercent > 30 ? 'var(--red)' : commitmentPercent > 15 ? '#f59e0b' : 'var(--green)';
+
+  document.getElementById('sim-results').innerHTML = `
+    <h3 style="margin-bottom: 8px; font-size: 1rem;">Resultado: <strong>${title}</strong></h3>
+    <p style="margin-bottom: 4px;">• Parcela (${installments}x): <strong style="font-size: 1.1rem;">${formatCurrency(installmentValue)} / mês</strong></p>
+    <p>• Comprometimento da Renda: <strong style="color: ${riskColor}; font-size: 1.1rem;">${commitmentPercent}%</strong></p>
+  `;
+});
+
+// ==========================================
+// 9. GAMIFICAÇÃO & METAS
+// ==========================================
 document.getElementById('goal-form').addEventListener('submit', (e) => {
   e.preventDefault();
   const newGoal = {
@@ -244,17 +292,15 @@ function deleteGoal(id) {
 function renderGoals() {
   const container = document.getElementById('goals-container');
   container.innerHTML = '';
-
   if (state.goals.length === 0) return;
 
   state.goals.forEach(g => {
     const percentRaw = (g.saved / g.target) * 100;
     const percent = Math.min(100, percentRaw).toFixed(1);
     
-    // Lógica de Gamificação (Medalhas/Badges)
     let badgeHTML = '';
     if (percentRaw >= 100) badgeHTML = `<span class="badge-gamification badge-gold">🏆 Concluído!</span>`;
-    else if (percentRaw >= 50) badgeHTML = `<span class="badge-gamification badge-silver">🔥 Metade do Caminho</span>`;
+    else if (percentRaw >= 50) badgeHTML = `<span class="badge-gamification badge-silver">🔥 Metade</span>`;
     else if (percentRaw > 0) badgeHTML = `<span class="badge-gamification badge-bronze">🌱 Iniciante</span>`;
 
     const div = document.createElement('div');
@@ -278,16 +324,14 @@ function renderGoals() {
   });
 }
 
-// 9. RELATÓRIOS E CHART.JS (Visualização Avançada)
+// ==========================================
+// 10. RELATÓRIOS (Chart.js & Juros Compostos)
+// ==========================================
 function renderReportsChart() {
   const expenses = state.transactions.filter(t => t.type === 'expense');
   const totals = {};
   
-  // Inclui custos fixos do painel na categoria 'Moradia/Fixos'
-  if (state.fixedCosts > 0) {
-      totals['Moradia/Fixos'] = state.fixedCosts;
-  }
-  
+  if (state.fixedCosts > 0) totals['Moradia/Fixos'] = state.fixedCosts;
   expenses.forEach(t => totals[t.category] = (totals[t.category] || 0) + t.amount);
 
   const labels = Object.keys(totals);
@@ -299,17 +343,11 @@ function renderReportsChart() {
   }
   
   document.getElementById('expenseChart').style.display = 'block';
-  
-  // Pegando a cor do texto dependendo do Tema atual para a legenda do gráfico
   const textColor = getComputedStyle(document.body).getPropertyValue('--text').trim();
-
   const ctx = document.getElementById('expenseChart').getContext('2d');
   
-  if (expenseChartInstance) {
-      expenseChartInstance.destroy(); // Destrói o antigo antes de desenhar um novo
-  }
+  if (expenseChartInstance) expenseChartInstance.destroy();
 
-  // Criação do Gráfico de Rosca (Donut)
   expenseChartInstance = new Chart(ctx, {
       type: 'doughnut',
       data: {
@@ -322,20 +360,10 @@ function renderReportsChart() {
           }]
       },
       options: {
-          responsive: true,
-          maintainAspectRatio: false,
+          responsive: true, maintainAspectRatio: false,
           plugins: {
-              legend: {
-                  position: 'right',
-                  labels: { color: textColor, font: { family: 'Segoe UI', size: 13 } }
-              },
-              tooltip: {
-                  callbacks: {
-                      label: function(context) {
-                          return ' ' + formatCurrency(context.raw);
-                      }
-                  }
-              }
+              legend: { position: 'right', labels: { color: textColor, font: { family: 'Segoe UI', size: 13 } } },
+              tooltip: { callbacks: { label: function(context) { return ' ' + formatCurrency(context.raw); } } }
           }
       }
   });
@@ -355,6 +383,23 @@ document.getElementById('compound-form').addEventListener('submit', (e) => {
     <h3>Projeção (${years} anos): <strong style="color: var(--green);">${formatCurrency(total)}</strong></h3>
     <p style="font-size: 0.8rem; color: var(--muted); margin-top: 4px;">*Taxa média 10% a.a.</p>
   `;
+});
+
+// Exportação CSV
+document.getElementById('export-csv-btn').addEventListener('click', () => {
+  if (state.transactions.length === 0) {
+    alert('Não há dados no extrato para exportar.');
+    return;
+  }
+  let csvContent = "data:text/csv;charset=utf-8,Data,Descricao,Categoria,Tipo,Valor\n";
+  state.transactions.forEach(t => { csvContent += `${t.date},"${t.description}",${t.category},${t.type},${t.amount}\n`; });
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", "extrato_oliva_finance.csv");
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 });
 
 init();

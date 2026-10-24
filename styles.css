@@ -22,7 +22,7 @@
 
 [data-theme="light"] {
   --bg-gradient: radial-gradient(circle at 50% 20%, #F8FAFC 0%, #E2E8F0 60%, #A7F3D0 100%);
-  --glass-bg: rgba(241, 245, 249, 0.75);
+  --glass-bg: rgba(241, 245, 249, 0.85);
   --glass-border: rgba(16, 185, 129, 0.5);
   --glass-shadow: 0 12px 32px 0 rgba(15, 23, 42, 0.12);
   --inset-light: inset 0 1px 1px 0 rgba(255, 255, 255, 0.8);
@@ -63,15 +63,8 @@ header h1 { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.5px; color: 
 header h1 span { color: var(--emerald); text-shadow: none; }
 
 .crypto-ticker {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--muted);
-  display: flex;
-  gap: 12px;
-  background: var(--glass-bg);
-  padding: 4px 12px;
-  border-radius: 20px;
-  border: 1px solid var(--glass-border);
+  font-size: 0.75rem; font-weight: 600; color: var(--muted); display: flex; gap: 12px;
+  background: var(--glass-bg); padding: 4px 12px; border-radius: 20px; border: 1px solid var(--glass-border);
 }
 .crypto-ticker span { color: var(--emerald); }
 
@@ -79,40 +72,23 @@ header h1 span { color: var(--emerald); text-shadow: none; }
 .nav-tabs { display: flex; gap: 12px; background: var(--glass-bg); padding: 8px; border-radius: var(--radius); border: 1px solid var(--glass-border); backdrop-filter: blur(25px); align-items: center; }
 
 .nav-btn {
-  display: flex; align-items: center; gap: 8px;
-  padding: 10px 20px;
-  background: transparent;
-  border: none;
-  border-radius: 16px;
-  cursor: pointer;
-  color: var(--muted);
-  transition: all 0.3s ease;
+  display: flex; align-items: center; gap: 8px; padding: 10px 20px; background: transparent;
+  border: none; border-radius: 16px; cursor: pointer; color: var(--muted); transition: all 0.3s ease;
 }
-
 .nav-btn:hover { background: var(--accent-light); }
-
 .nav-btn.active {
-  background: var(--glass-bg);
-  border: 1px solid var(--emerald);
-  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.15);
+  background: var(--glass-bg); border: 1px solid var(--emerald); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.15);
 }
 
 .nav-btn strong.spark-text {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--text);
-  letter-spacing: 0.5px;
+  font-size: 0.9rem; font-weight: 600; color: var(--text); letter-spacing: 0.5px;
 }
-
 .nav-btn.active strong.spark-text {
   background: linear-gradient(120deg, var(--text) 30%, var(--emerald) 50%, #ffffff 60%, var(--text) 70%);
-  background-size: 250% auto;
-  color: transparent;
-  -webkit-background-clip: text;
-  background-clip: text;
+  background-size: 250% auto; color: transparent;
+  -webkit-background-clip: text; background-clip: text;
   animation: shine-spark 3s linear infinite;
 }
-
 @keyframes shine-spark {
   0% { background-position: 200% center; }
   100% { background-position: -50% center; }
@@ -168,10 +144,10 @@ input, select {
   -webkit-appearance: none; appearance: none; backdrop-filter: blur(15px); position: relative; z-index: 2; 
 }
 input:focus, select:focus { border-color: var(--emerald); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25); }
-select option { background: #0A1128; color: var(--text); }
+select option { background: var(--glass-bg); color: var(--text); }
 input[type="date"] { min-height: 46px; display: block; }
 input[type="date"]::-webkit-calendar-picker-indicator { position: absolute; right: 16px; filter: invert(1); cursor: pointer; opacity: 0.8;}
-[data-theme="light"] input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0); } /* Correção para o ícone de data no tema claro */
+[data-theme="light"] input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0); }
 
 .btn {
   padding: 12px 22px; border-radius: 16px; cursor: pointer; background: var(--glass-bg); border: 1px solid var(--glass-border);
@@ -184,9 +160,7 @@ input[type="date"]::-webkit-calendar-picker-indicator { position: absolute; righ
 .btn-danger { color: var(--red); }
 
 /* Gamificação: Badges nos Cofres */
-.badge-gamification {
-  padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
-}
+.badge-gamification { padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
 .badge-gold { background: rgba(245, 158, 11, 0.2); color: #F59E0B; border: 1px solid #F59E0B; }
 .badge-silver { background: rgba(59, 130, 246, 0.2); color: #3B82F6; border: 1px solid #3B82F6; }
 .badge-bronze { background: rgba(16, 185, 129, 0.2); color: var(--emerald); border: 1px solid var(--emerald); }
@@ -207,7 +181,7 @@ th { color: var(--muted); font-size: 0.82rem; text-transform: uppercase; }
 .btn-delete { background: transparent; border: none; color: var(--red); cursor: pointer; font-weight: bold; }
 
 /* ==========================================
-   MOBILE RESPONSIVO E CORREÇÃO DO MENU CLARO
+   MOBILE RESPONSIVO & MENU LATERAL (DRAWER)
    ========================================== */
 @media (max-width: 1024px) { .cards { grid-template-columns: repeat(2, 1fr); } }
 .mobile-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); z-index: 999; opacity: 0; transition: opacity 0.3s ease; }
@@ -226,11 +200,11 @@ th { color: var(--muted); font-size: 0.82rem; text-transform: uppercase; }
     padding: 8px 14px; border-radius: 14px; font-size: 0.85rem; font-weight: 600; cursor: pointer;
   }
   
-  /* CORREÇÃO DO BUG: O Menu lateral agora respeita o Tema atual usando variáveis de cor */
+  /* Menu lateral que respeita o tema claro/escuro com var(--glass-bg) */
   .nav-tabs {
     position: fixed; top: 0; left: -300px; width: 260px; height: 100vh; flex-direction: column; justify-content: flex-start;
     padding: 80px 20px 20px 20px; 
-    background: var(--glass-bg); /* Estava chumbado um rgba() escuro, agora usa o Glass dinâmico */
+    background: var(--glass-bg); 
     backdrop-filter: blur(40px) saturate(200%);
     -webkit-backdrop-filter: blur(40px) saturate(200%);
     border: none; border-right: 1px solid var(--glass-border);
@@ -264,7 +238,7 @@ th { color: var(--muted); font-size: 0.82rem; text-transform: uppercase; }
 
 [data-theme="light"] {
   --bg-gradient: radial-gradient(circle at 50% 20%, #F8FAFC 0%, #E2E8F0 60%, #A7F3D0 100%);
-  --glass-bg: rgba(241, 245, 249, 0.75);
+  --glass-bg: rgba(241, 245, 249, 0.85);
   --glass-border: rgba(16, 185, 129, 0.5);
   --glass-shadow: 0 12px 32px 0 rgba(15, 23, 42, 0.12);
   --inset-light: inset 0 1px 1px 0 rgba(255, 255, 255, 0.8);
@@ -305,15 +279,8 @@ header h1 { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.5px; color: 
 header h1 span { color: var(--emerald); text-shadow: none; }
 
 .crypto-ticker {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--muted);
-  display: flex;
-  gap: 12px;
-  background: var(--glass-bg);
-  padding: 4px 12px;
-  border-radius: 20px;
-  border: 1px solid var(--glass-border);
+  font-size: 0.75rem; font-weight: 600; color: var(--muted); display: flex; gap: 12px;
+  background: var(--glass-bg); padding: 4px 12px; border-radius: 20px; border: 1px solid var(--glass-border);
 }
 .crypto-ticker span { color: var(--emerald); }
 
@@ -321,40 +288,23 @@ header h1 span { color: var(--emerald); text-shadow: none; }
 .nav-tabs { display: flex; gap: 12px; background: var(--glass-bg); padding: 8px; border-radius: var(--radius); border: 1px solid var(--glass-border); backdrop-filter: blur(25px); align-items: center; }
 
 .nav-btn {
-  display: flex; align-items: center; gap: 8px;
-  padding: 10px 20px;
-  background: transparent;
-  border: none;
-  border-radius: 16px;
-  cursor: pointer;
-  color: var(--muted);
-  transition: all 0.3s ease;
+  display: flex; align-items: center; gap: 8px; padding: 10px 20px; background: transparent;
+  border: none; border-radius: 16px; cursor: pointer; color: var(--muted); transition: all 0.3s ease;
 }
-
 .nav-btn:hover { background: var(--accent-light); }
-
 .nav-btn.active {
-  background: var(--glass-bg);
-  border: 1px solid var(--emerald);
-  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.15);
+  background: var(--glass-bg); border: 1px solid var(--emerald); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.15);
 }
 
 .nav-btn strong.spark-text {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--text);
-  letter-spacing: 0.5px;
+  font-size: 0.9rem; font-weight: 600; color: var(--text); letter-spacing: 0.5px;
 }
-
 .nav-btn.active strong.spark-text {
   background: linear-gradient(120deg, var(--text) 30%, var(--emerald) 50%, #ffffff 60%, var(--text) 70%);
-  background-size: 250% auto;
-  color: transparent;
-  -webkit-background-clip: text;
-  background-clip: text;
+  background-size: 250% auto; color: transparent;
+  -webkit-background-clip: text; background-clip: text;
   animation: shine-spark 3s linear infinite;
 }
-
 @keyframes shine-spark {
   0% { background-position: 200% center; }
   100% { background-position: -50% center; }
@@ -410,10 +360,10 @@ input, select {
   -webkit-appearance: none; appearance: none; backdrop-filter: blur(15px); position: relative; z-index: 2; 
 }
 input:focus, select:focus { border-color: var(--emerald); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25); }
-select option { background: #0A1128; color: var(--text); }
+select option { background: var(--glass-bg); color: var(--text); }
 input[type="date"] { min-height: 46px; display: block; }
 input[type="date"]::-webkit-calendar-picker-indicator { position: absolute; right: 16px; filter: invert(1); cursor: pointer; opacity: 0.8;}
-[data-theme="light"] input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0); } /* Correção para o ícone de data no tema claro */
+[data-theme="light"] input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0); }
 
 .btn {
   padding: 12px 22px; border-radius: 16px; cursor: pointer; background: var(--glass-bg); border: 1px solid var(--glass-border);
@@ -426,9 +376,7 @@ input[type="date"]::-webkit-calendar-picker-indicator { position: absolute; righ
 .btn-danger { color: var(--red); }
 
 /* Gamificação: Badges nos Cofres */
-.badge-gamification {
-  padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
-}
+.badge-gamification { padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
 .badge-gold { background: rgba(245, 158, 11, 0.2); color: #F59E0B; border: 1px solid #F59E0B; }
 .badge-silver { background: rgba(59, 130, 246, 0.2); color: #3B82F6; border: 1px solid #3B82F6; }
 .badge-bronze { background: rgba(16, 185, 129, 0.2); color: var(--emerald); border: 1px solid var(--emerald); }
@@ -449,7 +397,7 @@ th { color: var(--muted); font-size: 0.82rem; text-transform: uppercase; }
 .btn-delete { background: transparent; border: none; color: var(--red); cursor: pointer; font-weight: bold; }
 
 /* ==========================================
-   MOBILE RESPONSIVO E CORREÇÃO DO MENU CLARO
+   MOBILE RESPONSIVO & MENU LATERAL (DRAWER)
    ========================================== */
 @media (max-width: 1024px) { .cards { grid-template-columns: repeat(2, 1fr); } }
 .mobile-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); z-index: 999; opacity: 0; transition: opacity 0.3s ease; }
@@ -468,11 +416,11 @@ th { color: var(--muted); font-size: 0.82rem; text-transform: uppercase; }
     padding: 8px 14px; border-radius: 14px; font-size: 0.85rem; font-weight: 600; cursor: pointer;
   }
   
-  /* CORREÇÃO DO BUG: O Menu lateral agora respeita o Tema atual usando variáveis de cor */
+  /* Menu lateral que respeita o tema claro/escuro com var(--glass-bg) */
   .nav-tabs {
     position: fixed; top: 0; left: -300px; width: 260px; height: 100vh; flex-direction: column; justify-content: flex-start;
     padding: 80px 20px 20px 20px; 
-    background: var(--glass-bg); /* Estava chumbado um rgba() escuro, agora usa o Glass dinâmico */
+    background: var(--glass-bg); 
     backdrop-filter: blur(40px) saturate(200%);
     -webkit-backdrop-filter: blur(40px) saturate(200%);
     border: none; border-right: 1px solid var(--glass-border);
