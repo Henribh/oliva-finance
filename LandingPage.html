@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oliva Finance | O Futuro da Sua Renda</title>
+
+    <style>
+        /* ==========================================
+           RESET E ESTILOS GLOBAIS NATIVOS (SEM TAILWIND)
+           ========================================== */
+        *, *::before, *::after {
+            box-sizing: border-box !important;
+            margin: 0;
+            padding: 0;
+            text-decoration: none !important;
+        }
+
+        :root {
+            --bg-gradient: radial-gradient(circle at 50% 10%, #0A1128 0%, #050814 60%, #010308 100%);
+            --glass-bg: rgba(10, 17, 40, 0.75);
+            --glass-sub: rgba(5, 8, 20, 0.6);
+            --glass-border: rgba(16, 185, 129, 0.35);
+            --glass-border-sub: rgba(16, 185, 129, 0.2);
+            --emerald: #10B981;
+            --emerald-hover: #34d399;
+            --emerald-light: rgba(16, 185, 129, 0.15);
+            --navy: #1E3A8A;
+            --text-main: #F1F5F9;
+            --text-muted: #94A3B8;
+            --red: #EF4444;
+            --amber: #F59E0B;
+        }
+
+        html, body {
+            width: 100%;
+            min-height: 100vh;
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Container Principal com Centralização Estrita */
+        .lp-container {
+            width: 100%;
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 0 20px 80px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 64px;
+        }
+
+        /* Orbes Luminosos de Fundo */
+        .circle {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: 0;
+            pointer-events: none;
+        }
+        .circle-1 { width: 450px; height: 450px; background: rgba(16, 185, 129, 0.18); top: -100px; right: -80px; }
+        .circle-2 { width: 500px; height: 500px; background: rgba(30, 58, 138, 0.25); bottom: -120px; left: -100px; }
+
+        /* Painéis Glassmorphism */
+        .glass-panel {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            box-shadow: 0 16px 40px 0 rgba(0, 0, 0, 0.7), inset 0 1px 1px 0 rgba(16, 185, 129, 0.25);
+            border-radius: 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .glass-panel-sub {
+            background: var(--glass-sub);
+            border: 1px solid var(--glass-border-sub);
+            backdrop-filter: blur(15px);
+            border-radius: 18px;
+        }
+
+        /* Header e Navbar Pílula */
+        .lp-header {
+            width: 100%;
+            margin-top: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 28px;
+            background: rgba(10, 17, 40, 0.85);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            backdrop-filter: blur(25px);
+            z-index: 10;
+        }
+
+        .brand-logo {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .brand-logo span { color: var(--emerald); }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+        .nav-links a:hover { color: #ffffff; }
+
+        /* Botões Estilizados */
+        .btn-green {
+            background: var(--emerald);
+            color: #022c22;
+            font-weight: 700;
+            border-radius: 16px;
+            padding: 12px 24px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+        .btn-green:hover {
+            background: var(--emerald-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.35);
+        }
+
+        .btn-outline {
+            background: var(--emerald-light);
+            border: 1px solid var(--emerald);
+            color: var(--text-main);
+            font-weight: 600;
+            border-radius: 16px;
+            padding: 12px 24px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+        .btn-outline:hover {
+            background: rgba(16, 185, 129, 0.25);
+            transform: translateY(-2px);
+        }
+
+        /* Seção Hero */
+        .hero-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-top: 16px;
+            gap: 20px;
+            max-width: 850px;
+        }
+
+        .hero-title {
+            font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+            line-height: 1.12;
+            letter-spacing: -1.2px;
+            font-weight: 800;
+            background: linear-gradient(180deg, #ffffff 0%, #10B981 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+        }
+
+        .hero-subtitle {
+            color: var(--text-muted);
+            font-size: 1.125rem;
+            max-width: 650px;
+            line-height: 1.6;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 8px;
+        }
+
+        /* Mockup Samsung Galaxy S22 */
+        .hero-mockup-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 880px;
+            height: 460px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 8px;
+        }
+
+        .samsung-s22 {
+            width: 300px;
+            height: 480px;
+            background: rgba(5, 8, 20, 0.95);
+            border: 3px solid #2a354f;
+            border-radius: 38px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.8), inset 0 0 0 2px rgba(255,255,255,0.08);
+            padding: 16px 18px;
+            position: relative;
+            z-index: 2;
+            backdrop-filter: blur(25px);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .s22-camera {
+            width: 12px;
+            height: 12px;
+            background: #000;
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 50%;
+            margin: 4px auto 16px auto;
+        }
+
+        /* Elements Flutuantes Hero */
+        .floating-element {
+            position: absolute;
+            animation: float 6s ease-in-out infinite;
+            z-index: 3;
+            padding: 16px;
+        }
+        .fe-1 { top: 8%; left: 2%; animation-delay: 0s; width: 230px; }
+        .fe-2 { top: 35%; right: 2%; animation-delay: -2s; width: 240px; }
+        .fe-3 { bottom: 4%; left: 5%; animation-delay: -4s; width: 230px; }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* Bento Grid & Tecnologia Visual */
+        .tech-section {
+            width: 100%;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 650px;
+            margin: 0 auto 32px auto;
+        }
+
+        .badge-tag {
+            background: var(--emerald-light);
+            color: var(--emerald);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            font-size: 0.75rem;
+            font-weight: 800;
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-top: 12px;
+        }
+
+        .section-desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 8px;
+        }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        /* Gráfico SVG Nativo */
+        .svg-chart-container {
+            width: 100%;
+            height: 220px;
+            position: relative;
+            margin-top: 16px;
+        }
+
+        .svg-chart {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
+        /* Seção de Recursos (4 Colunas) */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        .feature-card {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .feature-icon-box {
+            font-size: 1.5rem;
+            background: var(--emerald-light);
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        /* Seção Por Que Escolher (2 Colunas) */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            width: 100%;
+        }
+
+        .why-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .why-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .why-item span {
+            color: var(--emerald);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* Planos */
+        .plans-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        .plan-card {
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .plan-price {
+            font-size: 2.25rem;
+            font-weight: 800;
+            margin: 8px 0 16px 0;
+        }
+
+        .plan-features {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            font-size: 0.9rem;
+            color: var(--text-main);
+            margin-bottom: 32px;
+            list-style: none;
+        }
+
+        .plan-features li {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .plan-features li span {
+            color: var(--emerald);
+            font-weight: bold;
+        }
+
+        /* Responsividade NAtiva */
+        @media (max-width: 960px) {
+            .floating-element { display: none; }
+            .lp-header { flex-direction: column; gap: 16px; border-radius: 24px; text-align: center; }
+            .bento-grid, .grid-2, .plans-grid { grid-template-columns: 1fr; }
+            .features-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 580px) {
+            .features-grid { grid-template-columns: 1fr; }
+            .hero-title { font-size: 2rem; }
+            .hero-actions { flex-direction: column; width: 100%; }
+            .hero-actions a { width: 100%; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Orbes Luminosos de Fundo -->
+    <div class="circle circle-1"></div>
+    <div class="circle circle-2"></div>
+
+    <!-- Container Centralizado -->
+    <div class="lp-container">
+
+        <!-- Navbar Pílula -->
+        <header class="lp-header">
+            <a href="index.html" class="brand-logo">
+                🌿 Oliva <span>Finance</span>
+            </a>
+            <nav class="nav-links">
+                <a href="app.html">Dashboard</a>
+                <a href="calculadora.html">Calculadora</a>
+                <a href="conversor.html">Câmbio</a>
+                <a href="calendario.html">Agenda</a>
+            </nav>
+            <a href="app.html" class="btn-green" style="padding: 8px 20px; font-size: 0.85rem;">Acessar App</a>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <h1 class="hero-title">
+                Você vive. O Oliva projeta o seu futuro financeiro.
+            </h1>
+            <p class="hero-subtitle">
+                O ecossistema definitivo para gerenciar sua renda, proteger seu patrimônio e simular sua liberdade financeira em uma interface Dark Glass ultra moderna.
+            </p>
+            <div class="hero-actions">
+                <a href="app.html" class="btn-green">Experimentar Plano Free</a>
+                <a href="#tecnologia" class="btn-outline">Conhecer Tecnologia</a>
+            </div>
+        </section>
+
+        <!-- Mockup Visual de Impacto (Samsung Galaxy S22) -->
+        <section class="hero-mockup-wrapper">
+
+            <!-- Card Flutuante 1 (Esquerda) -->
+            <div class="floating-element fe-1 glass-panel">
+                <div style="font-size: 0.75rem; color: var(--text-muted); display: flex; align-items: center; gap: 8px;">
+                    <span style="background: rgba(239, 68, 68, 0.2); padding: 6px; border-radius: 50%;">🍔</span> Alimentação
+                </div>
+                <div style="color: var(--red); font-weight: bold; font-size: 1.1rem; margin-top: 8px;">- R$ 85,90</div>
+                <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 4px;">Hoje, 19:45</div>
+            </div>
+
+            <!-- Samsung Galaxy S22 Centralizado -->
+            <div class="samsung-s22">
+                <div class="s22-camera"></div>
+
+                <div style="text-align: center; font-size: 0.75rem; font-weight: 600; color: var(--text-muted);">Saldo Livre Estimado</div>
+                <div style="text-align: center; font-size: 1.5rem; font-weight: 800; color: var(--emerald); margin-top: 4px;">R$ 4.250,00</div>
+
+                <div class="glass-panel-sub" style="margin-top: 16px; padding: 12px;">
+                    <div style="font-size: 0.75rem; color: var(--text-muted);">🎯 Meta: Viagem Férias</div>
+                    <div style="width: 100%; height: 8px; background: #000; border-radius: 10px; margin-top: 8px; overflow: hidden;">
+                        <div style="height: 100%; background: var(--emerald); border-radius: 10px; width: 65%;"></div>
+                    </div>
+                    <div style="font-size: 0.65rem; color: var(--text-muted); margin-top: 4px;">65% concluído</div>
+                </div>
+
+                <div class="glass-panel-sub" style="margin-top: 12px; padding: 12px;">
+                    <div style="font-size: 0.75rem; color: var(--text-muted);">💸 Rendimento Passivo</div>
+                    <div style="color: var(--emerald); font-weight: bold; font-size: 0.9rem; margin-top: 4px;">+ R$ 345,10</div>
+                </div>
+            </div>
+
+            <!-- Card Flutuante 2 (Direita) -->
+            <div class="floating-element fe-2 glass-panel">
+                <div style="font-size: 0.75rem; color: var(--text-muted); display: flex; align-items: center; gap: 8px;">
+                    <span style="background: rgba(16, 185, 129, 0.2); padding: 6px; border-radius: 50%;">💰</span> Salário Recebido
+                </div>
+                <div style="color: var(--emerald); font-weight: bold; font-size: 1.1rem; margin-top: 8px;">+ R$ 15.000,00</div>
+                <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 4px;">Renda Fixa</div>
+            </div>
+
+            <!-- Card Flutuante 3 (Aviso Baixo) -->
+            <div class="floating-element fe-3 glass-panel" style="padding: 12px;">
+                <div style="font-weight: bold; font-size: 0.75rem; color: var(--amber);">⚠️ Alerta de Orçamento</div>
+                <p style="font-size: 0.7rem; color: var(--text-muted); margin-top: 4px;">Parcelas comprometem 28% da sua renda atual.</p>
+            </div>
+
+        </section>
+
+        <!-- SEÇÃO TECNOLÓGICA & VISUAL DE DASHBOARD (Gráfico SVG Nativo - Sem CDNs) -->
+        <section id="tecnologia" class="tech-section">
+            <div class="section-header">
+                <span class="badge-tag">Tecnologia Visual</span>
+                <h2 class="section-title">Sua visão financeira em alta definição</h2>
+                <p class="section-desc">Visão analítica completa com a paleta exclusiva Dark Glass & Esmeralda.</p>
+            </div>
+
+            <div class="glass-panel" style="padding: 32px;">
+                <!-- Barra Superior do Canvas Bento -->
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--glass-border-sub); padding-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="width: 10px; height: 10px; border-radius: 50%; background: var(--emerald);"></span>
+                        <span style="width: 10px; height: 10px; border-radius: 50%; background: #3B82F6;"></span>
+                        <span style="width: 10px; height: 10px; border-radius: 50%; background: var(--text-muted);"></span>
+                        <h3 style="font-size: 1rem; font-weight: bold; margin-left: 8px;">Painel de Decisão Patrimonial</h3>
+                    </div>
+                    <div style="font-size: 0.75rem; background: rgba(5, 8, 20, 0.8); border: 1px solid var(--glass-border-sub); padding: 6px 12px; border-radius: 12px;">
+                        Status: <span style="color: var(--emerald); font-weight: bold;">● Protegido</span>
+                    </div>
+                </div>
+
+                <!-- Bento Grid Modular -->
+                <div class="bento-grid">
+
+                    <!-- Coluna Principal (Gráfico SVG Nativo) -->
+                    <div class="glass-panel-sub" style="padding: 20px; display: flex; flex-direction: column; justify-content: space-between;">
+                        <div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <h4 style="font-size: 0.85rem; color: var(--text-muted);">Fluxo & Crescimento Mensal</h4>
+                                    <div style="font-size: 1.5rem; font-weight: 800; margin-top: 4px;">
+                                        R$ 18.250,00 <span style="font-size: 0.75rem; color: var(--emerald); font-weight: bold;">↑ 14,2% este mês</span>
+                                    </div>
+                                </div>
+                                <span style="font-size: 0.75rem; color: var(--text-muted); background: rgba(0,0,0,0.3); padding: 4px 10px; border-radius: 8px;">Ano 2026</span>
+                            </div>
+
+                            <!-- Gráfico Vetorial Nativo (SVG Vector) -->
+                            <div class="svg-chart-container">
+                                <svg class="svg-chart" viewBox="0 0 500 180">
+                                    <defs>
+                                        <linearGradient id="emeraldGradient" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0%" stop-color="#10B981" stop-opacity="0.4"/>
+                                            <stop offset="100%" stop-color="#10B981" stop-opacity="0.0"/>
+                                        </linearGradient>
+                                    </defs>
+                                    
+                                    <!-- Linhas de Grade -->
+                                    <line x1="0" y1="40" x2="500" y2="40" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+                                    <line x1="0" y1="90" x2="500" y2="90" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+                                    <line x1="0" y1="140" x2="500" y2="140" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+
+                                    <!-- Área Preenchida com Gradiente -->
+                                    <polygon points="0,150 50,130 100,110 150,90 200,80 250,60 300,50 350,40 400,30 450,25 500,15 500,170 0,170" fill="url(#emeraldGradient)" />
+
+                                    <!-- Linha Principal (Patrimônio) -->
+                                    <polyline points="0,150 50,130 100,110 150,90 200,80 250,60 300,50 350,40 400,30 450,25 500,15" fill="none" stroke="#10B981" stroke-width="3" stroke-linecap="round" />
+
+                                    <!-- Linha Pontilhada (Custos) -->
+                                    <polyline points="0,130 50,128 100,132 150,125 200,128 250,120 300,122 350,118 400,120 450,115 500,110" fill="none" stroke="#3B82F6" stroke-width="2" stroke-dasharray="4,4" />
+
+                                    <!-- Pontos de Destaque -->
+                                    <circle cx="500" cy="15" r="4" fill="#10B981" />
+                                    <circle cx="250" cy="60" r="3" fill="#10B981" />
+                                </svg>
+                            </div>
+                        </div>
+
+                        <!-- Barra Multissegmento Nativa -->
+                        <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--glass-border-sub);">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 8px;">
+                                <span>Distribuição do Saldo</span>
+                                <span style="color: var(--emerald); font-weight: bold;">82% Comprometido de forma saudável</span>
+                            </div>
+                            <div style="width: 100%; height: 10px; background: #000; border-radius: 10px; overflow: hidden; display: flex;">
+                                <div style="width: 45%; background: var(--emerald);" title="Poupança"></div>
+                                <div style="width: 30%; background: #1E3A8A;" title="Custos Fixos"></div>
+                                <div style="width: 15%; background: var(--amber);" title="Lazer"></div>
+                                <div style="width: 10%; background: #475569;" title="Livre"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Coluna Lateral (AI Advisor & Metas) -->
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        
+                        <!-- Card Oliva AI Advisor -->
+                        <div class="glass-panel-sub" style="padding: 20px; background: rgba(16, 185, 129, 0.05); border-color: rgba(16, 185, 129, 0.3);">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="background: rgba(16, 185, 129, 0.2); padding: 6px; border-radius: 10px;">✨</span>
+                                    <h4 style="font-size: 0.9rem; font-weight: bold;">Oliva AI Advisor</h4>
+                                </div>
+                                <span style="font-size: 0.65rem; background: rgba(16, 185, 129, 0.2); color: var(--emerald); padding: 2px 8px; border-radius: 10px; font-weight: 800;">ATIVO</span>
+                            </div>
+                            <p style="font-size: 0.8rem; color: var(--text-main); line-height: 1.5;">
+                                "Sua taxa de economia atingiu <strong>38% da renda</strong> este mês. Você está a apenas <strong>14 meses</strong> da sua meta de Reserva de Emergência."
+                            </p>
+                        </div>
+
+                        <!-- Card Índice de Liberdade -->
+                        <div class="glass-panel-sub" style="padding: 20px; display: flex; flex-direction: column; justify-content: space-between; flex: 1;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <h4 style="font-size: 0.85rem; font-weight: bold;">Índice de Liberdade</h4>
+                                <span style="font-size: 0.75rem; color: var(--emerald); font-weight: bold;">Nível 3</span>
+                            </div>
+
+                            <div style="text-align: center; margin: 16px 0;">
+                                <div style="font-size: 2rem; font-weight: 800; color: var(--emerald);">74,8%</div>
+                                <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 4px;">Conclusão da Independência</div>
+                            </div>
+
+                            <div style="background: rgba(0, 0, 0, 0.4); padding: 10px; border-radius: 12px; text-align: center; font-size: 0.75rem; border: 1px solid var(--glass-border-sub);">
+                                Rendimento coberto: <strong>R$ 3.850 / R$ 5.000</strong>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Recursos do Ecossistema -->
+        <section id="features" style="width: 100%;">
+            <div class="glass-panel" style="padding: 32px;">
+                <h2 style="text-align: center; font-size: 1.5rem; font-weight: bold; margin-bottom: 32px;">O ecossistema completo</h2>
+
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon-box">📊</div>
+                        <h3 style="font-size: 1rem; font-weight: bold; margin-top: 8px;">Dashboard Inteligente</h3>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">Controle receitas e custos fixos. Descubra em tempo real seu saldo livre real para gastos.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon-box">🎯</div>
+                        <h3 style="font-size: 1rem; font-weight: bold; margin-top: 8px;">Cofres e Metas</h3>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">Organize seu planejamento por objetivos com conquistas visuais para cada etapa concluída.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon-box">🔮</div>
+                        <h3 style="font-size: 1rem; font-weight: bold; margin-top: 8px;">Calculadora de Liberdade</h3>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">Simule o crescimento com juros compostos e descubra o caminho para sua independência.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon-box">💱</div>
+                        <h3 style="font-size: 1rem; font-weight: bold; margin-top: 8px;">Câmbio & Agenda</h3>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">Acompanhe moedas e ativos em tempo real com alertas de vencimento integrados.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Por que escolher o Oliva? -->
+        <section style="width: 100%;">
+            <div class="grid-2">
+                <div class="glass-panel" style="padding: 32px; display: flex; flex-direction: column; justify-content: center;">
+                    <h2 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 12px;">Por que escolher o Oliva?</h2>
+                    <p style="font-size: 0.85rem; color: var(--text-main); line-height: 1.6; margin-bottom: 20px;">
+                        Desenhado para ser o seu centro de decisões financeiras com clareza, estética superior e controle total sobre o seu planejamento.
+                    </p>
+
+                    <div class="why-list">
+                        <div class="why-item">
+                            <span>✓</span>
+                            <div>
+                                <strong style="color: #fff;">Santuário de Paz Financeira</strong>
+                                <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Interface noturna fluida que transforma o acompanhamento do seu dinheiro em uma rotina agradável.</p>
+                            </div>
+                        </div>
+                        <div class="why-item">
+                            <span>✓</span>
+                            <div>
+                                <strong style="color: #fff;">Tecnologia Liquid Glass Imersiva</strong>
+                                <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Navegação visual inspirada nos melhores sistemas operacionais modernos.</p>
+                            </div>
+                        </div>
+                        <div class="why-item">
+                            <span>✓</span>
+                            <div>
+                                <strong style="color: #fff;">Privacidade com Modo Oculto Instantâneo</strong>
+                                <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Proteja e resguarde a exibição dos seus valores com um único toque quando estiver em público.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-panel" style="padding: 32px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background: rgba(16, 185, 129, 0.05); border-color: rgba(16, 185, 129, 0.4);">
+                    <div style="font-size: 3rem; margin-bottom: 12px;">🌱</div>
+                    <h3 style="font-size: 1.25rem; font-weight: bold; margin-bottom: 8px;">Pronto para transformar sua jornada?</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 24px; max-width: 320px;">
+                        Comece a organizar seu orçamento hoje mesmo no Plano Semente ou libere todos os recursos avançados no Plano Pro.
+                    </p>
+                    <a href="app.html" class="btn-green" style="width: 100%; max-width: 280px;">Acessar Meu Painel</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção de Planos -->
+        <section id="planos" style="width: 100%;">
+            <div class="glass-panel" style="padding: 32px;">
+                <h2 style="text-align: center; font-size: 1.5rem; font-weight: bold; margin-bottom: 8px;">Escolha o plano ideal para você</h2>
+                <p style="text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 32px;">Transparência total em cada etapa.</p>
+
+                <div class="plans-grid">
+                    <!-- Plano Semente (Free) -->
+                    <div class="glass-panel-sub plan-card">
+                        <div>
+                            <h3 style="font-size: 1.25rem; font-weight: bold;">Plano Semente</h3>
+                            <div class="plan-price">R$ 0 <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: normal;">/sempre</span></div>
+                            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 24px;">Para quem busca organização essencial do dia a dia.</p>
+
+                            <ul class="plan-features">
+                                <li><span>✓</span> Dashboard completo de receitas e despesas</li>
+                                <li><span>✓</span> Até 3 Cofres de Metas</li>
+                                <li><span>✓</span> Exportação de extrato em CSV</li>
+                                <li><span>✓</span> Calculadoras básicas</li>
+                            </ul>
+                        </div>
+                        <a href="app.html" class="btn-outline" style="text-align: center; width: 100%;">Start Grátis</a>
+                    </div>
+
+                    <!-- Plano Floresta Pro -->
+                    <div class="glass-panel-sub plan-card" style="border: 2px solid var(--emerald); background: rgba(16, 185, 129, 0.1); position: relative;">
+                        <div style="position: absolute; top: -12px; right: 24px; background: var(--emerald); color: #022c22; padding: 2px 10px; border-radius: 20px; font-size: 0.65rem; font-weight: 800; text-transform: uppercase;">Recomendado</div>
+                        <div>
+                            <h3 style="font-size: 1.25rem; font-weight: bold; color: #fff;">Plano Floresta Pro</h3>
+                            <div class="plan-price" style="color: var(--emerald);">R$ 19,90 <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: normal;">/mês</span></div>
+                            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 24px;">Projeção patrimonial estendida e recursos ilimitados.</p>
+
+                            <ul class="plan-features">
+                                <li><span>✓</span> Tudo do Plano Semente</li>
+                                <li><span>✓</span> Cofres e Metas Ilimitados</li>
+                                <li><span>✓</span> Cotações ao vivo de Moedas & Cripto</li>
+                                <li><span>✓</span> Agenda de Vencimentos Ilimitada</li>
+                                <li><span>✓</span> Projeção estendida de Juros Compostos</li>
+                            </ul>
+                        </div>
+                        <a href="app.html" class="btn-green" style="text-align: center; width: 100%;">Assinar Plano Pro</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Rodapé Limpo -->
+        <footer style="width: 100%; text-align: center; color: var(--text-muted); font-size: 0.75rem; border-top: 1px solid var(--glass-border-sub); padding-top: 24px;">
+            <p>🌿 Oliva Finance © 2026. Projetado para a sua liberdade financeira.</p>
+            <div style="margin-top: 12px; display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                <a href="app.html" style="color: var(--text-muted);">Dashboard</a> •
+                <a href="calculadora.html" style="color: var(--text-muted);">Calculadora</a> •
+                <a href="conversor.html" style="color: var(--text-muted);">Câmbio</a> •
+                <a href="calendario.html" style="color: var(--text-muted);">Agenda</a>
+            </div>
+        </footer>
+
+    </div>
+
+</body>
+</html>

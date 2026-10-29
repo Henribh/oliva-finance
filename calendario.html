@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda de Vencimentos - Oliva</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <header>
+        <div class="brand">
+            <h1>📅 Agenda <span>Oliva</span></h1>
+        </div>
+        <div class="actions">
+            <button class="btn" onclick="window.close()">✕ Fechar Aba</button>
+        </div>
+    </header>
+
+    <main style="display: grid; gap: 24px; max-width: 800px; margin: 0 auto; padding-top: 20px;">
+        
+        <section class="panel">
+            <h2>➕ Nova Conta a Pagar</h2>
+            <p style="color: var(--muted); margin-bottom: 20px; font-size: 0.9rem;">
+                Cadastre seus boletos e assinaturas mensais para não esquecer o vencimento.
+            </p>
+
+            <form id="bill-form" class="form-stack">
+                <div class="grid-2-inputs">
+                    <div class="input-group">
+                        <label for="bill-name">Nome da Conta / Assinatura</label>
+                        <input type="text" id="bill-name" placeholder="Ex: Conta de Luz, Netflix" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="bill-amount">Valor (R$)</label>
+                        <input type="text" id="bill-amount" placeholder="Ex: 120,00" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="bill-date">Data de Vencimento</label>
+                    <input type="date" id="bill-date" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Adicionar à Agenda</button>
+            </form>
+        </section>
+
+        <section class="panel">
+            <h2>📋 Próximos Vencimentos</h2>
+            <div class="table-responsive" style="margin-top: 16px;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Status</th>
+                            <th>Vencimento</th>
+                            <th>Conta</th>
+                            <th>Valor</th>
+                            <th>Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bills-list">
+
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+
+function applyLocalTheme(themeName) {
+            if (themeName === 'light') document.documentElement.setAttribute('data-theme', 'light');
+            else document.documentElement.removeAttribute('data-theme');
+        }
+        applyLocalTheme(localStorage.getItem('oliva_theme') || 'dark');
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'oliva_theme') applyLocalTheme(e.newValue);
+        });
+
+        function parseCurrencyInput(value) {
+            if (!value) return 0;
+            let cleanValue = value.toString().trim();
+            if (cleanValue.includes('.') && cleanValue.includes(',')) cleanValue = cleanValue.replace(/\./g, '').replace(',', '.');
+            else if (cleanValue.includes(',')) cleanValue = cleanValue.replace(',', '.');
+            else if (cleanValue.includes('.')) {
+                const parts = cleanValue.split('.');
+                if (parts.length > 1 && parts[parts.length - 1].length === 3) cleanValue = cleanValue.replace(/\./g, '');
+            }
+            return parseFloat(cleanValue) || 0;
+        }
+
+        function formatCurrency(val) {
+            return val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+
+        let bills = JSON.parse(localStorage.getItem('oliva_bills')) || [];
+
+        function renderBills() {
+            const list = document.getElementById('bills-list');
+            list.innerHTML = '';
+            
+            bills.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+            if (bills.length === 0) {
+                list.innerHTML = `<tr><td colspan="5" style="text-align:center; color: var(--muted);">Tudo em dia! Nenhuma conta pendente.</td></tr>`;
+                return;
+            }
+
+            const today = new Date();
+            today.setHours(0,0,0,0);
+
+            bills.forEach(bill => {
+                const billDate = new Date(bill.date);
+                // Ajuste de fuso horário
+                billDate.setMinutes(billDate.getMinutes() + billDate.getTimezoneOffset());
+                
+                let statusBadge = '';
+                if (bill.paid) {
+                    statusBadge = `<span class="tag" style="background: rgba(16, 185, 129, 0.2); color: var(--green); border-color: var(--green);">Pago</span>`;
+                } else if (billDate < today) {
+                    statusBadge = `<span class="tag" style="background: rgba(239, 68, 68, 0.2); color: var(--red); border-color: var(--red);">Atrasado</span>`;
+                } else {
+                    statusBadge = `<span class="tag" style="background: rgba(245, 158, 11, 0.2); color: #F59E0B; border-color: #F59E0B;">Pendente</span>`;
+                }
+
+                const tr = document.createElement('tr');
+                tr.style.opacity = bill.paid ? '0.5' : '1';
+                
+                tr.innerHTML = `
+                    <td>${statusBadge}</td>
+                    <td><strong style="color: var(--text);">${bill.date.split('-').reverse().join('/')}</strong></td>
+                    <td>${bill.name}</td>
+                    <td style="font-weight: bold;">${formatCurrency(bill.amount)}</td>
+                    <td style="display: flex; gap: 8px;">
+                        <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8rem;" onclick="togglePaid(${bill.id})">
+                            ${bill.paid ? 'Desfazer' : '✔ Pagar'}
+                        </button>
+                        <button class="btn-delete" style="font-size: 1.2rem; padding: 6px;" onclick="deleteBill(${bill.id})">🗑️</button>
+                    </td>
+                `;
+                list.appendChild(tr);
+            });
+        }
+
+        document.getElementById('bill-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const newBill = {
+                id: Date.now(),
+                name: document.getElementById('bill-name').value,
+                amount: parseCurrencyInput(document.getElementById('bill-amount').value),
+                date: document.getElementById('bill-date').value,
+                paid: false
+            };
+            bills.push(newBill);
+            localStorage.setItem('oliva_bills', JSON.stringify(bills));
+            renderBills();
+            e.target.reset();
+        });
+
+        function togglePaid(id) {
+            const bill = bills.find(b => b.id === id);
+            if (bill) {
+                bill.paid = !bill.paid;
+                localStorage.setItem('oliva_bills', JSON.stringify(bills));
+                renderBills();
+            }
+        }
+
+        function deleteBill(id) {
+            bills = bills.filter(b => b.id !== id);
+            localStorage.setItem('oliva_bills', JSON.stringify(bills));
+            renderBills();
+        }
+
+        renderBills();
+    </script>
+</body>
+</html>

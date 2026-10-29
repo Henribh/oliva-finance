@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Financeira - Oliva</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <header>
+        <div class="brand">
+            <h1>🧮 Calculadora <span>Oliva</span></h1>
+        </div>
+        <div class="actions">
+            <button class="btn" onclick="window.close()">✕ Fechar Aba</button>
+        </div>
+    </header>
+
+    <main style="display: grid; gap: 24px; max-width: 800px; margin: 0 auto; padding-top: 20px;">
+        
+        <section class="panel">
+            <h2>💳 Simulador de Parcelamento / Empréstimo</h2>
+            <p style="color: var(--muted); margin-bottom: 20px; font-size: 0.9rem;">
+                Calcule o valor das parcelas com juros e inclua taxas extras do banco.
+            </p>
+
+            <form id="calc-loan-form" class="form-stack">
+                <div class="grid-2-inputs">
+                    <div class="input-group">
+                        <label for="loan-amount">Valor Solicitado (R$)</label>
+                        <input type="text" id="loan-amount" placeholder="Ex: 5.000,00" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="loan-months">Nº de Parcelas (Meses)</label>
+                        <input type="number" id="loan-months" placeholder="Ex: 12" min="1" required>
+                    </div>
+                </div>
+
+                <div class="grid-2-inputs">
+                    <div class="input-group">
+                        <label for="loan-interest">Taxa de Juros Mensal (%)</label>
+                        <input type="number" step="0.01" id="loan-interest" placeholder="Ex: 1.5" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="loan-fees">Taxas Extras / Tarifas (R$)</label>
+                        <input type="text" id="loan-fees" placeholder="Ex: 150,00 (Opcional)">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Simular Empréstimo</button>
+            </form>
+
+            <div id="loan-result" class="sim-results" style="display: none; margin-top: 16px;"></div>
+        </section>
+
+        <section class="panel">
+            <h2>📄 Cálculo de Boleto Atrasado</h2>
+            <p style="color: var(--muted); margin-bottom: 20px; font-size: 0.9rem;">
+                Descubra o valor atualizado da sua conta com multa e juros ao dia.
+            </p>
+
+            <form id="calc-boleto-form" class="form-stack">
+                <div class="grid-2-inputs">
+                    <div class="input-group">
+                        <label for="bol-amount">Valor do Boleto (R$)</label>
+                        <input type="text" id="bol-amount" placeholder="Ex: 250,00" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="bol-days">Dias de Atraso</label>
+                        <input type="number" id="bol-days" placeholder="Ex: 5" min="1" required>
+                    </div>
+                </div>
+
+                <div class="grid-2-inputs">
+                    <div class="input-group">
+                        <label for="bol-multa">Multa por Atraso (%)</label>
+                        <input type="number" step="0.01" id="bol-multa" value="2.0" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="bol-juros">Juros ao Mês (%)</label>
+                        <input type="number" step="0.01" id="bol-juros" value="1.0" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-secondary" style="margin-top: 10px;">Atualizar Valor</button>
+            </form>
+
+            <div id="boleto-result" class="sim-results" style="display: none; margin-top: 16px;"></div>
+        </section>
+
+    </main>
+
+    <script>
+
+function parseCurrencyInput(value) {
+            if (!value) return 0;
+            let cleanValue = value.toString().trim();
+            if (cleanValue.includes('.') && cleanValue.includes(',')) {
+                cleanValue = cleanValue.replace(/\./g, '').replace(',', '.');
+            } else if (cleanValue.includes(',')) {
+                cleanValue = cleanValue.replace(',', '.');
+            } else if (cleanValue.includes('.')) {
+                const parts = cleanValue.split('.');
+                if (parts.length > 1 && parts[parts.length - 1].length === 3) {
+                    cleanValue = cleanValue.replace(/\./g, '');
+                }
+            }
+            return parseFloat(cleanValue) || 0;
+        }
+
+        function formatCurrency(val) {
+            return val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+
+        function applyLocalTheme(themeName) {
+            if (themeName === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+            }
+        }
+
+        const initialTheme = localStorage.getItem('oliva_theme') || 'dark';
+        applyLocalTheme(initialTheme);
+
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'oliva_theme') {
+                applyLocalTheme(e.newValue);
+            }
+        });
+
+        document.getElementById('calc-loan-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const amount = parseCurrencyInput(document.getElementById('loan-amount').value);
+            const months = parseInt(document.getElementById('loan-months').value);
+            const interestRate = parseFloat(document.getElementById('loan-interest').value) / 100;
+            const extraFees = parseCurrencyInput(document.getElementById('loan-fees').value) || 0;
+
+            const totalFinanced = amount + extraFees;
+            
+            let installmentValue = 0;
+            if (interestRate > 0) {
+                installmentValue = totalFinanced * (interestRate * Math.pow(1 + interestRate, months)) / (Math.pow(1 + interestRate, months) - 1);
+            } else {
+                installmentValue = totalFinanced / months;
+            }
+
+            const totalPaid = installmentValue * months;
+            const totalInterest = totalPaid - amount;
+
+            const res = document.getElementById('loan-result');
+            res.style.display = 'block';
+            res.innerHTML = `
+                <h3 style="font-size: 1rem; margin-bottom: 8px;">Detalhes do Financiamento</h3>
+                <p>• Valor da Parcela: <strong style="font-size: 1.2rem; color: var(--green);">${formatCurrency(installmentValue)} / mês</strong></p>
+                <p>• Total a pagar no final: <strong>${formatCurrency(totalPaid)}</strong></p>
+                <p>• Juros + Taxas pagas ao banco: <strong style="color: var(--red);">${formatCurrency(totalInterest)}</strong></p>
+            `;
+        });
+
+        document.getElementById('calc-boleto-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const amount = parseCurrencyInput(document.getElementById('bol-amount').value);
+            const days = parseInt(document.getElementById('bol-days').value);
+            const finePercent = parseFloat(document.getElementById('bol-multa').value) / 100;
+            const monthlyInterest = parseFloat(document.getElementById('bol-juros').value) / 100;
+
+            const fineValue = amount * finePercent; // Multa fixa
+            const dailyInterestRate = monthlyInterest / 30; // Juros divididos por 30 dias
+            const interestValue = amount * dailyInterestRate * days; // Juros proporcionais aos dias
+
+            const totalUpdated = amount + fineValue + interestValue;
+
+            const res = document.getElementById('boleto-result');
+            res.style.display = 'block';
+            res.innerHTML = `
+                <h3 style="font-size: 1rem; margin-bottom: 8px;">Boleto Atualizado</h3>
+                <p>• Valor a pagar hoje: <strong style="font-size: 1.2rem; color: var(--red);">${formatCurrency(totalUpdated)}</strong></p>
+                <p style="font-size: 0.85rem; color: var(--muted); margin-top: 8px;">
+                    Composição: Valor Original (${formatCurrency(amount)}) + Multa (${formatCurrency(fineValue)}) + Juros por ${days} dia(s) (${formatCurrency(interestValue)}).
+                </p>
+            `;
+        });
+    </script>
+</body>
+</html>

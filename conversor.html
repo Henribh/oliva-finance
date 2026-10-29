@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Câmbio e Moedas - Oliva</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <header>
+        <div class="brand">
+            <h1>💱 Câmbio <span>Oliva</span></h1>
+        </div>
+        <div class="actions">
+            <button class="btn" onclick="window.close()">✕ Fechar Aba</button>
+        </div>
+    </header>
+
+    <main style="display: grid; gap: 24px; max-width: 800px; margin: 0 auto; padding-top: 20px;">
+        
+        <section class="cards" style="grid-template-columns: repeat(3, 1fr);">
+            <div class="card">
+                <div class="label">🇺🇸 Dólar (USD)</div>
+                <div class="value" id="card-usd">R$ 0,00</div>
+                <div class="delta up" id="var-usd">Buscando...</div>
+            </div>
+            <div class="card">
+                <div class="label">🇪🇺 Euro (EUR)</div>
+                <div class="value" id="card-eur">R$ 0,00</div>
+                <div class="delta up" id="var-eur">Buscando...</div>
+            </div>
+            <div class="card">
+                <div class="label">🪙 Bitcoin (BTC)</div>
+                <div class="value" id="card-btc">R$ 0,00</div>
+                <div class="delta up" id="var-btc">Buscando...</div>
+            </div>
+        </section>
+
+        <section class="panel">
+            <h2>🔄 Conversor Instantâneo</h2>
+            <p style="color: var(--muted); margin-bottom: 20px; font-size: 0.9rem;">
+                Converta seus Reais (BRL) para moedas estrangeiras utilizando a cotação em tempo real.
+            </p>
+
+            <form id="converter-form" class="form-stack">
+                <div class="grid-2-inputs">
+                    <div class="input-group">
+                        <label for="conv-amount">Valor em Reais (R$)</label>
+                        <input type="text" id="conv-amount" placeholder="Ex: 1.000,00" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="conv-currency">Converter para</label>
+                        <select id="conv-currency" required>
+                            <option value="USD">Dólar Americano (USD)</option>
+                            <option value="EUR">Euro (EUR)</option>
+                            <option value="BTC">Bitcoin (BTC)</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Converter</button>
+            </form>
+
+            <div id="converter-result" class="sim-results" style="display: none; margin-top: 24px; text-align: center; padding: 30px;">
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+
+        function applyLocalTheme(themeName) {
+            if (themeName === 'light') document.documentElement.setAttribute('data-theme', 'light');
+            else document.documentElement.removeAttribute('data-theme');
+        }
+        applyLocalTheme(localStorage.getItem('oliva_theme') || 'dark');
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'oliva_theme') applyLocalTheme(e.newValue);
+        });
+
+        function parseCurrencyInput(value) {
+            if (!value) return 0;
+            let cleanValue = value.toString().trim();
+            if (cleanValue.includes('.') && cleanValue.includes(',')) cleanValue = cleanValue.replace(/\./g, '').replace(',', '.');
+            else if (cleanValue.includes(',')) cleanValue = cleanValue.replace(',', '.');
+            else if (cleanValue.includes('.')) {
+                const parts = cleanValue.split('.');
+                if (parts.length > 1 && parts[parts.length - 1].length === 3) cleanValue = cleanValue.replace(/\./g, '');
+            }
+            return parseFloat(cleanValue) || 0;
+        }
+
+        function formatCurrency(val, currencyCode) {
+            if (currencyCode === 'BTC') {
+                return val.toLocaleString('pt-BR', { minimumFractionDigits: 6, maximumFractionDigits: 6 }) + ' BTC';
+            }
+            return val.toLocaleString('pt-BR', { style: 'currency', currency: currencyCode });
+        }
+
+        let currentRates = { USD: 0, EUR: 0, BTC: 0 };
+
+        async function fetchExchangeRatesLive() {
+            try {
+                const response = await fetch('https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL,BTC-BRL');
+                const data = await response.json();
+                
+                currentRates.USD = parseFloat(data.USDBRL.bid);
+                currentRates.EUR = parseFloat(data.EURBRL.bid);
+                currentRates.BTC = parseFloat(data.BTCBRL.bid);
+                
+                document.getElementById('card-usd').textContent = `R$ ${currentRates.USD.toFixed(2).replace('.', ',')}`;
+                document.getElementById('card-eur').textContent = `R$ ${currentRates.EUR.toFixed(2).replace('.', ',')}`;
+                document.getElementById('card-btc').textContent = `R$ ${currentRates.BTC.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+                
+                function renderVariation(elId, valStr) {
+                    const el = document.getElementById(elId);
+                    const val = parseFloat(valStr);
+                    el.textContent = `${val > 0 ? '▲' : '▼'} ${val.toFixed(2)}% hoje`;
+                    el.className = `delta ${val > 0 ? 'up' : 'down'}`;
+                }
+
+                renderVariation('var-usd', data.USDBRL.pctChange);
+                renderVariation('var-eur', data.EURBRL.pctChange);
+                renderVariation('var-btc', data.BTCBRL.pctChange);
+
+            } catch (error) {
+                document.getElementById('card-usd').textContent = "Offline";
+                document.getElementById('card-eur').textContent = "Offline";
+                document.getElementById('card-btc').textContent = "Offline";
+            }
+        }
+
+        document.getElementById('converter-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const amountBRL = parseCurrencyInput(document.getElementById('conv-amount').value);
+            const targetCurrency = document.getElementById('conv-currency').value;
+            
+            if (currentRates[targetCurrency] === 0) {
+                alert("As cotações ainda estão carregando ou a API está offline.");
+                return;
+            }
+
+            const convertedValue = amountBRL / currentRates[targetCurrency];
+            const rateUsed = currentRates[targetCurrency];
+
+            const resDiv = document.getElementById('converter-result');
+            resDiv.style.display = 'block';
+            
+            resDiv.innerHTML = `
+                <p style="color: var(--muted); font-size: 1rem; margin-bottom: 8px;">Você terá aproximadamente</p>
+                <h2 style="font-size: 2.5rem; color: var(--emerald); margin-bottom: 12px; font-weight: 800;">
+                    ${formatCurrency(convertedValue, targetCurrency)}
+                </h2>
+                <p style="font-size: 0.85rem; color: var(--muted); background: var(--input-bg); display: inline-block; padding: 6px 12px; border-radius: 12px;">
+                    Cotação utilizada: 1 ${targetCurrency} = R$ ${rateUsed.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                </p>
+            `;
+        });
+
+        fetchExchangeRatesLive();
+    </script>
+</body>
+</html>
